@@ -1,0 +1,43 @@
+my_account Mi cuenta
+own Propio
+Consignment En consignación
+receipt Ingreso
+ConsignmentLoss Pérdida de Consignación
+ConsignmentReturn Devolución de Consignación
+consigsale Venta de Consignación
+custretrn Devolución de Cliente
+donation Donación
+InternalConsumption Consumo Interno
+inventoryAdjustment Ajuste de Inventario
+issue Salida
+returntosup Devolución a Proveedor
+sale Venta
+transfer Traslado Interno
+wastage Mermas y Pérdidas
+user Usuario
+edit_user Editar usuario
+not_allowed No permitido
+fabrication Fabricación
+consignment Consignación
+loss Pérdida
+other Otros
+ConsignmentDelivery Entrega en Consignación
+warehouse Almacén
+danation Donación
+provider Proveedor
+finalClient Cliente final
+book Libro
+books Libros
+good Bien
+goods Bienes
+service Servicio
+services Servicios
+LCproducts productos
+LCtitles títulos
+profile_img Imagen de perfil
+editar Editar
+enter_a_valid_email Ingresa un correo válido
+supply Suministro
+approved Aprobado
+emitted Emitido
+draft Borrador

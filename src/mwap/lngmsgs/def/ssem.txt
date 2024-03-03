@@ -1,0 +1,85 @@
+stocks Stocks
+warehouses Almacenes
+clientesAndProviders Clientes y proveedores
+configuracion Configuración
+ConsignmentWarehouses Almacenes de consignación
+system Sistema
+not_allowed No permitido
+address Dirección
+createMovement Crear movimiento
+cleint Cliente
+currency Moneda
+code Código
+symbol Símbolo
+plural Plural
+main Principal
+RUC RUC
+client Cliente
+provider Proveedor
+phone Teléfono
+country País
+products Productos
+type Tipo
+defcountry País por defecto
+save Guardar
+PEigvUnaffected IGV Inafecto
+PEiscPercentage ISC porcentual
+PEiscFixed ISC fijo
+LCcreated creado
+LCdeleted eliminado
+virtual Virtual
+collection Colección
+pulisher Editorial
+title Título
+year Año
+authors Autores
+collections Colecciones
+titles Títulos
+publishers Editoriales
+cant_eliminate No se pudo eliminar
+pricelists Listas de precio
+sales Ventas
+costos Costos
+codes Códigos
+enabled Habilitada
+detail Detalle
+unableToCreateElement No se pudo crear el elemento.
+product Producto
+createNewStockMovment Crear nuevo movimiento de stocks
+class Clase
+create Crear
+main_currency Moneda principal
+movement Movimiento
+edit Editar
+approvedMovementCanNotBeEdited No se puede editar un movimiento aprobado.
+consig Consignación
+purchase_order Orden de compra
+series Serie
+number Número
+date Fecha
+guide Guía
+dest_warehouse Almacén de destino
+src_warehouse Almacén de origen
+sales_price Precio de venta
+sale Venta
+cost Costo
+note Nota
+stocks_disabled Stocks desactivados
+details Detalle
+savedraft Guardar borrador
+product_id ID de producto
+det_id ID de detalle
+quantity Cantidad
+batch Lote
+salesProceSHORT P. venta
+sales_unit_priceHINT Precio de venta neto
+salesPriceSHORT P. venta
+included Incluido
+additionaCurrenry Moneda adicional
+exchange_rate Tipo de cambio
+additional_codes Códigos adicionales
+updateN Actualización
+updateMod Módulo de actualización
+movements Movimientos
+state Estado
+digital Digital

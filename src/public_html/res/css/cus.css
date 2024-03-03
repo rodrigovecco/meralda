@@ -1,0 +1,16 @@
+.mw_ui_frm_container{
+	max-width: 800px;
+}
+.mw-subinterface-btns-container{
+	text-align: left;
+}
+.btncus{
+	text-align: left;
+}
+.mw_ui_frm_container .justify-content-md-end {
+    justify-content: flex-start !important;
+ }
+ .nav_main_ui_title{
+ 	color: #ffffff;
+ 	
+ }

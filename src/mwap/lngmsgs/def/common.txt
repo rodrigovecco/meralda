@@ -1,0 +1,20 @@
+users Usuarios
+my_account Mi cuenta
+name Nombre
+login Iniciar sesión
+please_login Por favor, iniciar sesión
+user Usuario
+password Contraseña
+field_required Dato requerido
+please_wait Por favor, espere
+seconds_lc segundos
+home Inicio
+yes Sí
+no No
+new_user Nuevo usuario
+rols Roles
+active Activo
+modulos Módulos
+there_are_X_OBJS_related Existen %num% %objs% relacionados.
+save Guardar
+information Información

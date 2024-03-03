@@ -1,0 +1,15 @@
+TDESC_receipt Registra el ingreso de productos o mercancías a un almacén propio por compra a proveedor.
+TDESC_fabrication Registra el ingreso de productos o mercancías a un almacén propio por fabricación o transformación.
+TDESC_consigloss Registra la pérdida de productos que estaban en consignación debido a daños, robos, o cualquier otra causa no atribuible al cliente o al proveedor.
+TDESC_consigretrn Registra la devolución de productos que estaban en consignación. Debita las cantidades del almacén en consignación asignado al cliente y las carga a un almacén propio.
+TDESC_consigsale Registra la venta de productos que estaban en consignación. Debita las cantidades del almacén en consignación asignado al cliente, puede generar documento de venta.
+TDESC_custretrn Registra la devolución de productos por parte del cliente a un almacén propio.
+TDESC_donation Registra la entrega de productos como donación a una entidad benéfica u organización sin fines de lucro. Debita de un almacén propio.
+TDESC_internalconsump Registra el uso de un producto como insumo o materia prima para producir otro producto internamente. Debita de un almacén propio.
+TDESC_inventadjust Registra los ajustes realizados en el inventario para corregir discrepancias o errores en las cantidades registradas.
+TDESC_returntosup Registra la devolución de productos a un almacén propio.
+TDESC_sale Registra la venta de productos a un cliente externo. Debita las cantidadades de un almacén propio.
+TDESC_transfer Registra el movimiento de productos entre diferentes almacenes propios.
+TDESC_wastage Registra la pérdida o reducción de inventario debido a mermas, daños o cualquier otro motivo.
+TDESC_consignment Registra la entrega de productos a un cliente, pero el se mantiene la propiedad hasta que se vendan. Carga las cantidades del almacén en consignación asignado al cliente y las debita de un almacén propio.
+TDESC_supply Registra la salida de productos o mercancías de un almacén propio para ser usados en fabricación o transformación.
