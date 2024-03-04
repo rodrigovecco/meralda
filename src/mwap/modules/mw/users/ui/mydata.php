@@ -2,7 +2,7 @@
 class mwmod_mw_users_ui_mydata extends mwmod_mw_ui_sub_uiabs{
 	function __construct($cod,$maininterface){
 		$this->init($cod,$maininterface);
-		$this->set_def_title($this->get_msg("Mi cuenta"));
+		$this->set_def_title($this->lng_get_msg_txt("myAccount","Mi cuenta"));
 		
 	}
 	function do_exec_no_sub_interface(){
@@ -22,11 +22,11 @@ class mwmod_mw_users_ui_mydata extends mwmod_mw_ui_sub_uiabs{
 		
 		
 		
-		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_html("name",$this->get_msg("Usuario")));
+		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_html("name",$this->lng_get_msg_txt("user","Usuario")));
 		$input->set_value($user->get_idname());	
-		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_input("complete_name",$this->get_msg("Nombre completo")),"data");
+		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_input("complete_name",$this->lng_get_msg_txt("fullName","Nombre completo")),"data");
 		$input->set_value($user->get_real_name());	
-		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_input("email",$this->get_msg("Email")),"data");
+		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_input("email",$this->lng_get_msg_txt("email","Email")),"data");
 		$input->set_value($user->get_email());
 		
 		
