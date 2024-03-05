@@ -4,7 +4,7 @@ Meralda is a comprehensive PHP and JavaScript library developed with decades of 
 
 ## About Meralda
 
-Meralda is the culmination of decades of software development expertise, starting from the creation of FaciPub in 2003, a popular CMS, to the evolution of DrSoft, a flexible platform for data gathering and reporting since 2014. Along the way, we encountered challenges, learned valuable lessons, and honed our craft, which eventually led to the birth of Meralda.
+Meralda is the culmination of decades of software development expertise, starting from the creation of FaciPub in 2003, a popular CMS, to the evolution of DrSoft, a flexible platform for data gathering and reporting since 2014. Along the way, we encountered challenges, learned valuable lessons, and honed our craft, which eventually led to the birth of Meralda in 2024.
 
 ## Key Features
 
