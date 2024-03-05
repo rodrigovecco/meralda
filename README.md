@@ -11,7 +11,7 @@ Meralda is the culmination of decades of software development expertise, startin
 - **Modularity:** Meralda is designed with modularity in mind, allowing developers to pick and choose components based on their project requirements.
 - **Flexibility:** Whether you're building a content management system, a data-driven application, or a responsive website, Meralda offers the flexibility to adapt to diverse use cases.
 - **Getting Started:** To start using Meralda in your projects, simply clone the repository and follow the instructions in the documentation.
-- **Contributing:** We welcome contributions from the community! Whether it's fixing bugs, adding new features, or improving documentation, every contribution is valuable. Please read our contribution guidelines [here](CONTRIBUTING.md) for more information on how to get involved.
+- **Contributing:** We welcome contributions from the community! Whether it's fixing bugs, adding new features, or improving documentation, every contribution is valuable.
 - **License:** Meralda is open-source software released under the [MIT License](LICENSE). You are free to use, modify, and distribute Meralda for both commercial and non-commercial purposes.
 
 ## About mwPHPlib (by Rodrigo Vecco Haddad)
