@@ -22,6 +22,9 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 		if(!$l=$this->get_link()){
 			return false;	
 		}
+		if(!is_string($sql)){
+			return false;
+		}
 	
 		if($query=mysql_query($sql,$l)){
 			return 	$query;
@@ -42,6 +45,9 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 		return mysql_real_escape_string($txt);	
 	}
 	function insert($sql){
+		if(!is_string($sql)){
+			return false;
+		}
 		if(!$l=$this->get_link()){
 			return false;	
 		}
@@ -50,6 +56,9 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 		}
 	}
 	function exec_update($sql,$unsafe=false){
+		if(!is_string($sql)){
+			return false;
+		}
 		if($unsafe){
 			$this->query("SET SQL_SAFE_UPDATES = 0;");	
 		}
@@ -61,6 +70,9 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 			
 	}
 	function exec_delete($sql,$unsafe=false){
+		if(!is_string($sql)){
+			return false;
+		}
 		if($unsafe){
 			$this->query("SET SQL_SAFE_UPDATES = 0;");	
 		}
@@ -72,6 +84,9 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 			
 	}
 	function query_get_affected_rows($sql){
+		if(!is_string($sql)){
+			return false;
+		}
 		if(!$l=$this->get_link()){
 			return false;	
 		}
@@ -251,6 +266,9 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 	}
 	
 	function query_debug($sql){
+		if(!is_string($sql)){
+			return false;
+		}
 		$r=array();
 		$r["sql"]=$sql;
 		$r["ok"]=false;

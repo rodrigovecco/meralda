@@ -4,6 +4,55 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 	function __construct($ap){
 		$this->init($ap);	
 	}
+	//todo paramquery
+	function query($sql){
+		if(!is_string($sql)){
+			return false;
+		}
+		if(!$l=$this->get_link()){
+			return false;	
+		}
+		
+		try {
+        	$result = $l->query($sql);
+
+			if ($result === false) {
+				return false;
+			}
+			return $result;
+    	} catch (Exception $e) {
+    		$this->lastException=$e;
+        	
+        	return false;
+    	}
+	}
+
+	function insert($sql){
+		if(!is_string($sql)){
+			return false;
+		}
+		if(!$l=$this->get_link()){
+			return false;	
+		}
+		if($l->real_query($sql)){
+			return $l->insert_id;
+		}
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	//db methods
 	function do_connect($cfg){
 		if($cfg["port"]??null){
@@ -22,25 +71,6 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 		
 			
 	}
-	function query($sql){
-		
-		if(!$l=$this->get_link()){
-			return false;	
-		}
-		
-		try {
-        	$result = $l->query($sql);
-
-			if ($result === false) {
-				return false;
-			}
-			return $result;
-    	} catch (Exception $e) {
-    		$this->lastException=$e;
-        	
-        	return false;
-    	}
-	}
 	function fetch_array($query){
 		if(!$query){
 			return false;	
@@ -49,10 +79,7 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 			return false;	
 		}
 		return $query->fetch_array(MYSQLI_BOTH);
-		//fetch_array 
 		
-		
-		//return mysql_fetch_array($query);	
 	}
 	
 	function fetch_assoc($query){
@@ -65,7 +92,6 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 		return $query->fetch_assoc();
 		
 		
-		//return mysql_fetch_assoc($query);	
 	}
 	function real_escape_string($txt){
 		if(!$l=$this->get_link()){
@@ -73,20 +99,7 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 		}
 		return $l->real_escape_string($txt);
 		
-		//return mysql_real_escape_string($txt);	
-	}
-	function insert($sql){
-		if(!$l=$this->get_link()){
-			return false;	
-		}
-		if($l->real_query($sql)){
-			return $l->insert_id;
-		}
-		/*
-		if($query=mysql_query($sql,$l)){
-			return 	mysql_insert_id($l);
-		}
-		*/
+		
 	}
 	function query_get_affected_rows($sql){
 		if(!$l=$this->get_link()){
@@ -94,12 +107,7 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 		}
 		$this->query($sql);
 		return $l->affected_rows;
-		/*
-	
-		if($query=mysql_query($sql,$l)){
-			return 	mysql_affected_rows($l);
-		}
-		*/
+		
 	}
 	function get_error(){
 		if(!$l=$this->get_link()){
@@ -125,7 +133,7 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 			return false;	
 		}
 		return $l->affected_rows;
-		//return mysql_affected_rows($l);
+		
 			
 	}
 	

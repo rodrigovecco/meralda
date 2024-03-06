@@ -6,7 +6,7 @@ class mwmod_mw_db_paramstatement_paramquery extends mw_apsubbaseobj{
 
 	}
 	function addParam($value){
-		$item=new mwmod_mw_db_paramstatement_param($value);
+		$item=new mwmod_mw_db_paramstatement_param($value,$this);
 		return $this->addParamItem($item);
 
 	}

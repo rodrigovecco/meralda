@@ -31,19 +31,31 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 			return;	
 		}
 		$this->_fieldManagers=array();
-		$sql="SHOW FULL COLUMNS from ".$this->tbl;
+		if($items=$this->createFieldsManagers()){
+			foreach($items as $id=>$item){
+				$this->_fieldManagers[$id]=$item;
+			}
+		}
 		
+		
+	}
+	function createFieldsManagers(){
+		$sql="SHOW FULL COLUMNS from ".$this->tbl;
+		$r=array();
 		if($query=$this->dbman->query($sql)){
 			while ($data=$this->fetch_assoc($query)){
 				if($id=$data["Field"]){
 					if($item=$this->createFieldMan($id,$data)){
-						$this->_fieldManagers[$id]=$item;	
+						$r[$id]=$item;	
 					}
 				}
 			}
 		}
-		
+		return $r;
+
 	}
+
+
 	function getFieldsDebugData(){
 		$r=array();
 		if($items=$this->getFields()){
@@ -157,13 +169,7 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 						}
 						$ok=true;
 					}
-					/*
-					if($fields[$c]??null){
-						$fieldslist[]="`$c`";
-						$valueslist[]="'".$this->real_escape_string($v)."'";
-						$ok=true;
-					}
-					*/
+					
 				}
 			}
 		}

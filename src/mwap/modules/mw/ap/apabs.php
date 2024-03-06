@@ -165,7 +165,9 @@ abstract class  mwmod_mw_ap_apabs extends mw_baseobj{
 		$this->__temporal_error_manager=$errorman;
 		return 	$this->__temporal_error_manager;
 	}
-	
+	function get_lngmsgsmancod(){
+		return "def";
+	}
 	
 	//sub command
 	function allow_submancmd(){

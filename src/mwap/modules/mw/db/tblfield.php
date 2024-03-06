@@ -75,7 +75,12 @@ class  mwmod_mw_db_tblfield extends mw_apsubbaseobj{
 			$this->info=$info;	
 		}
 	}
-	
+	function getInfoData($cod=false){
+		if(!$cod){
+			return $this->info;
+		}
+		return $this->info[$cod]??null;
+	}
 	
 	function getDebugData(){
 		$r=array(
@@ -95,7 +100,7 @@ class  mwmod_mw_db_tblfield extends mw_apsubbaseobj{
 			
 	}
 	function getComment(){
-		return $this->info["Comment"];	
+		return $this->info["Comment"]??null;	
 	}
 	function getInfo(){
 		$r=array(
@@ -110,7 +115,7 @@ class  mwmod_mw_db_tblfield extends mw_apsubbaseobj{
 		if(!$cod){
 			return $r;	
 		}
-		return $r[$cod];
+		return $r[$cod]??null;
 	}
 	final function __get_priv_typeInfo(){
 		if(!isset($this->typeInfo)){
@@ -123,7 +128,7 @@ class  mwmod_mw_db_tblfield extends mw_apsubbaseobj{
 	}
 	function loadTypeInfo(){
 		$r=array();
-		if(!$type=$this->info["Type"]){
+		if(!$type=$this->info["Type"]??null){
 			return $r;	
 		}
 		$type=strtolower($type);
