@@ -5,6 +5,15 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	function __construct($ap){
 		$this->init($ap);	
 	}
+	function dbModeCheck($mode){
+		if($mode=="sqlsrv"){
+			return true;
+		}
+		return false;	
+	}
+	function useAlwaysParameterizedMode(){
+		return true;
+	}
 	function create_tbl_managers(){
 		//$sql = "SELECT TABLE_NAME FROM [".$this->dbName."].[INFORMATION_SCHEMA].TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = '".$this->dbName."'";
 
@@ -41,7 +50,8 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 		$connectionInfo = array(
 	        "UID" => $cfg["user"] ?? null,
 	        "PWD" => $cfg["pass"] ?? null,
-	        "Database" => $cfg["db"] ?? null
+	        "Database" => $cfg["db"] ?? null,
+	        'ReturnDatesAsStrings'=> true
 	    );
 		$this->serverName=$cfg["host"];
 		$this->dbName=$cfg["db"];
@@ -70,12 +80,21 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 			
 	}
 	function query($sql){
+
+
+
 	    if(!$l = $this->get_link()) {
 	        return false;
 	    }
 	    
 	    try {
-	        $result = sqlsrv_query($l, $sql);
+	    	if(is_string($sql)){
+	    		 $result = sqlsrv_query($l, $sql);
+	    	}elseif(is_object($sql)){
+	    		 $result = sqlsrv_query($l, $sql->getSQL(),$sql->getParams());
+	    	}
+
+	       
 
 	        if($result === false) {
 	            return false;

@@ -8,18 +8,29 @@ class mwmod_mw_db_sql_where_wherevalpair extends mwmod_mw_db_sql_where_abs{
 		$this->set_cod($cod);
 	}
 	
-	 
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		
+		if($this->pre_append_to_sql($tempSubSQLstr)){
+			
+			$pq->appendSQL($this->get_sql_other_prev(),$tempSubSQLstr);	
+		}
+		$pq->appendSQL(" ".$this->field.$this->cond."?",$tempSubSQLstr);
+		$pq->addParam($this->crit);
+
+		
+
+
+		
+		
+		
+	}
+
 	function get_sql_in(){
 		return $this->field.$this->cond."'".$this->real_escape_string($this->crit)."'";
 		
-		//return $this->field.$this->cond."'".$this->crit."'";
+		
 	}
-	/*
-	function get_sql(){
-		$sql=$this->get_sql_in();
-		return "(".$sql.")";
-	}
-	*/
+	
 	
 }
 ?>

@@ -1,13 +1,6 @@
 <?php
 class mwmod_mw_db_sql_from_sql extends mwmod_mw_db_sql_from_tbl{
-	/*
-	var $join_mode="left join";
-	var $tbl;
-	var $inner_join_field="id";
-	var $external_join_field;
 	
-	var $as_mode=false;
-	*/
 	var $sql="";
 	
 	function __construct($sql,$cod,$querypart=false){
@@ -73,6 +66,7 @@ class mwmod_mw_db_sql_from_sql extends mwmod_mw_db_sql_from_tbl{
 		
 		return "(".$this->sql.")";
 	}
+	
 	function get_sql(){
 		
 		$sql=$this->get_sql_in();

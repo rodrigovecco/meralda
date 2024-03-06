@@ -1,5 +1,5 @@
 <?php
-//20210222 repoder
+//20240306
 class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 	private $select;
 	private $from;
@@ -15,6 +15,8 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 	public $linebreakmode=false;
 	public $useFullQueryCount=false;
 
+	public $parameterizedMode;
+
 	
 	function __construct($from=false){
 		if($from){
@@ -22,6 +24,85 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 			$f->add_from($from);
 		}
 	}
+	function isParameterizedMode(){
+		if(isset($this->parameterizedMode)){
+			return $this->parameterizedMode;
+		}
+		if($this->dbman){
+			if($this->dbman->useAlwaysParameterizedMode()){
+				return true;
+			}
+		}
+		return false;
+	}
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		$parts=$this->get_parts();
+		foreach($parts as $part){
+			if($this->debug_mode){
+				$part->debug_mode=true;	
+			}
+			$part->append_to_parameterized_sql($pq);	
+			if($this->debug_mode){
+				$pq->appendSQL("\n");
+			}
+
+		}
+	}
+	function get_parameterized_sql(){
+		$pq=new mwmod_mw_db_paramstatement_paramquery();
+		$pq->sql="";
+		$this->append_to_parameterized_sql($pq);
+		return $pq;
+	}
+
+
+
+	function get_sql_or_parameterized_query(){
+		if($this->isParameterizedMode()){
+			return $this->get_parameterized_sql();
+		}
+		return $this->get_sql();
+	}
+	function get_array_from_sql(){
+		if(!$sql=$this->get_sql_or_parameterized_query()){
+			return false;	
+		}
+		return $this->dbman->get_array_from_sql($sql);
+	}
+	function get_array_data_from_sql_by_index(){
+		////modificado 2013-10-05
+		if(!$sql=$this->get_sql_or_parameterized_query()){
+			return false;	
+		}
+		return $this->dbman->get_array_data_from_sql($sql,false);
+	}
+	
+	function get_array_data_from_sql($idfield=false){
+		if(!$idfield){
+			$idfield=$this->idfield;	
+		}
+		if(!$sql=$this->get_sql_or_parameterized_query()){
+			return false;	
+		}
+		return $this->dbman->get_array_data_from_sql($sql,$idfield);
+	}
+	function get_sql(){
+		$sql="";
+		$parts=$this->get_parts();
+		foreach($parts as $part){
+			if($this->debug_mode){
+				$part->debug_mode=true;	
+			}
+			$sql.=$part->get_sql();	
+			if($this->debug_mode){
+				$sql.="\n";
+			}
+
+		}
+		return $sql;
+	}
+
+
 	function get_count_sql_full_query_mode(){
 		$sql="";
 		$parts=array(
@@ -74,17 +155,23 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 		return $d[$this->sql_count_name]+0;
 	}
 
-	
-	
-	function fix_data_values(&$data,$date_keys){
-		return $this->dbman->fix_data_values($data,$date_keys);	
-	}
 	function execute(){
 		if(!$sql=$this->get_sql()){
 			return false;	
 		}
 		return $this->dbman->query($sql);
 			
+	}
+	function get_one_row_result(){
+		if(!$sql=$this->get_sql()){
+			return false;	
+		}
+		return $this->dbman->get_array_from_sql($sql);
+	}
+	
+	
+	function fix_data_values(&$data,$date_keys){
+		return $this->dbman->fix_data_values($data,$date_keys);	
 	}
 	function execute_debug(){
 		if(!$sql=$this->get_sql()){
@@ -115,51 +202,8 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 		}
 		
 	}
-	function get_one_row_result(){
-		if(!$sql=$this->get_sql()){
-			return false;	
-		}
-		return $this->dbman->get_array_from_sql($sql);
-	}
 	
-	function get_array_from_sql(){
-		if(!$sql=$this->get_sql()){
-			return false;	
-		}
-		return $this->dbman->get_array_from_sql($sql);
-	}
-	function get_array_data_from_sql_by_index(){
-		////modificado 2013-10-05
-		if(!$sql=$this->get_sql()){
-			return false;	
-		}
-		return $this->dbman->get_array_data_from_sql($sql,false);
-	}
 	
-	function get_array_data_from_sql($idfield=false){
-		if(!$idfield){
-			$idfield=$this->idfield;	
-		}
-		if(!$sql=$this->get_sql()){
-			return false;	
-		}
-		return $this->dbman->get_array_data_from_sql($sql,$idfield);
-	}
-	function get_sql(){
-		$sql="";
-		$parts=$this->get_parts();
-		foreach($parts as $part){
-			if($this->debug_mode){
-				$part->debug_mode=true;	
-			}
-			$sql.=$part->get_sql();	
-			if($this->debug_mode){
-				$sql.="\n";
-			}
-
-		}
-		return $sql;
-	}
 	function get_parts(){
 		$r=array(
 		"select"=>$this->__get_priv_select(),

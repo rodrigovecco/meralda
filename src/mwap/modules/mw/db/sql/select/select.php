@@ -6,7 +6,8 @@ class mwmod_mw_db_sql_select_select extends mwmod_mw_db_sql_querysubpart{
 		$this->set_cod($cod);
 		$this->set_query_part($querypart);
 	}
-	 
+	
+	
 	function get_sql_in(){
 		
 		return $this->sql;

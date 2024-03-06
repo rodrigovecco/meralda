@@ -2,6 +2,7 @@
 class mwmod_mw_db_sql_where_wheretime extends mwmod_mw_db_sql_where_abs{
 	var $time;
 	var $include_hour=false;
+
 	
 	function __construct($field,$timeOrDate,$cod=false,$querypart=false){
 		$this->set_query_part($querypart);
@@ -43,20 +44,53 @@ class mwmod_mw_db_sql_where_wheretime extends mwmod_mw_db_sql_where_abs{
 		}
 		return $this->helper->dateman->get_sys_date($this->time,$this->include_hour);
 	}
+
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		if(!$this->is_ok()){
+			return "";	
+		}
+		if($this->pre_append_to_sql($tempSubSQLstr)){
+			
+			$pq->appendSQL($this->get_sql_other_prev(),$tempSubSQLstr);	
+		}
+		if($this->dbModeCheckSQLsrv()){
+			if(!$this->include_hour){
+				$pq->appendSQL(" CONVERT(date, ".$this->field.")".$this->cond."?",$tempSubSQLstr);
+				$pq->addParam(date("Y-m-d",$this->time));
+
+			}else{
+	 			$pq->appendSQL(" CONVERT(datetime, " . $this->field . ")" . $this->cond . "?", $tempSubSQLstr);
+	       		$pq->addParam(date("Y-m-d H:i:s", $this->time));
+			}
+
+
+		}else{
+
+			if(!$this->include_hour){
+				$pq->appendSQL(" ".$this->get_sql_formated_left().$this->cond."?",$tempSubSQLstr);
+				$pq->addParam(date("Y-m-d",$this->time));
+
+			}else{
+	 			$pq->appendSQL(" ".$this->get_sql_formated_left().$this->cond."?", $tempSubSQLstr);
+	       		$pq->addParam(date("Y-m-d H:i:s", $this->time));
+			}
+		}
+
+
+
+		
+		
+		
+	}
 	function get_sql_in(){
 		if(!$this->is_ok()){
 			return "";	
 		}
 		return $this->get_sql_formated_left().$this->cond."'".$this->real_escape_string($this->get_sql_formated_right())."'";
 		
-		//return $this->field.$this->cond."'".$this->crit."'";
+		
 	}
-	/*
-	function get_sql(){
-		$sql=$this->get_sql_in();
-		return "(".$sql.")";
-	}
-	*/
+	
 	
 }
 ?>

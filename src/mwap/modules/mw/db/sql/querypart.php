@@ -3,6 +3,30 @@ abstract class mwmod_mw_db_sql_querypart extends mwmod_mw_db_sql_abs{
 	private $query;
 	private $_items=array();
 	private $_items_by_cod=array();
+	
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+
+		if(!$items=	$this->get_items_ok()){
+			 $pq->appendSQL($this->get_sql_no_items());
+			 return;
+		}
+		$pq->appendSQL($this->get_sql_start());
+		$sqlItemsTemp="";
+		foreach ($items as $item){
+			if($this->debug_mode){
+				$item->debug_mode=true;	
+			}
+			
+			$item->append_to_parameterized_sql($pq,$sqlItemsTemp);	
+			if($this->debug_mode){
+				$pq->appendSQL("\n");
+			}
+
+		}
+		$pq->appendSQL($this->get_sql_end());
+		return true;
+	}
+
 	function get_sql_no_items(){
 		return "";	
 	}

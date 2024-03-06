@@ -12,7 +12,7 @@ class mwmod_mw_db_sql_order_order extends mwmod_mw_db_sql_querysubpart{
 	function set_desc(){
 		$this->order="DESC";	
 	}
-	 
+
 	function get_sql_in(){
 		$r=$this->sql;
 		if($this->order){

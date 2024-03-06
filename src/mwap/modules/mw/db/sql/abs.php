@@ -4,6 +4,17 @@ abstract class mwmod_mw_db_sql_abs extends mw_apsubbaseobj{
 	private $dbman;
 	private $helper;
 	var $debug_mode=false;
+
+	function dbModeCheck($mode){
+		$man=$this->get_dbman();
+		return $man->dbModeCheck($mode);	
+	}
+	function dbModeCheckMySQL(){
+		return $this->dbModeCheck("mysql");
+	}
+	function dbModeCheckSQLsrv(){
+		return $this->dbModeCheck("sqlsrv");
+	}
 	function real_escape_string($txt){
 		$man=$this->get_dbman();
 		return $man->real_escape_string($txt);	

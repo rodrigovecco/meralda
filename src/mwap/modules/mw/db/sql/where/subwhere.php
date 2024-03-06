@@ -19,7 +19,7 @@ class mwmod_mw_db_sql_where_subwhere extends mwmod_mw_db_sql_where{
 	function get_sql_no_items(){
 		return "";	
 	}
-
+	
 	function append_to_sql(&$sql){
 		if($this->pre_append_to_sql($sql)){
 			$sql.=$this->get_sql_as_other();	
@@ -81,7 +81,34 @@ class mwmod_mw_db_sql_where_subwhere extends mwmod_mw_db_sql_where{
 		return " ".$this->general_cond;
 	}
 	
-	 
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+
+		if(!$items=	$this->get_items_ok()){
+			 $pq->appendSQL($this->get_sql_no_items());
+			 return;
+		}
+		if($this->pre_append_to_sql($tempSubSQLstr)){
+			
+			$pq->appendSQL($this->get_sql_other_prev(),$tempSubSQLstr);	
+		}
+		$pq->appendSQL(" ");
+
+		$pq->appendSQL($this->get_sql_start());
+		$sqlItemsTemp="";
+		foreach ($items as $item){
+			if($this->debug_mode){
+				$item->debug_mode=true;	
+			}
+			
+			$item->append_to_parameterized_sql($pq,$sqlItemsTemp);	
+			if($this->debug_mode){
+				$sql.="\n";
+			}
+
+		}
+		$pq->appendSQL($this->get_sql_end());
+		return true;
+	}
 	
 	function get_sql(){
 		$sql="";

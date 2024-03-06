@@ -102,6 +102,7 @@ class mwmod_mw_db_sql_from_tbl extends mwmod_mw_db_sql_querysubpart{
 		
 		return $this->tbl;
 	}
+	
 	function get_sql(){
 		
 		$sql=$this->get_sql_in();

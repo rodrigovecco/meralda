@@ -11,11 +11,6 @@ class mwmod_mw_db_sql_where_wheresql extends mwmod_mw_db_sql_where_abs{
 		
 		return $this->sql;
 	}
-	/*
-	function get_sql(){
-		$sql=$this->get_sql_in();
-		return "(".$sql.")";
-	}
-	*/
+	
 }
 ?>

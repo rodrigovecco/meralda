@@ -18,6 +18,26 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 		}
 			
 	}
+	function useAlwaysParameterizedMode(){
+		return false;
+	}
+	function new_query(){
+		$query=new mwmod_mw_db_sql_query();
+		$query->set_dbman($this);
+		return $query;	
+	}
+	function dbModeCheck($mode){
+		if($mode=="mysql"){
+			return true;
+		}
+		return false;	
+	}
+	function dbModeCheckMySQL(){
+		return $this->dbModeCheck("mysql");
+	}
+	function dbModeCheckSQLsrv(){
+		return $this->dbModeCheck("sqlsrv");
+	}
 	function query($sql){
 		if(!$l=$this->get_link()){
 			return false;	

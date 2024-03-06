@@ -33,6 +33,13 @@ abstract class mwmod_mw_db_sql_querysubpart extends mwmod_mw_db_sql_abs{
 			$sql.=$this->get_sql_as_first();		
 		}
 	}
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		if($this->pre_append_to_sql($tempSubSQLstr)){
+			$pq->appendSQL($this->get_sql_as_other(),$tempSubSQLstr);	
+		}else{
+			$pq->appendSQL($this->get_sql_as_first(),$tempSubSQLstr);		
+		}
+	}
 	function pre_append_to_sql(&$sql){
 		if(!$sql){
 			$sql="";

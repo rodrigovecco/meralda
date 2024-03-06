@@ -10,6 +10,35 @@ class mwmod_mw_db_sql_where_dateok extends mwmod_mw_db_sql_where_abs{
 		return $this->field;
 		
 	}
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		if(!$this->is_ok()){
+			return "";	
+		}
+		if($this->pre_append_to_sql($tempSubSQLstr)){
+			
+			$pq->appendSQL($this->get_sql_other_prev(),$tempSubSQLstr);	
+		}
+		if($this->dbModeCheckSQLsrv()){
+			//only allows op >!!!!
+
+
+			$pq->appendSQL(" TRY_CONVERT(datetime, ".$this->field.") IS NOT NULL",$tempSubSQLstr);
+			
+
+		}else{
+			
+			$pq->appendSQL(" ".$this->get_sql_in(),$tempSubSQLstr);
+			
+
+			
+		}
+
+
+
+		
+		
+		
+	}
 	function get_sql_formated_right(){
 		return "0000-00-00";	
 	}

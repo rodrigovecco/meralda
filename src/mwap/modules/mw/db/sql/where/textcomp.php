@@ -23,9 +23,46 @@ class mwmod_mw_db_sql_where_textcomp extends mwmod_mw_db_sql_where_wherevalpair{
 		return "contains";
 	
 	}
+
 	
 	
-	 
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		
+		if($this->pre_append_to_sql($tempSubSQLstr)){
+			
+			$pq->appendSQL($this->get_sql_other_prev(),$tempSubSQLstr);	
+		}
+
+		$r=$this->field;
+		$val="?";
+		$mode=$this->getCompareMode();
+		if($mode=="notcontains"){
+			$r.=" NOT";	
+		}
+		$r.=" LIKE ";
+		if($mode=="startswith"){
+			$r.="CONCAT(?, '%')";	
+		}
+		if($mode=="endswith"){
+			$r.="CONCAT('%',?)";	
+		}
+		if($mode=="contains"){
+			$r.="CONCAT('%',?,'%')";		
+		}
+		if($mode=="notcontains"){
+			$r.="CONCAT('%',?,'%')";		
+		}
+		
+		$pq->appendSQL(" ".$r,$tempSubSQLstr);
+		$pq->addParam($this->crit);
+
+		
+
+
+		
+		
+		
+	}
 	function get_sql_in(){
 		$r=$this->field;
 		$val=$this->crit;

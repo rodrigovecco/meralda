@@ -40,12 +40,7 @@ class mwmod_mw_db_sql_where_whereinnumlist extends mwmod_mw_db_sql_where_abs{
 		}
 		return $this->field." $not in ($list)";
 	}
-	/*
-	function get_sql(){
-		$sql=$this->get_sql_in();
-		return "(".$sql.")";
-	}
-	*/
+	
 	
 }
 ?>

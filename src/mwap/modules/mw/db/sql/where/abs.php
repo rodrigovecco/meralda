@@ -9,13 +9,7 @@ abstract class mwmod_mw_db_sql_where_abs extends mwmod_mw_db_sql_querysubpart{
 	var $not=false;
 	public $notIn=false;
 
-	/*
-	function mwmod_mw_db_sql_from_tbl($sql,$cod=false,$querypart=false){
-		$this->sql=$sql;
-		$this->set_cod($cod);
-		$this->set_query_part($querypart);
-	}
-	*/
+	
 	function get_valid_operators(){
 		$valid=explode(",","<>,<,>,<=,>=,=");
 		$r=array();
@@ -71,6 +65,7 @@ abstract class mwmod_mw_db_sql_where_abs extends mwmod_mw_db_sql_querysubpart{
 		
 		return $this->sql;
 	}
+	
 	function get_sql(){
 		$sql=$this->get_sql_in();
 		if($this->not){

@@ -18,6 +18,9 @@ class mwmod_mw_db_sql_limit extends mwmod_mw_db_sql_querypart{
 		//$this->from=$from;
 		
 	}
+	function append_to_parameterized_sql($pq,&$tempSubSQLstr=""){
+		$pq->appendSQL($this->get_sql());
+	}
 	function get_sql(){
 		$sql="";
 		if(!$this->num){
@@ -28,29 +31,23 @@ class mwmod_mw_db_sql_limit extends mwmod_mw_db_sql_querypart{
 			return "";	
 		}
 		if(is_int($this->from)){
+			if($this->dbModeCheckSQLsrv()){
+				return "OFFSET $this->from ROWS FETCH NEXT $this->num ROWS ONLY ";	
+			}
 			return " limit $this->num OFFSET $this->from ";	
+		}
+		if($this->dbModeCheckSQLsrv()){
+			return "OFFSET 0 ROWS FETCH NEXT $this->num ROWS ONLY ";	
 		}
 		return " limit $this->num ";	
 		
 	}
 
-	/*
-	function add_from_join($tbl,$external_field,$as=false){
-		if(is_string($tbl)){
-			$item = new mwmod_mw_db_sql_from_tbl($tbl,$as,$this);
-			$item->external_join_field=$external_field;
-			return $this->add_item($item);
-		}
-	}
-	function add_from($tbl,$as=false){
-		if(is_string($tbl)){
-			$item = new mwmod_mw_db_sql_from_tbl($tbl,$as,$this);
-			return $this->add_item($item);
-		}
-	}
-	*/
+	
 	function get_sql_start(){
-		return " from ";	
+		//revisar!
+		//return " from ";	
+		return " ";	
 	}
 
 	
