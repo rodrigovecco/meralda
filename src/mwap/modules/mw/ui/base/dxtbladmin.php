@@ -94,7 +94,10 @@ abstract class mwmod_mw_ui_base_dxtbladmin extends mwmod_mw_ui_base_basesubui{
 		if(!$dataqueryhelper->sorted){
 			$this->setDefaultQuerySort($query);
 		}
-		$xml->set_prop("debug.sql",$query->get_sql());
+		if($this->debugOutputEnabled()){
+			$xml->set_prop("debug.sql",$query->get_sql());
+		}
+		
 		
 		$js->set_prop("totalCount",$query->get_total_regs_num());
 		

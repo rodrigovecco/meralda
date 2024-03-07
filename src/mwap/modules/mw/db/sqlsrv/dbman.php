@@ -53,6 +53,9 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	        "Database" => $cfg["db"] ?? null,
 	        'ReturnDatesAsStrings'=> true
 	    );
+	    if(isset($cfg["CharacterSet"])){
+	    	$connectionInfo["CharacterSet"]=$cfg["CharacterSet"];
+	    }
 		$this->serverName=$cfg["host"];
 		$this->dbName=$cfg["db"];
 	    if(isset($cfg["port"])){
@@ -147,7 +150,15 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	    if (!$conn) {
 	        return false;
 	    }
+	    /*
 
+	    if(is_string($sql)){
+	    	 $result = sqlsrv_query($l, $sql);
+	    }elseif(is_object($sql)){
+	    	 $result = sqlsrv_query($l, $sql->getSQL(),$sql->getParams());
+	    }
+	    */
+	    //todo!!!
 	    // Execute the query
 	    if ($conn->real_query($sql)) {
 	        return $conn->insert_id;

@@ -17,6 +17,8 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 
 	public $parameterizedMode;
 
+	public $currentParameterizedQuery;
+
 	
 	function __construct($from=false){
 		if($from){
@@ -52,6 +54,7 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 		$pq=new mwmod_mw_db_paramstatement_paramquery();
 		$pq->sql="";
 		$this->append_to_parameterized_sql($pq);
+		$this->currentParameterizedQuery=$pq;
 		return $pq;
 	}
 
@@ -70,7 +73,7 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 		return $this->dbman->get_array_from_sql($sql);
 	}
 	function get_array_data_from_sql_by_index(){
-		////modificado 2013-10-05
+		////modificado 2024-03-06
 		if(!$sql=$this->get_sql_or_parameterized_query()){
 			return false;	
 		}
@@ -121,6 +124,55 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 		return "select count(*) as ".$this->sql_count_name." from ($sql) as zz";
 			
 	}
+	function get_count_sql_parameterized_full_query_mode(){
+		$pq=new mwmod_mw_db_paramstatement_paramquery();
+		$pq->sql="";
+		$pq->appendSQL("select count(*) as ".$this->sql_count_name." from (");
+		$parts=array(
+		"select"=>$this->__get_priv_select(),
+		"from"=>$this->__get_priv_from(),
+		"where"=>$this->__get_priv_where(),
+		"group"=>$this->__get_priv_group(),
+		"having"=>$this->__get_priv_having(),
+		
+		
+		);
+		foreach($parts as $part){
+			$part->append_to_parameterized_sql($pq);
+
+		}
+
+		$pq->appendSQL(") as zz");
+		return $pq;
+
+
+	}
+	
+	function get_count_parameterized_sql(){
+		if($this->useFullQueryCount){
+			return $this->get_count_sql_parameterized_full_query_mode();	
+		}
+
+
+		$pq=new mwmod_mw_db_paramstatement_paramquery();
+		$pq->sql="";
+
+		$pq->appendSQL("select ".$this->sql_count." as ".$this->sql_count_name." ");
+		$parts=array(
+		"from"=>$this->__get_priv_from(),
+		"where"=>$this->__get_priv_where(),
+		//"having"=>$this->__get_priv_having(),
+		
+		);
+		foreach($parts as $part){
+			$part->append_to_parameterized_sql($pq);
+			if($this->linebreakmode){
+				$pq->appendSQL("\n\n");	
+			}
+		}
+		return $pq;
+	}
+
 	function get_count_sql(){
 		if($this->useFullQueryCount){
 			return $this->get_count_sql_full_query_mode();	
@@ -146,6 +198,14 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 		
 		
 	}
+
+	function get_count_sql_or_parameterized_query(){
+		if($this->isParameterizedMode()){
+			return $this->get_count_parameterized_sql();
+		}
+		return $this->get_count_sql();
+	}
+
 	function get_total_regs_num(){
 		$sql=$this->get_count_sql();
 		if(!$d=$this->dbman->get_array_from_sql($sql)){
@@ -163,6 +223,7 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 			
 	}
 	function get_one_row_result(){
+		//todo!!!!!
 		if(!$sql=$this->get_sql()){
 			return false;	
 		}
