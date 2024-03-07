@@ -9,6 +9,39 @@ class  mwmod_mw_util_itemsbycod extends mw_apsubbaseobj{
 	function __construct(){
 		
 	}
+	function addItemsByDataArray($allData,$codField="id",$nameField="name"){
+		//mw_array2list_echo($allData);
+		if(is_array($allData)){
+			foreach($allData as $d){
+				$this->addItemByData($d,$codField,$nameField);
+			}
+		}
+	}
+	function addItemByData($data,$codField="id",$nameField="name"){
+		
+		if(!is_array($data)){
+			return false;
+		}
+		if(!$codField){
+			return false;
+		}
+		if(!$cod=$data[$codField]??null){
+			return false;
+		}
+
+		if(!$cod=$this->check_str_key_alnum_underscore($cod)){
+			return false;
+		}
+		
+		$item=new mwmod_mw_util_itemsbycod_data($cod,$data);
+		if($nameField){
+			if($name=$data[$nameField]??null){
+				$item->name=$name;
+			}
+		}
+		return $this->add_item($item);
+
+	}
 	function getDefaultItem(){
 		if(isset($this->defaultItem)){
 			return $this->defaultItem;	

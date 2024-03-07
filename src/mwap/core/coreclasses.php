@@ -53,6 +53,9 @@ abstract class  mw_baseobj{
 			return false;	
 		}
 		if(!is_string($cod)){
+			if(is_numeric($cod)){
+				return $cod."";
+			}
 			return false;	
 		}
 		return $cod;

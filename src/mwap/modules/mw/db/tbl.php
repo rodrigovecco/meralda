@@ -90,7 +90,9 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 		return $this->_readonly_fields;	
 	}
 	function new_query(){
+
 		$query=new mwmod_mw_db_sql_query($this->tbl);
+		$query->set_dbman($this->dbman);
 		return $query;	
 	}
 
