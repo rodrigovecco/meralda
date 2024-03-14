@@ -1,6 +1,6 @@
 <?php
-//v5
-//Rodrigo Vecco - 2023-11-23
+//v6
+//Rodrigo Vecco - 2024-03-13
 
 abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 	private $tblman;
@@ -13,6 +13,7 @@ abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 	//private $_strdataman;
 	
 	private $_tbl_name;
+	private $dbmancod="db";
 	//private $_can_create_strdata=false;
 	//private $_can_create_treedata=false;
 	
@@ -55,14 +56,7 @@ abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 		$item=new mwmod_mw_manager_item($tblitem,$this);
 		return $item;
 	}
-	/*
-	final function enable_strdata($val=true){
-		$this->_can_create_strdata=$val;
-	}
-	final function enable_treedata($val=true){
-		$this->_can_create_treedata=$val;
-	}
-	*/
+	
 	function get_filemanager(){
 		if(!$fm=$this->mainap->get_submanager("fileman")){
 			return false;	
@@ -241,10 +235,29 @@ abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 
 	}
 	function get_items_by_query($query){
+
+		if(!$man=$this->get_tblman()){
+			return false;	
+		}
+		if(!$items=$man->get_items_by_mwQuery($query)){
+			return false;
+		}
+		foreach ($items as $itemtbl){
+			if($item=$this->get_or_create_item($itemtbl)){
+				if($id=$item->get_id()){
+					$r[$id]=$item;	
+				}
+			}
+		}
+		return $r;
+
+		//reescrito para habilitar query params
+		/*
 		if(!$sql=$query->get_sql()){
 			return false;
 		}
 		return $this->get_items_by_sql($sql);
+		*/
 		
 	}
 	function get_items_by_simple_crit($crit){
@@ -313,6 +326,7 @@ abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 	}
 
 	function get_items_by_sql_extra_data_mode($sql){
+		//todo: paramquery mode!
 		if(!$man=$this->get_tblman()){
 			return false;	
 		}
@@ -491,11 +505,12 @@ abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 	function get_init_tblman_prepare($tblman){
 		//
 	}
+
 	function get_init_tblman(){
 		if(!$name=$this->get_tbl_name()){
 			return false;	
 		}
-		if(!$db=$this->mainap->get_submanager("db")){
+		if(!$db=$this->mainap->get_submanager($this->dbmancod)){
 			return false;	
 		}
 		if(!$tblman=$db->get_tbl_manager($name)){
@@ -519,14 +534,14 @@ abstract class  mwmod_mw_manager_man extends mwmod_mw_manager_basemanabs{
 	final function __get_priv_tblman(){
 		return $this->get_tblman(); 	
 	}
-	/*
-	final function __get_priv_code(){
-		return $this->code; 	
+	final function setDBManCode($code){
+		$this->dbmancod=$code;
 	}
-	function __call($a,$b){
-		return false;	
+	final function __get_priv_dbmancod(){
+		return $this->dbmancod;
 	}
-	*/
+	
+	
 
 }
 ?>

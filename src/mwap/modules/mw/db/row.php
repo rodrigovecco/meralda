@@ -21,8 +21,17 @@ class  mwmod_mw_db_row extends mw_apsubbaseobj{
 		if(!$id=$this->get_id()){
 			return false;	
 		}
+
+		//
 		$sql="delete from ".$this->tblman->tbl;
-		$sql.=" where $idfield=$id limit 1";
+		if($this->tblman->dbman->dbModeCheckSQLsrv()){
+			$sql="delete TOP (1) from ".$this->tblman->tbl;
+			$sql.=" where $idfield=$id ";
+		}else{
+			$sql.=" where $idfield=$id limit 1";
+		}
+		
+
 		$this->tblman->dbman->query($sql);
 		return true;
 			
@@ -30,8 +39,11 @@ class  mwmod_mw_db_row extends mw_apsubbaseobj{
 	final function directSetData($cod,$val){
 		$this->data[$cod]=$val;
 	}
-	//20231206
+	//20240313
 	function get_update_sql($data){
+		return $this->generate_update_sql($data);
+	}
+	function generate_update_sql($data,$paramQuery=false){
 		if(!is_array($data)){
 			return false;	
 		}
@@ -39,11 +51,14 @@ class  mwmod_mw_db_row extends mw_apsubbaseobj{
 			return false;
 		}
 		unset($data[$idfield]);
+		
 		if(!$fields=$this->tblman->get_tbl_fields()){
 			return false;	
 		}
 		
+		
 		$updatelist=array();
+		$updatelistPH=array();
 		$ok=false;
 		if(!$id=$this->get_id()){
 			return false;	
@@ -56,9 +71,29 @@ class  mwmod_mw_db_row extends mw_apsubbaseobj{
 						if((!$this->tblman->only_update_if_different)or(($this->data[$c]!==$v)or(!isset($this->data[$c])))){
 							$this->data[$c]=$v;
 							if(is_null($v) and $field->nullAllowed()){
-								$updatelist[]="`$c`=NULL ";
+								if($this->tblman->dbman->dbModeCheckSQLsrv()){
+									$updatelist[]="$c=NULL ";
+									$updatelistPH[]="$c=? ";
+								}else{
+									$updatelist[]="`$c`=NULL ";
+									$updatelistPH[]="`$c`=? ";
+								}
+								
+								if($paramQuery){
+									$paramQuery->addParam(null);
+								}
 							}else{
-								$updatelist[]="`$c`='".$this->real_escape_string($v)."'";
+								if($this->tblman->dbman->dbModeCheckSQLsrv()){
+									$updatelist[]="$c='".$this->real_escape_string($v)."'";
+									$updatelistPH[]="$c=? ";
+								}else{
+									$updatelist[]="`$c`='".$this->real_escape_string($v)."'";
+									$updatelistPH[]="`$c`=? ";
+								}
+								
+								if($paramQuery){
+									$paramQuery->addParam($v);
+								}
 							}
 							
 							$ok=true;
@@ -69,35 +104,57 @@ class  mwmod_mw_db_row extends mw_apsubbaseobj{
 					
 
 
-					/*
-					if($fields[$c]??null){
-						//todo allow null
-						if((!$this->tblman->only_update_if_different)or(($this->data[$c]!==$v)or(!isset($this->data[$c])))){
-							$this->data[$c]=$v;
-							
-							$updatelist[]="`$c`='".$this->real_escape_string($v)."'";
-							$ok=true;
-						}
-					}
-					*/
+					
 				}
 			}
 		}
 		if(!$ok){
 			return false;	
 		}
-		$sql="update ".$this->tblman->tbl;
-		$sql.=" set ".implode(",",$updatelist)." ";
-		$sql.="where $idfield=$id limit 1";
+		if($paramQuery){
+			$paramQuery->addParam($id);
+		}
+		if($this->tblman->dbman->dbModeCheckSQLsrv()){
+			$sql="update TOP (1)  ".$this->tblman->tbl;
+			if($paramQuery){
+				$paramQuery->appendSQL($sql);
+				$paramQuery->appendSQL(" set ".implode(",",$updatelistPH)." ");
+				$paramQuery->appendSQL("where $idfield =? ");
+			}
+			$sql.=" set ".implode(",",$updatelist)." ";
+			$sql.="where $idfield=$id ";
+
+		}else{
+			$sql="update ".$this->tblman->tbl;
+			if($paramQuery){
+				$paramQuery->appendSQL($sql);
+				$paramQuery->appendSQL(" set ".implode(",",$updatelistPH)." ");
+				$paramQuery->appendSQL("where $idfield =?  limit 1");
+			}
+			$sql.=" set ".implode(",",$updatelist)." ";
+			$sql.="where $idfield=$id limit 1";
+		}
+		
 		return $sql;
 	}
 
 	final function do_update($data){
-		if(!$sql=$this->get_update_sql($data)){
+		$paramQuery=false;
+
+		if($this->tblman->dbman->useAlwaysParameterizedMode()){
+			$paramQuery=new mwmod_mw_db_paramstatement_paramquery();
+		}
+
+		if(!$sql=$this->generate_update_sql($data,$paramQuery)){
 			return false;
 		}
+
+		if($this->tblman->dbman->useAlwaysParameterizedMode()){
+			$this->tblman->dbman->query($paramQuery);
+		}else{
+			$this->tblman->dbman->query($sql);
+		}
 		
-		$this->tblman->dbman->query($sql);
 		return true;
 
 			

@@ -1,4 +1,5 @@
 <?php
+//rvh 20240313
 class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 	private $dbman;
 	private $tbl;
@@ -13,6 +14,9 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 	var $only_update_if_different=false;
 	function __construct($dbman,$tbl){
 		$this->init($dbman,$tbl);	
+	}
+	final function setIDfield($id_field){
+		$this->id_field=$id_field;
 	}
 	final function getFields(){
 		$this->initFields();
@@ -148,44 +152,77 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 		$sql=$this->get_sql_load_all_start();
 		return $sql;
 	}
-	function get_insert_sql($data){
+	function generate_insert_sql($data,$paramQuery=false){
 		//ignore was added to prevent fatal error rvh 20230923
 		$sql="insert IGNORE  into ".$this->tbl." ";
-		
-		if(!$fields=$this->get_tbl_fields()){
-			return false;	
+		if($this->dbman->dbModeCheckSQLsrv()){
+			$sql="insert into ".$this->tbl." ";
+		}
+		if($paramQuery){
+			$paramQuery->appendSQL($sql);
 		}
 		$fieldslist=array();
 		$valueslist=array();
+		$valueslistPH=array();
 		$ok=false;
 		foreach($data as $c=>$v){
 			if(is_string($c)){
 				if(!is_array($v)){
 					//20231206
 					if($field=$this->getField($c)){
-						$fieldslist[]="`$c`";
+
+						if($this->dbman->dbModeCheckSQLsrv()){
+							$fieldslist[]="$c";
+						}else{
+							$fieldslist[]="`$c`";
+						}
+
+						
+						$valueslistPH[]=" ? ";
 						if(is_null($v) and $field->nullAllowed()){
 							$valueslist[]=" NULL ";
+							if($paramQuery){
+								$paramQuery->addParam(null);
+
+							}
 						}else{
 							$valueslist[]="'".$this->real_escape_string($v)."'";
+							if($paramQuery){
+								$paramQuery->addParam($v);
+
+							}
 						}
 						$ok=true;
+					
 					}
 					
 				}
 			}
 		}
 		if(!$ok){
+			
 			return false;	
+		
 		}
 		$sql.="(".implode(",",$fieldslist).") ";
 		$sql.=" values (".implode(",",$valueslist).") ";
+		if($paramQuery){
+			$paramQuery->appendSQL("(".implode(",",$fieldslist).") ");
+			$paramQuery->appendSQL(" values (".implode(",",$valueslistPH).") ");
+
+		}
 		return $sql;
 		
 		
 	
 	}
+	function get_insert_sql($data){
+		return $this->generate_insert_sql($data);
+		
+	
+	}
 	function getInsertOrUpdateSQL($data,$keys){
+		//todo: paramQ
 		if(!is_array($data)){
 			return false;
 		}
@@ -240,12 +277,36 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 	}
 
 	private function _insert_item($data){
-		if(!$sql=$this->get_insert_sql($data)){
+		
+		if($this->dbman->useAlwaysParameterizedMode()){
+			$paramQuery=new mwmod_mw_db_paramstatement_paramquery();
+			if(!$sql=$this->generate_insert_sql($data,$paramQuery)){
+				
+				return false;
+			}
+			
+			$sql=$paramQuery;
+
+		}else{
+			if(!$sql=$this->get_insert_sql($data)){
+				return false;
+			}
+						
+		}
+		if(!$insertResponse=$this->dbman->insert($sql)){
+
 			return false;
 		}
-		if(!$id=$this->dbman->insert($sql)){
+		if(is_array($insertResponse)){
+			$id=$insertResponse[$this->id_field]??null;
+		}else{
+			$id=$insertResponse;
+		}
+		if(!isset($id)){
+			
 			return false;
 		}
+
 		return $id;
 		
 	
@@ -316,11 +377,19 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 	function query_get_affected_rows($sql){
 		return $this->dbman->query_get_affected_rows($sql);
 	}
+	//20240314
+	function get_item_by_mwQuery($mwQuery){
+		$mwQuery->set_dbman($this->dbman);
+		$sql=$mwQuery->get_sql_or_parameterized_query();
+		return $this->get_item_by_sql($sql);
 
+	}
 	function get_item_by_sql($sql){
 		if(!$query=$this->dbman->query($sql)){
+
 			return false;
 		}
+
 		if($data=$this->fetch_assoc($query)){
 			if($item=$this->get_or_create_item($data)){
 				return $item;
@@ -328,12 +397,21 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 		}
 		
 	}
-	
+	//20240314
+	function get_items_by_mwQuery($mwQuery,$extradatamode=false){
+		$mwQuery->set_dbman($this->dbman);
+		$sql=$mwQuery->get_sql_or_parameterized_query();
+		return $this->get_items_by_sql($sql,$extradatamode);
+
+
+	}
 	function get_items_by_sql($sql,$extradatamode=false){
 		if(!$query=$this->dbman->query($sql)){
+
 			return false;
 		}
 		$r=array();
+	
 		while ($data=$this->fetch_assoc($query)){
 			if($item=$this->get_or_create_item($data,$extradatamode)){
 				$id=$item->get_id();
@@ -435,10 +513,33 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 		unset($this->_fieldManagers);	
 		$this->_init_tbl_fields();
 	}
+	function load_tbl_fields(){
+		$sql="SHOW COLUMNS from ".$this->tbl;
+		
+		if(!$query=$this->dbman->query($sql)){
+			return false;
+		}
+		$r=array();
+		while ($data=$this->fetch_assoc($query)){
+			if($id=$data["Field"]){
+				$r[$id]=$data;	
+			}
+		}
+		return $r;
+	}
 	private function _init_tbl_fields(){
 		if(isset($this->tblfields)){
 			return true;	
 		}
+		if(!$allData=$this->load_tbl_fields()){
+			return false;
+		}
+		$this->tblfields=array();
+		foreach($allData as $id=>$d){
+			$this->tblfields[$id]=$d;	
+		}
+		
+		/*
 		$sql="SHOW COLUMNS from ".$this->tbl;
 		
 		if(!$query=$this->dbman->query($sql)){
@@ -450,6 +551,7 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 				$this->tblfields[$id]=$data;	
 			}
 		}
+		*/
 		return true;
 		
 		

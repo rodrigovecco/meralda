@@ -92,6 +92,7 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	    
 	    try {
 	    	if(is_string($sql)){
+
 	    		 $result = sqlsrv_query($l, $sql);
 	    	}elseif(is_object($sql)){
 	    		 $result = sqlsrv_query($l, $sql->getSQL(),$sql->getParams());
@@ -100,6 +101,7 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	       
 
 	        if($result === false) {
+	        	
 	            return false;
 	        }
 	        
@@ -145,24 +147,35 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	}
 	function insert($sql){
 	    // Assuming $this->get_link() returns a valid connection
-	    $conn = $this->get_link();
-	    
-	    if (!$conn) {
+	    $l = $this->get_link();
+	   
+	    if (!$l) {
 	        return false;
 	    }
-	    /*
+	    
 
 	    if(is_string($sql)){
 	    	 $result = sqlsrv_query($l, $sql);
 	    }elseif(is_object($sql)){
 	    	 $result = sqlsrv_query($l, $sql->getSQL(),$sql->getParams());
+
 	    }
-	    */
-	    //todo!!!
-	    // Execute the query
-	    if ($conn->real_query($sql)) {
-	        return $conn->insert_id;
+	   	
+	    if(!$result){
+	    	
+	    	return false;
 	    }
+	    $stmt = sqlsrv_query($l, "select last_insert_id=@@identity");
+	    if ($stmt !== false) {
+	        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+	        if ($row !== false) {
+	            return $row[0];
+	        }
+	    }
+	    return false;
+
+	  
+	    
 	    
 	    return false;
 		
