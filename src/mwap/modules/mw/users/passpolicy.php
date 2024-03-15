@@ -2,12 +2,12 @@
 //
 class mwmod_mw_users_passpolicy extends mw_apsubbaseobj{
 	private $man;
-	var $pass_min_len=8;
-	var $pass_max_len=100;
-	var $pass_def_len=10;
-	var $must_contain_uppers=true;
-	var $must_contain_lowers=true;
-	var $must_contain_numbers=true;
+	public $pass_min_len=8;
+	public $pass_max_len=100;
+	public $pass_def_len=10;
+	public $must_contain_uppers=true;
+	public $must_contain_lowers=true;
+	public $must_contain_numbers=true;
 	
 	var $change_password_on_remember_ui_enabled=false;
 	var $pass_secure_mode=1;//1: secure, 2: optional, 3: non secure

@@ -5,30 +5,7 @@ abstract class mwmod_mw_uitemplates_sbadmin_main extends mwmod_mw_ui_main_uimain
 		return $t;
 	}
 
-/*
-	function exec_full_output(){
 
-
-
-		$out1 = ob_get_contents();
-		ob_end_clean();
-		echo "<!DOCTYPE HTML>\n";
-		echo "<html>\n";
-		echo "<head>\n";
-		echo $this->get_page_html_head();
-		echo "</head>\n";
-		echo "<body id='page-top' class='sb-nav-fixed'>\n";
-		$this->exec_page_body();
-		echo $out1;
-		if($this->jsmanager){
-			echo $this->jsmanager->get_bottom_items_declaration();	
-		}
-		
-		echo "\n</body>\n";
-		echo "</html>\n";
-	
-	}
-	*/
 	function add_default_js_scripts_sub($jsmanager){
 		$jsmanager->add_jquery();
 		$item=new mwmod_mw_html_manager_item_jsexternal("bootstrap","/res/bootstrap/js/bootstrap.bundle.min.js");

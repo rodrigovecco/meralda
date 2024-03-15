@@ -1105,11 +1105,11 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		if(!$idname=trim($idname."")){
 			return false;	
 		}
-		$idname=$this->real_escape_string($idname);
+		//$idname=$this->real_escape_string($idname);
 		$idname=strtoupper($idname);
 		$q=$this->new_users_query();
 		
-		$q->where->add_where("UPPER(name)='$idname'");
+		$q->where->add_where_crit("UPPER(name)",$idname);
 		if($users=$this->get_users_by_query($q)){
 			foreach($users as $u){
 				return $u;	
@@ -1348,10 +1348,12 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		if(!$tblman=$this->get_tblman()){
 			return false;	
 		}
+		/*
 		if(!$sql=$query->get_sql()){
 			return false;
 		}
-		return $this->get_users_by_tbl_items($tblman->get_items_by_sql($sql));
+		*/
+		return $this->get_users_by_tbl_items($tblman->get_items_by_mwQuery($query));
 	}
 	////////
 	

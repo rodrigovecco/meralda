@@ -216,6 +216,7 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 	}
 
 	function execute(){
+		//todo!!!!! if(!$sql=$this->get_sql_or_parameterized_query()){
 		if(!$sql=$this->get_sql()){
 			return false;	
 		}
@@ -223,10 +224,11 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 			
 	}
 	function get_one_row_result(){
-		//todo!!!!!
-		if(!$sql=$this->get_sql()){
+		
+		if(!$sql=$this->get_sql_or_parameterized_query()){
 			return false;	
 		}
+
 		return $this->dbman->get_array_from_sql($sql);
 	}
 	
