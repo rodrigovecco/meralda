@@ -44,6 +44,18 @@ abstract class mwmod_mw_ui_base_basesubui extends mwmod_mw_ui_sub_uiabs{
 	function childrenInheritPermissions(){
 		return true;
 	}
+	function create_sub_interface_mnu_for_sub_interface($su=false){
+		$mnu = new mwmod_mw_mnu_mnu();
+		
+		if($subs=$this->get_subinterfaces_by_code($this->sucods,true)){
+			foreach($subs as $su){
+				$su->add_2_sub_interface_mnu($mnu);	
+			}
+		}
+		
+		
+		return $mnu;
+	}
 
 	
 }

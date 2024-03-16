@@ -1131,18 +1131,21 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 
 	}
 	final function get_user($id){
-		if(!$id=$id+0){
+
+		if(!$id=mw_get_number($id)){
 			return false;	
 		}
+
 		if($item=$this->get_user_if_loaded($id)){
 			return $item;	
 		}
 		return $this->_load_user($id);
 	}
 	final function get_user_if_loaded($id){
-		if(!$id=$id+0){
+		if(!$id=mw_get_number($id)){
 			return false;	
 		}
+
 		$this->init_users();
 		if(isset($this->users[$id])){
 			return $this->users[$id]; 	
@@ -1219,15 +1222,19 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		
 	}
 	function load_and_create_user($id){
+		
 		if(!$tblman=$this->get_tblman()){
+
 			return false;	
 		}
+
+
 		return $this->load_and_create_user_by_tblitem($tblman->get_item($id));
 		
 	}
 	//adding and loading user: for interna use only
 	private function _load_user($id){
-		if(!$id=$id+0){
+		if(!$id=mw_get_number($id)){
 			return false;	
 		}
 		if($item=$this->load_and_create_user($id)){

@@ -455,18 +455,18 @@ class  mwmod_mw_db_tbl extends mw_apsubbaseobj{
 	}
 	
 	final function load_item($id){
-		if(!is_numeric($id)){
+
+		if(!$id=mw_get_number($id)){
 			return false;
 		}
-		if(!$id=$id+0){
-			return false;	
-		}
+		
 		$this->add_to_preload($id);
 		$this->preload();
 		return $this->get_item_if_loaded($id);
 	}
 	final function get_item_if_loaded($id){
-		if(!is_numeric($id)){
+		
+		if(!$id=mw_get_number($id)){
 			return false;
 		}
 		if(!$id=$id+0){
