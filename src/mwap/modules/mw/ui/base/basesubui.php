@@ -1,9 +1,7 @@
 <?php
 abstract class mwmod_mw_ui_base_basesubui extends mwmod_mw_ui_sub_uiabs{
 	public $sucods;
-	function get_lngmsgsmancod(){
-		return $this->mainAp->get_lngmsgsmancod();	
-	}
+	
 	
 	/*Todos los permisos configurados solo para admin*/
 	function is_allowed(){
