@@ -116,23 +116,7 @@ abstract class mwmod_mw_data_fixcontent_absman extends mw_apsubbaseobj{
 	}
 	
 	function getFileFullPath($relFileNameAndPath,$checkExists=true){
-		/*
-		$issub=false;
-		if(strpos($relFileNameAndPath,"/")!==false){
-			$issub=true;
-		}
-		if(strpos($relFileNameAndPath,"\\")!==false){
-			$issub=true;
-		}
-		if($issub){
-			$filename=basename($relFileNameAndPath);
-			$subpath=trim(dirname($relFileNameAndPath),"/\\");
-				
-		}else{
-			$filename=basename($relFileNameAndPath);
-			$subpath=false;
-		}
-		*/
+		
 		$filename="";
 		$subpath="";
 		$this->getFilePathInfo($relFileNameAndPath,$filename,$subpath);
