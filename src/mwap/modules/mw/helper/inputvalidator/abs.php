@@ -12,19 +12,21 @@ abstract class mwmod_mw_helper_inputvalidator_abs extends mw_baseobj{
 
 	//20231222
 	function getValueStrTrim($cod=false){
-		if($v=$this->getValueStr($cod)){
+		$v=$this->getValueStr($cod);
+
+		if(is_string($v)){
 			return trim($v);
 
 		}
 	}
 	function getValueStr($cod=false){
-		if($v=$this->get_value_by_dot_cod($cod)){
-			if(is_array($v)){
-				return null;
-			}
-			return $v;
+		$v=$this->get_value_by_dot_cod($cod);
+		if(is_numeric($v)){
+			return $v."";
 		}
-
+		if(is_string($v)){
+			return $v."";
+		}
 
 	}
 	function getValuesFromDoptim($cod=false){
