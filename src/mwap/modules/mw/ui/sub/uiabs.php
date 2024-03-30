@@ -68,17 +68,13 @@ abstract class mwmod_mw_ui_sub_uiabs extends mw_apsubbaseobj{
 				}
 			}
 		}
-		if(method_exists($this->mainAp,"get_lngmsgsmancod")){
-			if($code=$this->mainAp->get_lngmsgsmancod()){
+		if(method_exists($this->mainap,"get_lngmsgsmancod")){
+			if($code=$this->mainap->get_lngmsgsmancod()){
 				return $code;
 			}
 		}
 		return "def";
 
-		
-
-
-		//return $this->mainAp->get_lngmsgsmancod();	
 	}
 	function createUISessionDataMan(){
 		if($m=$this->maininterface->uiSessionDataMan){
