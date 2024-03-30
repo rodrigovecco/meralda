@@ -74,7 +74,7 @@ class mwmod_mw_data_cfg_man extends mw_apsubbaseobj{
 			return false;
 		}
 		$this->init_items();
-		return $this->_items[$cod];
+		return $this->_items[$cod]??null;
 	}
 	final function init_items(){
 		if(isset($this->_items)){

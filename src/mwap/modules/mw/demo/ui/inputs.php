@@ -26,12 +26,14 @@ class mwmod_mw_demo_ui_inputs extends mwmod_mw_demo_ui_abs{
 			//echo "Sí se han enviado datos.";
 			$finalvalue=$inputMan->get_value_by_dot_cod();
 			//mw_array2list_echo($finalvalue);
+			/*
 			echo $inputMan->getValueStrTrim("subgr.boolval");
 			
 			$subitem=$inputMan->get_item_by_dot_cod("multiline");
 			echo "<textarea>".$subitem->getValueStrTrim()."</textarea><hr>";
 			echo "<textarea>".$subitem->get_orig_value()."</textarea><hr>";
 			echo $subitem->get_orig_value();
+			*/
 			
 		}else{
 			//echo "No se han enviado datos.";
