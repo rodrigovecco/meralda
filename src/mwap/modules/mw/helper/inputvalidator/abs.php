@@ -311,9 +311,29 @@ abstract class mwmod_mw_helper_inputvalidator_abs extends mw_baseobj{
 		if(!strlen($cod)){
 			return false;
 		}
+		if(!$cod=$this->checkItemCode($cod)){
+			return false;
+		}
 		$item =new mwmod_mw_helper_inputvalidator_item($cod,$this);
 		return $item;
 		
+	}
+	function checkItemCode($cod){
+		if($this->parent){
+			return $this->parent->checkItemCode($cod);
+		}
+		return $this->checkItemCodeAsMainParent($cod);
+	}
+	function checkItemCodeAsMainParent($cod){
+
+		if(!strlen($cod)){
+			return false;
+		}
+		if($cod=$this->check_str_key_alnum_underscore($cod)){
+			return $cod;
+		}
+
+
 	}
 }
 ?>
