@@ -151,7 +151,7 @@ class  mwmod_mw_util_itemsbycod extends mw_apsubbaseobj{
 		if(!$cod){
 			return false;	
 		}
-		return $this->items[$cod];	
+		return $this->items[$cod]??null;	
 	}
 	function add_item($item){
 		$cod=$this->get_item_cod($item);

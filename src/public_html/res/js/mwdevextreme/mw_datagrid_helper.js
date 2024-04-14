@@ -416,37 +416,49 @@ function mw_devextreme_datagrid_man(params){
 
 	}
 	
-	
+	//20240412
 	this.set_ds_from_array=function(list,key){
 		if(!mw_is_array(list)){
 			return false;	
 		}
+		var s={data:list};
 		var op={
 			type: 'array',
-			store:list	
+			
 		};
 		if(key){
-			op["key"]=key;	
+			op["key"]=key;
+			s["key"]=key;			
 		}
+		op.store= new DevExpress.data.ArrayStore(s);
 		this.ds_cfg=op;
 		return true;
 		
 	}
-	
+	//20240412
 	this.set_ds_from_optim=function(doptim){
+
 		if(!doptim){
 			return false;
 		}
 		var op={
 			type: 'array',
-			store:doptim.get_all_data()	
+			
 		};
 		var key=doptim.get_key_cod();
-		
+		var s={
+			data:doptim.get_all_data()	
+		};
 		if(key){
-			op["key"]=key;	
+			op["key"]=key;
+			s["key"]=key;		
+			
 		}
+		op.store= new DevExpress.data.ArrayStore(s);
+
+
 		this.ds_cfg=op;
+		//console.log("ds_cfg",this.ds_cfg);
 		return true;
 		
 		

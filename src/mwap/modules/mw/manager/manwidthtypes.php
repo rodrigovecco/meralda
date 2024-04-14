@@ -23,7 +23,7 @@ abstract class  mwmod_mw_manager_manwidthtypes extends mwmod_mw_manager_man{
 		if(!is_array($data)){
 			return false;
 		}
-		if(!$type=$this->get_type($data["type"])){
+		if(!$type=$this->get_type($data["type"]??null)){
 			return false;	
 		}
 		$data["type"]=$type->cod;
@@ -38,7 +38,7 @@ abstract class  mwmod_mw_manager_manwidthtypes extends mwmod_mw_manager_man{
 			return false;	
 		}
 		$this->init_types();
-		return $this->_types[$cod];	
+		return $this->_types[$cod]??null;	
 	}
 	final function get_types(){
 		$this->init_types();

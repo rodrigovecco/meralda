@@ -1,11 +1,19 @@
 function mw_datainput_dx(options){
-	//no usado
 	mw_datainput_item_abs.call(this);
 	this.init(options);
 	this.get_input_value=function(){
-		//falta
+		return this.DXValue;
+		
+	}
+	this.set_input_value=function(val){
+		this.DXValue=val;
+
+		if(this.DXctr){
+			this.DXctr.option("value",val);
+		}
+
 		if(this.input_elem){
-			return this.input_elem.value;	
+			this.input_elem.value=this.format_input_value(val)+"";	
 		}
 	}
 	this.get_tooltip_target_elem=function(){
@@ -13,11 +21,11 @@ function mw_datainput_dx(options){
 	}
 
 	this.createDXctr=function(container,ops){
-		console.log(ops);
+		
 		$($(container)).dxTextBox(ops);
+		this.DXctr=$($(container)).dxTextBox('instance');
 		
 		
-		//return $($(container)).dxTextBox('instance');
 		
 	}
 	this.initDX=function(){
@@ -26,8 +34,7 @@ function mw_datainput_dx(options){
 		}
 		var ops=this.getDXOptions();
 		this.createDXctr(this.DXctrElem,ops);
-		//console.log(this.DXctr);
-		//return this.DXctr;
+		
 	}
 	this.onDXValueChanged=function(e){
 		
@@ -111,7 +118,7 @@ function mw_datainput_dx(options){
 				lbl.htmlFor =id;	
 			}
 			return lbl;
-			//c.appendChild(lbl);
+			
 		}
 			
 	}
@@ -127,6 +134,7 @@ function mw_datainput_dx_selectBox(options){
 	this.createDXctr=function(container,ops){
 		console.log(ops);
 		$($(container)).dxSelectBox(ops);
+		this.DXctr=$($(container)).dxSelectBox('instance');
 	}
 	this.autoCreateItems=function(){
 		var list=this.options.get_param_as_list("optionslist");
@@ -146,6 +154,6 @@ function mw_datainput_dx_selectBox(options){
 
 
 }
-//mw_datainput_item_hidden.prototype=new mw_datainput_item_abs();
+
 
 

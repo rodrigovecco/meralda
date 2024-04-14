@@ -147,6 +147,9 @@ abstract class  mwmod_mw_manager_basemanabs extends mw_apsubbaseobj{
 	
 	
 	function __get_man_path(){
+		if(!$this->code){
+			return false;
+		}
 		if(!$code=basename($this->code)){
 			return false;
 		}
