@@ -139,7 +139,7 @@ function mw_datainput_dx_selectBox(options){
 	this.autoCreateItems=function(){
 		var list=this.options.get_param_as_list("optionslist");
 		if(!list){
-			list=array();
+			list=[];
 		}
 		return list;
 	}
