@@ -1,8 +1,6 @@
 <?php
 /*
 PHPMWLIB by RVH 
-202400422
-v 22.01
 */
 /*
 Puedan todos los seres lograr la felicidad y sus causas.
@@ -30,6 +28,7 @@ TAYATA OM BEKANZHE BEKANZHE MAHA BEKANZHE RAZA SAMUGATE SOHA
 
 */
 abstract class  mw_baseobj{
+	
 	function __accepts_exec_cmd_by_url(){
 		return false;	
 	}

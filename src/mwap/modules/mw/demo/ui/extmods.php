@@ -4,12 +4,15 @@ class mwmod_mw_demo_ui_extmods extends mwmod_mw_demo_ui_abs{
 		$this->init_as_main_or_sub($cod,$parent);
 		$this->set_lngmsgsmancod("demo");
 		$this->set_def_title($this->lng_get_msg_txt("externalModules","Módulos externos"));
-		$this->sucods="qr,fpdf,phpspreadsheet";
+		$this->sucods="qr,fpdf,phpspreadsheet,phpmailer";
 
 		
 	}
 
-	
+	function _do_create_subinterface_child_phpmailer($cod){
+		$ui=new mwmod_mw_demo_ui_extmods_phpmailer($cod,$this);
+		return $ui;	
+	}
 	function _do_create_subinterface_child_qr($cod){
 		$ui=new mwmod_mw_demo_ui_qr($cod,$this);
 		return $ui;	
