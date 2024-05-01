@@ -1,0 +1,11 @@
+{
+    "config": {
+        "vendor-dir": "src/mwap/modulesext/phpoffice/vendor",
+        "platform": {
+            "php": "8.0"
+        }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "2.0.0"
+    }
+}

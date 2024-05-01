@@ -66,7 +66,12 @@ abstract class mwmod_mw_data_fixcontent_absitem extends mw_apsubbaseobj{
 		}
 		return $this->phContentSetted;
 	}
-	
+	//new 20240422
+	function fileExists(){
+		if($file=$this->fixcontentman->getFileFullPath($this->filepath,true)){
+			return $file;
+		}
+	}
 	function getContentHTML(){
 		return $this->fixcontentman->getContentHTML($this->filepath);
 	}

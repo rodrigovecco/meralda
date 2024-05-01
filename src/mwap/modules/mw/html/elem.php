@@ -44,6 +44,11 @@ class mwmod_mw_html_elem extends mwmod_mw_html_abselem implements mwmod_mw_html_
 		if(!$list=$this->get_class_list()){
 			return false;	
 		}
+
+		
+		if(!isset($list[$class])){
+			return false;
+		}
 		if(!$list[$class]){
 			return false;	
 		}
