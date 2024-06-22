@@ -35,7 +35,7 @@ class mwmod_mw_paymentapi_debugui_mod_createfiles extends mwmod_mw_paymentapi_de
 		$frm=$this->new_frm();
 		$frm->title="Actualizar claves";
 		$cr=$this->new_datafield_creator();
-		if($_REQUEST["nd"]){
+		if($_REQUEST["nd"]??null){
 			//mw_array2list_echo($_REQUEST["nd"]);
 			$valman=new mwmod_mw_helper_inputvalidator_request("nd");
 			if($val=$valman->get_value_by_dot_cod("newkeys.public").""){

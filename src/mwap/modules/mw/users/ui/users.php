@@ -5,6 +5,7 @@ class mwmod_mw_users_ui_users extends mwmod_mw_ui_sub_uiabs{
 		$this->init_as_main_or_sub($cod,$parent);
 		$this->set_def_title($this->lng_common_get_msg_txt("users","Usuarios"));
 		$this->js_ui_class_name="mw_ui_grid_remote";
+		$this->mnuIconClass="fa fa-users";
 		
 		
 	}

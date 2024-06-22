@@ -31,6 +31,7 @@ abstract class mwmod_mw_ui_sub_uiabs extends mw_apsubbaseobj{
 	public $xml_output;
 	//var $order_on_main_mnu=99999999;
 	//var $mnu_icon;
+	public $mnuIconClass;
 	
 	//inicializar
 	var $mnu;
@@ -981,6 +982,9 @@ abstract class mwmod_mw_ui_sub_uiabs extends mw_apsubbaseobj{
 		//agregar aca
 	}
 	function prepare_mnu_item($item){
+		if($this->mnuIconClass){
+			$item->addInnerHTML_icon($this->mnuIconClass);
+		}
 		//aca puede colocarse icono	
 	}
 	function get_cod_for_mnu(){

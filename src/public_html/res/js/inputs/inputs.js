@@ -1418,7 +1418,7 @@ function mw_datainput_item_file(options){
 		if(p){
 			input.id=p;	
 		}
-		input.className="";
+		input.className="form-control";
 		input.type="file";
 		this.set_def_input_atts_by_cfg(input);//new
 		this.set_def_input_atts_more(input);//new
@@ -1923,6 +1923,16 @@ function mw_datainput_item_btn(options){
 			fnc(this);	
 		}
 	}
+	this.showLoadingIndicator=function(){
+		if(this.loadingJQind){
+			this.loadingJQind.show();
+		}
+	}
+	this.hideLoadingIndicator=function(){
+		if(this.loadingJQind){
+			this.loadingJQind.hide();
+		}
+	}
 	this.create_input_elem=function(){
 		var _this=this;
 		var p;
@@ -1932,15 +1942,23 @@ function mw_datainput_item_btn(options){
 		c.setAttribute("type","button");
 		c.className="btn btn-"+this.options.get_param_or_def("display_mode","default");
 		c.onclick=function(){_this._onClick()};
+		this.loadingJQind=$('<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>');
+		this.loadingJQind.appendTo(c);
+		this.loadingJQind.hide();
+		
+		this.lblJQ=$("<span role='status'></span>")
+		this.lblJQ.appendTo(c);
+		var innerHTML="";
 		p=this.options.get_param_or_def("iconClass",false);
 		if(p){
-			c.innerHTML="<i class='"+p+"'></i> ";
+			innerHTML="<i class='"+p+"'></i> ";
 		}
 		p=this.options.get_param_or_def("lbl",false);
 		
 		if(p){
-			c.innerHTML=c.innerHTML+p;
+			innerHTML=innerHTML+p;
 		}
+		this.lblJQ.html(innerHTML);
 		this.set_def_input_atts(c);
 		return c;
 	}

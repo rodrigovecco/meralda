@@ -15,7 +15,7 @@ abstract class  mwmod_mw_paymentapi_abs_manabs extends mw_apsubbaseobj{
 	private $_isEnabled;
 	final function init($cod){
 		$this->cod=basename($cod);
-		$this->set_mainap($ap);	
+		$this->set_mainap();	
 	}
 	function doLoadApiClasses(){
 		//ver mwmod_mw_paymentapi_api_test_man	

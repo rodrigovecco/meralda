@@ -13,10 +13,10 @@ abstract class  mwmod_mw_paymentapi_man_abs extends mw_apsubbaseobj{
 	}
 
 	function getProductionItem(){
-		return $this->get_item($productionManCod);	
+		return $this->get_item($this->productionManCod);	
 	}
 	function getDebugItem(){
-		return $this->get_item($debugManCod);	
+		return $this->get_item($this->debugManCod);	
 	}
 	
 	function getItems(){

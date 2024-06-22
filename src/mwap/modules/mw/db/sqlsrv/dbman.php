@@ -5,6 +5,41 @@ class mwmod_mw_db_sqlsrv_dbman extends mwmod_mw_db_mysqli_dbman{
 	function __construct($ap){
 		$this->init($ap);	
 	}
+	function create_views_managers(){
+		$sql = "SELECT TABLE_NAME FROM [INFORMATION_SCHEMA].TABLES WHERE TABLE_TYPE = 'VIEW';";
+    	if(!$query=$this->query($sql)){
+			return false;	
+		}
+		$r=array();
+		if ($array=$this->fetch_array($query)){
+			do{
+				if($tbl=$array[0]){
+					if($man=$this->create_view_man($tbl)){
+						$r[$tbl]=$man;	
+					}
+				}
+			}while ($array=$this->fetch_array($query));
+		
+		}
+		if(sizeof($r)){
+			return $r;	
+		}
+		
+			
+	}
+	function create_view_man_def($tbl){
+		
+		if(!$tbl=$this->check_str_key($tbl)){
+			return false;	
+		}
+		$man=new mwmod_mw_db_sqlsrv_view($this,$tbl);
+		return $man;
+		
+			
+	}
+
+
+	
 	function dbModeCheck($mode){
 		if($mode=="sqlsrv"){
 			return true;

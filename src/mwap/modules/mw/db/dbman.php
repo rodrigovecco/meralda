@@ -4,6 +4,7 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 	private $__dblink;
 	private $_connected;
 	private $_tblmanagers;
+	private $_viewsmanagers;
 	function __construct($ap){
 		$this->init($ap);	
 	}
@@ -18,6 +19,85 @@ abstract class mwmod_mw_db_dbman extends mw_apsubbaseobj{
 		}
 			
 	}
+	////////////////views no implemented
+	function get_view_manager($cod){
+		if(!$cod=$this->check_str_key($cod)){
+			return false;	
+		}
+		if(!$this->_init_views_managers()){
+			return false;	
+		}
+		return $this->_viewsmanagers[$cod]??null;
+		
+	}
+
+	final function get_views_managers(){
+		if(!$this->_init_views_managers()){
+			return false;	
+		}
+		return $this->_viewsmanagers;
+	}
+	function create_view_man_def($tbl){
+		return false;
+		/*
+		if(!$tbl=$this->check_str_key($tbl)){
+			return false;	
+		}
+		$man=new mwmod_mw_db_tbl($this,$tbl);
+		return $man;
+		*/
+			
+	}
+	function create_view_man($tbl){
+		if(!$tbl=$this->check_str_key($tbl)){
+			return false;	
+		}
+		$method="create_view_man_view_".$tbl;
+		if(method_exists($this,$method)){
+			return $this->$method($tbl);	
+		}
+		return $this->create_view_man_def($tbl);	
+	
+			
+	}
+	function create_views_managers(){
+		return false;	
+		
+			
+	}
+	private function _init_views_managers(){
+		if(isset($this->_viewsmanagers)){
+			return true;	
+		}
+		$this->_viewsmanagers=array();
+		if(!$mans=$this->create_views_managers()){
+			return false;
+		}
+		if(is_array($mans)){
+			$this->_viewsmanagers=$mans;
+			return true;	
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//////////
 	function useAlwaysParameterizedMode(){
 		return false;
 	}

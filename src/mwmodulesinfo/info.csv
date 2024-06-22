@@ -1,0 +1,4 @@
+sep=;
+manager;mode;cod;type;version;path
+autoload_mwmod_mw;system;date/month/def.php;file;2;modules/mw/date/month/def.php
+autoload_mwmod_mw;system;date/month;dir;1;modules/mw/date/month

@@ -1,6 +1,7 @@
 <?php
 class mwmod_mw_data_tree_man extends mw_apsubbaseobj{
 	private $filemanager;
+	private $mainRootPath;
 	private $_path;
 	private $datamanagers=array();
 	function __construct($path){
@@ -178,7 +179,18 @@ class mwmod_mw_data_tree_man extends mw_apsubbaseobj{
 		$this->_path=$path;
 		return true;
 	}
+	final function __get_priv_mainRootPath(){
+		if(isset($this->mainRootPath)){
+			return $this->mainRootPath;
+		}
+	}
+	final function setMainRootPath($path){
+		$this->mainRootPath=$path;
+	}
 	function get_main_root_path(){
+		if($p=$this->__get_priv_mainRootPath()){
+			return $p;
+		}
 		return $this->mainap->get_path("userfiles");	
 	}
 	

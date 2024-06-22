@@ -70,7 +70,7 @@ class mwmod_mw_ui_debug_uidebug extends mwmod_mw_ui_sub_uiabs{
 
 	}
 	function prepare_mnu_item($item){
-		$item->addInnerHTML_icon("glyphicon glyphicon-star");
+		$item->addInnerHTML_icon("fa fa-bug");
 	}
 	
 	

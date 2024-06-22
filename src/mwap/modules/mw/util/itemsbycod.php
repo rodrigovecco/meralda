@@ -9,6 +9,9 @@ class  mwmod_mw_util_itemsbycod extends mw_apsubbaseobj{
 	function __construct(){
 		
 	}
+	function getItemsNum(){
+		return sizeof($this->items);
+	}
 	function addItemsByDataArray($allData,$codField="id",$nameField="name"){
 		//mw_array2list_echo($allData);
 		if(is_array($allData)){
