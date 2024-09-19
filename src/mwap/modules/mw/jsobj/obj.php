@@ -232,6 +232,10 @@ class mwmod_mw_jsobj_obj extends mw_object_as_array{
 			if(method_exists($val,"get_as_js_val")){
 				return 	$val->get_as_js_val();	
 			}
+			//new 20240918
+			if ($val instanceof stdClass) {
+				return json_encode($val);
+			}
 		}
 		if(is_array($val)){
 			return $this->get_as_js_val_from_array($val);	
