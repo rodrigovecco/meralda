@@ -1,5 +1,5 @@
 <?php
-//20240306
+//20241002
 class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 	private $select;
 	private $from;
@@ -218,6 +218,8 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 	}
 
 	function execute(){
+
+
 		//todo!!!!! if(!$sql=$this->get_sql_or_parameterized_query()){
 		if(!$sql=$this->get_sql()){
 			return false;	
