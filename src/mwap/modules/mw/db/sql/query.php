@@ -207,7 +207,9 @@ class mwmod_mw_db_sql_query extends mwmod_mw_db_sql_abs{
 	}
 
 	function get_total_regs_num(){
-		$sql=$this->get_count_sql();
+		
+		$sql=$this->get_count_sql_or_parameterized_query();
+		//$sql=$this->get_count_sql();
 		if(!$d=$this->dbman->get_array_from_sql($sql)){
 			return 0;	
 		}

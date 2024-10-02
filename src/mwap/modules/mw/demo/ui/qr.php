@@ -67,7 +67,8 @@ class mwmod_mw_demo_ui_qr extends mwmod_mw_demo_ui_abs{
 		}
 		//ob_end_clean();
 		$qrMan=new mwmod_mw_extmods_qr();
-		if(!$qr=$qrMan->newQR("hola")){
+		$txt="¡Hola Mundo!";
+		if(!$qr=$qrMan->newQR($txt)){
 			echo "error";
 			return false;
 		}
