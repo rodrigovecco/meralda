@@ -33,7 +33,7 @@ class mwmod_mw_facebook_ui_cfg_test extends mwmod_mw_facebook_ui_cfg_abs{
 			$output->xml->root_do_all_output();
 			return false;	
 		}
-		if(!$helper=$man->fbApp->newFBhelperWithAppToken()){
+		if(!$helper=$man->fbApp->newFBhelperWithApptoken()){
 			$output->alert->setMsgError("Ocurrió un error");
 			$output->xml->root_do_all_output();
 			return false;	
@@ -41,8 +41,8 @@ class mwmod_mw_facebook_ui_cfg_test extends mwmod_mw_facebook_ui_cfg_abs{
 		}
 		//get
 		
-		//if(!$info=$helper->getTokenInfo($input->get_value_by_dot_cod("accessToken"))){
-		if(!$info=$helper->get("me",array(),$input->get_value_by_dot_cod("accessToken"))){
+		//if(!$info=$helper->gettokenInfo($input->get_value_by_dot_cod("accesstoken"))){
+		if(!$info=$helper->get("me",array(),$input->get_value_by_dot_cod("accesstoken"))){
 			$output->alert->setMsgError("Ocurrió un error");
 			$output->xml->root_do_all_output();
 			return false;	

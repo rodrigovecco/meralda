@@ -130,7 +130,7 @@ class mwmod_mw_culqi_client extends mwmod_mw_culqi_client_abs{
 			
 	}
 	
-	function createCardFromToken($token,$params=array()){
+	function createCardFromtoken($token,$params=array()){
 		if(!$token=$token.""){
 			return false;	
 		}

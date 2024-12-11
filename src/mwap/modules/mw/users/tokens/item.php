@@ -47,7 +47,7 @@ class  mwmod_mw_users_tokens_item extends mwmod_mw_manager_item{
 		return true;
 	}
 	function get_token_str(){
-		return $this->man->encodeTocken($this);	
+		return $this->man->encodetoken($this);	
 	}
 	
 }

@@ -123,7 +123,7 @@ class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 			
 			return false;	
 		}
-		$l->errorno;
+		$l->errno;
 		//return mysql_errno($l);
 			
 	}

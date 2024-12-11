@@ -16,15 +16,15 @@ class mwmod_mw_facebook_sess_user extends mwmod_mw_facebook_sess_obj {
 		return $d;
 	}
 	function tokenIsValid(){
-		if(!$t=$this->getToken()){
+		if(!$t=$this->gettoken()){
 			return false;	
 		}
 		//falta ver si hay fecha de caducidad
 		return true;
 	}
-	function setNewToken($val){
+	function setNewtoken($val){
 		$this->unsetSessData();
-		return $this->setToken($val);
+		return $this->settoken($val);
 	}
 	function setUserId($val){
 		return $this->setSessData($val,"id");
@@ -32,10 +32,10 @@ class mwmod_mw_facebook_sess_user extends mwmod_mw_facebook_sess_obj {
 	function setName($val){
 		return $this->setSessData($val,"name");
 	}
-	function getToken(){
+	function gettoken(){
 		return $this->getSessData("token");
 	}
-	function setToken($val){
+	function settoken($val){
 		return $this->setSessData($val,"token");
 	}
 

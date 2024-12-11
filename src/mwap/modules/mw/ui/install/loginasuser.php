@@ -80,7 +80,7 @@ class mwmod_mw_ui_install_loginasuser extends mwmod_mw_ui_sub_withfrm{
 			echo "<p>".$this->lng_get_msg_txt("edit_main_user","Editar usuario principal")."</p>";	
 		}
 		
-		$cr->add_item(new mwmod_mw_datafield_password("adminuser_tocken",$this->get_msg("Contraseña maestra")));
+		$cr->add_item(new mwmod_mw_datafield_password("adminuser_token",$this->get_msg("Contraseña maestra")));
 		
 		$input=$cr->add_sub_item_by_dot_cod(new mwmod_mw_datafield_input("name",$this->get_msg("Usuario")),"data");
 		if($user){

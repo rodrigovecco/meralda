@@ -5,52 +5,52 @@ class  mwmod_mw_users_tokens_man extends mwmod_mw_manager_man{
 	public $appIDEnabled=false;
 	public $currentAppID;//identificador único para instancias de aplicación en aplicaciones móviles
 	public $numTranslationTbl;
-	public $invalidTokenErrorCode;
-	public $invalidTokenErrorMsg;
+	public $invalidtokenErrorCode;
+	public $invalidtokenErrorMsg;
 	
 	function __construct($code,$tblName,$userMan){
-		$this->initTokensMan($code,$tblName,$userMan);	
+		$this->inittokensMan($code,$tblName,$userMan);	
 	}
 	function setCurrentAppID($appID){
 		//datos enviado por el usurio
 		$this->currentAppID=$appID;
 	}
-	function setInvalidTokenEreror($code,$msg){
-		$this->invalidTokenErrorCode=$code;
-		$this->invalidTokenErrorMsg=$this->lng_get_msg_txt("INVALIDTOKEN_".$cod,$msg);
+	function setInvalidtokenEreror($code,$msg){
+		$this->invalidtokenErrorCode=$code;
+		$this->invalidtokenErrorMsg=$this->lng_get_msg_txt("INVALIDtoken_".$cod,$msg);
 	}
-	function getTokenByInput($inputStr){
+	function gettokenByInput($inputStr){
 		if(!$inputStr=$inputStr.""){
-			$this->setInvalidTokenEreror("NoInput","Se requiere adjuntar un token");
+			$this->setInvalidtokenEreror("NoInput","Se requiere adjuntar un token");
 			return false;	
 		}
-		if(!$info=$this->decodeTokenInfo($inputStr)){
-			$this->setInvalidTokenEreror("Format","El token enviado no tiene un formato válido");
+		if(!$info=$this->decodetokenInfo($inputStr)){
+			$this->setInvalidtokenEreror("Format","El token enviado no tiene un formato válido");
 			return false;	
 		}
 		if(!$token=$this->get_item($info["id"])){
-			$this->setInvalidTokenEreror("deosNotExist","El token no existe");
+			$this->setInvalidtokenEreror("deosNotExist","El token no existe");
 			return false;	
 		}
 		if(!$info["token"]){
-			$this->setInvalidTokenEreror("Format","El token enviado no tiene un formato válido");
+			$this->setInvalidtokenEreror("Format","El token enviado no tiene un formato válido");
 			return false;	
 		}
 		if($info["token"]!==$token->get_data("token")){
-			$this->setInvalidTokenEreror("NoCoincidence","El token enviado no coincide");
+			$this->setInvalidtokenEreror("NoCoincidence","El token enviado no coincide");
 			return false;	
 		}
 		if($info["user_id"]!==$token->get_data("user_id")){
-			$this->setInvalidTokenEreror("NoCoincidenceUser","El token enviado no pertenece al usuario");
+			$this->setInvalidtokenEreror("NoCoincidenceUser","El token enviado no pertenece al usuario");
 			return false;	
 		}
 		if($this->appIDEnabled){
 			if(!$this->currentAppID){
-				$this->setInvalidTokenEreror("InvalidAPPIDNoData","Se requiere un identificador de instancia para validar token");
+				$this->setInvalidtokenEreror("InvalidAPPIDNoData","Se requiere un identificador de instancia para validar token");
 				return false;	
 			}
 			if($this->currentAppID!=$token->get_data("appid")){
-				$this->setInvalidTokenEreror("InvalidAPPIDNoCoincidence","El token no coincide con el identificador de instancia");
+				$this->setInvalidtokenEreror("InvalidAPPIDNoCoincidence","El token no coincide con el identificador de instancia");
 				return false;	
 			}
 			
@@ -58,14 +58,14 @@ class  mwmod_mw_users_tokens_man extends mwmod_mw_manager_man{
 		return $token;
 		
 	}
-	function encodeTocken($token){
+	function encodetoken($token){
 		$r=array();
 		$r[]=$this->numToSecretCh($token->get_id());
 		$r[]=$token->get_data("token");
 		$r[]=$this->numToSecretCh($token->get_data("user_id"));
 		return implode(" ",$r);
 	}
-	function decodeTokenInfo($tokenStr){
+	function decodetokenInfo($tokenStr){
 		
 		if(!$a=explode(" ",$tokenStr."")){
 			return false;	
@@ -121,10 +121,10 @@ class  mwmod_mw_users_tokens_man extends mwmod_mw_manager_man{
 	function newExpDate(){
 		return false;//never expieres
 	}
-	function createNewToken($user){
+	function createNewtoken($user){
 		$nd=array(
 			"user_id"=>$user->get_id(),
-			"token"=>$this->randomTokenStr(),
+			"token"=>$this->randomtokenStr(),
 			"active"=>1,
 			"creation_date"=>date("Y-m-d H:i:s"),
 			"innerkey"=>$this->buildInnerKey($user->tblitem->get_data("pass")),
@@ -142,7 +142,7 @@ class  mwmod_mw_users_tokens_man extends mwmod_mw_manager_man{
 		
 		
 	}
-	function randomTokenStr(){
+	function randomtokenStr(){
 		$_alphaSmall = 'abcdefghijklmnopqrstuvwxyz';
 		$_alphaCaps  = strtoupper($_alphaSmall);
 		$_numerics   = '1234567890';
@@ -192,7 +192,7 @@ class  mwmod_mw_users_tokens_man extends mwmod_mw_manager_man{
 		return $item;
 	}
 	
-	final function initTokensMan($code,$tblName,$userMan){
+	final function inittokensMan($code,$tblName,$userMan){
 		$this->init($cod,$userMan->mainap,$tblName);
 		$this->usersMan=$userMan;	
 	}

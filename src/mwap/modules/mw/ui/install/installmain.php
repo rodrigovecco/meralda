@@ -2,7 +2,7 @@
 class mwmod_mw_ui_install_installmain extends mwmod_mw_uitemplates_sbadmin_main{
 	var $session_var_name="install_credentials";
 	private $_cfg_data;
-	var $tocken="asdfw3rfsdafasf5t54sdfhsdgfgasfgsdfgwfgar44";
+	var $token="asdfw3rfsdafasf5t54sdfhsdgfgasfgsdfgwfgar44";
 	function __construct($ap){
 		$this->set_mainap($ap);	
 		$this->subinterface_def_code="def";
@@ -55,10 +55,10 @@ class mwmod_mw_ui_install_installmain extends mwmod_mw_uitemplates_sbadmin_main{
 			$_SESSION[$this->session_var_name]=array();
 			$_SESSION[$this->session_var_name]["ok"]=false;
 		}
-		if($tocken_input=$_REQUEST["login_tocken"]??null){
-			if($tocken_input===$this->get_cfg_data("pass")){
+		if($token_input=$_REQUEST["login_token"]??null){
+			if($token_input===$this->get_cfg_data("pass")){
 				if($this->get_cfg_data("allowed")){
-					$_SESSION[$this->session_var_name]["ok"]=$this->tocken;	
+					$_SESSION[$this->session_var_name]["ok"]=$this->token;	
 					$_SESSION[$this->session_var_name]["sessionvalidtime"]=strtotime(date("Y-m-d H:i:s")." + 15 minutes");
 				}
 					
@@ -80,7 +80,7 @@ class mwmod_mw_ui_install_installmain extends mwmod_mw_uitemplates_sbadmin_main{
 		if(!is_array($_SESSION[$this->session_var_name])){
 			return false;	
 		}
-		if(!$tocken=$_SESSION[$this->session_var_name]["ok"]){
+		if(!$token=$_SESSION[$this->session_var_name]["ok"]){
 			return false;
 		}
 		if(!$t=$_SESSION[$this->session_var_name]["sessionvalidtime"]+0){
@@ -89,7 +89,7 @@ class mwmod_mw_ui_install_installmain extends mwmod_mw_uitemplates_sbadmin_main{
 		if($t<time()){
 			return false;	
 		}
-		if($tocken===$this->tocken){
+		if($token===$this->token){
 			return true;	
 		}
 		

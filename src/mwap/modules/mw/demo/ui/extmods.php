@@ -4,7 +4,7 @@ class mwmod_mw_demo_ui_extmods extends mwmod_mw_demo_ui_abs{
 		$this->init_as_main_or_sub($cod,$parent);
 		$this->set_lngmsgsmancod("demo");
 		$this->set_def_title($this->lng_get_msg_txt("externalModules","Módulos externos"));
-		$this->sucods="qr,fpdf,phpspreadsheet,phpmailer";
+		$this->sucods="qr,fpdf,phpspreadsheet,phpmailer,geophp";
 
 		
 	}
@@ -19,6 +19,10 @@ class mwmod_mw_demo_ui_extmods extends mwmod_mw_demo_ui_abs{
 	}
 	function _do_create_subinterface_child_phpspreadsheet($cod){
 		$ui=new mwmod_mw_demo_ui_extmods_phpspreadsheet($cod,$this);
+		return $ui;	
+	}
+	function _do_create_subinterface_child_geophp($cod){
+		$ui=new mwmod_mw_demo_ui_extmods_geophp($cod,$this);
 		return $ui;	
 	}
 	function _do_create_subinterface_child_fpdf($cod){

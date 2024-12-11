@@ -10,28 +10,28 @@ class  mwmod_mw_facebook_helper_fb extends mw_apsubbaseobj {
 			$this->fb=$fb;
 		}
 	}
-	function request($method, $endpoint, $params = array(), $accessToken = null, $eTag = null, $graphVersion = null){
+	function request($method, $endpoint, $params = array(), $accesstoken = null, $eTag = null, $graphVersion = null){
 		if($this->fb){
-			return $this->fb->request($method, $endpoint, $params , $accessToken , $eTag , $graphVersion );	
+			return $this->fb->request($method, $endpoint, $params , $accesstoken , $eTag , $graphVersion );	
 		}
 		
 	
 	}
-	function getDefaultAccessToken(){
+	function getDefaultAccesstoken(){
 		if($this->fb){
-			return $this->fb->getDefaultAccessToken();	
+			return $this->fb->getDefaultAccesstoken();	
 		}
 	}
-	function getLongLivedAccessToken($accessToken){
+	function getLongLivedAccesstoken($accesstoken){
 		if(!$this->fb){
 			return false;	
 		}
-		if(!$accessToken=$accessToken.""){
+		if(!$accesstoken=$accesstoken.""){
 			return false;	
 		}
 		try {
 			$OAuth2Client=$this->fb->getOAuth2Client();
-			$newToken=$OAuth2Client->getLongLivedAccessToken($accessToken);
+			$newtoken=$OAuth2Client->getLongLivedAccesstoken($accesstoken);
 		} catch(Facebook\Exceptions\FacebookResponseException $e) {
 			$this->reportError($e);
 			return false;	
@@ -42,23 +42,23 @@ class  mwmod_mw_facebook_helper_fb extends mw_apsubbaseobj {
 			$this->reportError($e);
 			return false;	
 		}
-		return $newToken;
+		return $newtoken;
 	}
 	
-	function getTokenInfo($token=false){
+	function gettokenInfo($token=false){
 		$mwResponse=new mwmod_mw_facebook_helper_response_tokeninfo($token,$this);
 		$mwResponse->proc();
 		return $mwResponse;
 		
 	}
-	function sendRequestProccess($mwResponse,$method, $endpoint, $params = array(), $accessToken = null, $eTag = null, $graphVersion = null){
+	function sendRequestProccess($mwResponse,$method, $endpoint, $params = array(), $accesstoken = null, $eTag = null, $graphVersion = null){
 		if(!$this->fb){
 			$mwResponse->reportError("No FB OBJ");
 			return false;	
 		}
 		try {
 			  $response = $this->fb->sendRequest(
-				$method, $endpoint, $params , $accessToken , $eTag , $graphVersion
+				$method, $endpoint, $params , $accesstoken , $eTag , $graphVersion
 			);
 		} catch(Facebook\Exceptions\FacebookResponseException $e) {
 		  // When Graph returns an error
@@ -87,22 +87,22 @@ class  mwmod_mw_facebook_helper_fb extends mw_apsubbaseobj {
 	
 	}
 	
-	function sendRequest($method, $endpoint, $params = array(), $accessToken = null, $eTag = null, $graphVersion = null,$mwResponse=false){
+	function sendRequest($method, $endpoint, $params = array(), $accesstoken = null, $eTag = null, $graphVersion = null,$mwResponse=false){
 		
 		
 		if(!$mwResponse){
 			$mwResponse=new mwmod_mw_facebook_helper_response(null,$this);
 				
 		}
-		$this->sendRequestProccess($mwResponse,$method, $endpoint, $params , $accessToken , $eTag , $graphVersion);
+		$this->sendRequestProccess($mwResponse,$method, $endpoint, $params , $accesstoken , $eTag , $graphVersion);
 		return $mwResponse;
 	
 	}
-	function post($endpoint="me",$params=array(), $accessToken = null, $eTag = null, $graphVersion = null){
+	function post($endpoint="me",$params=array(), $accesstoken = null, $eTag = null, $graphVersion = null){
 		$mwResponse=$this->sendRequest('POST',
 				$endpoint,
 				$params,
-				$accessToken,
+				$accesstoken,
 				$eTag,
 				$graphVersion);
 		if(!$mwResponse->isOK()){
@@ -113,11 +113,11 @@ class  mwmod_mw_facebook_helper_fb extends mw_apsubbaseobj {
 	
 	}
 	
-	function get($endpoint="me",$params=array(), $accessToken = null, $eTag = null, $graphVersion = null){
+	function get($endpoint="me",$params=array(), $accesstoken = null, $eTag = null, $graphVersion = null){
 		$mwResponse=$this->sendRequest('GET',
 				$endpoint,
 				$params,
-				$accessToken,
+				$accesstoken,
 				$eTag,
 				$graphVersion);
 		if(!$mwResponse->isOK()){

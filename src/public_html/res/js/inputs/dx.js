@@ -145,8 +145,44 @@ function mw_datainput_dx(options){
 		this.DXctrElemContainer.className="mw-dx-form-control-placeholder";
 
 		this.DXctrElemContainer.appendChild(this.DXctrElem);
-		c.appendChild(this.DXctrElemContainer);	
-		
+		//c.appendChild(this.DXctrElemContainer);	
+		var lbnt=this.create_left_btn();
+		var rbtn=this.create_right_btn();
+		var inputelem=this.DXctrElemContainer;
+		var cc;
+		var ccc;
+		if(lbnt||rbtn||this.is_horizontal()){
+			cc=document.createElement("div");
+			cc.className="input-group";
+			if(this.is_horizontal()){
+				if(lbnt||rbtn){
+					ccc=document.createElement("div");
+					ccc.className="mw_input_group_horizontal_container";
+					cc.appendChild(ccc);
+					cc=ccc;	
+					
+					
+				}
+			}
+			if(lbnt){
+				cc.appendChild(lbnt);	
+			}
+			if(inputelem){
+				cc.appendChild(inputelem);
+				$(inputelem).addClass("flex-fill");
+			}
+			if(rbtn){
+				cc.appendChild(rbtn);
+				
+			}
+			
+			c.appendChild(cc);	
+		}else{
+			if(inputelem){
+				c.appendChild(inputelem);	
+			}
+				
+		}
 		
 		
 		this.create_notes_elem_if_req();

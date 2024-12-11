@@ -2,7 +2,7 @@
 
 $subman= new mwmod_mw_users_def_usersman($this,"users");
 $subman->set_disable_login_after_fail(true,5,3);
-$subman->enable_login_session_tocken(true);
+$subman->enable_login_session_token(true);
 $rolsman=new mwmod_mw_users_rols_rolsman($subman);
 $subman->set_rols_man($rolsman);
 $rol=$rolsman->add_item(new mwmod_mw_users_rols_rolpublic("public","Público",$rolsman));

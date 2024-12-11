@@ -33,7 +33,11 @@ class mwmod_mw_ap_apbase  extends mwmod_mw_ap_apabs{
 		$man=new mwmod_mw_mail_mailer_man_system($this);
 		return $man;	
 	}
-	
+	function create_submanager_bruteforce(){
+		
+		$man=new mwmod_mw_bruteforce_man($this);
+		return $man;	
+	}
 	
 	function create_submanager_captcha(){
 		

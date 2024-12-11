@@ -153,14 +153,14 @@ class mwmod_mw_users_usermailer extends mw_apsubbaseobj{
 		if(!$user){
 			return false;	
 		}
-		if(!$tocken=$user->create_reset_password_tocken()){
+		if(!$token=$user->create_reset_password_token()){
 			return false;
 		}
 		$ds=$phgr->get_or_create_ph_src();
 		$this->prepare_ph_src_ap($ds);
 		$this->prepare_ph_src_for_user($ds,$user);
 		$dsitem=$ds->get_or_create_item("user");
-		$dsitem->add_item_by_cod($tocken,"reset_pass_code");
+		$dsitem->add_item_by_cod($token,"reset_pass_code");
 		
 		if($this->ui_reset_password){
 			$this->ui_reset_password->prepare_ph_src($ds,$user);	

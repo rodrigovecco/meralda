@@ -23,7 +23,8 @@ class mwmod_mw_ui_debug_db_tests extends mwmod_mw_ui_sub_uiabs{
 	function do_exec_page_in(){
 		$dbman=$this->mainap->get_submanager("db");
 		mw_array2list_echo($dbman->get_tbl_managers());
-		$tblman=$dbman->get_tbl_manager("tasks_flows");
+		
+		$tblman=$dbman->get_tbl_manager("datatest");
 		mw_array2list_echo($tblman->get_tbl_fields());
 		
 		/*

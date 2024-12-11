@@ -859,7 +859,7 @@ class mwmod_mw_users_userdata extends mw_apsubbaseobj{
 		$update["reset_pass_enabled"]="0";
 		/*
 		$nd=array(
-		"reset_pass_code"=>$tocken,
+		"reset_pass_code"=>$token,
 		"reset_pass_enabled"=>1,
 		"reset_pass_expires"=>$exp,
 		*/

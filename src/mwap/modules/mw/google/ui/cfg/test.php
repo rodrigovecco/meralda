@@ -34,7 +34,7 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 			$output->xml->root_do_all_output();
 			return false;	
 		}
-		if(!$helper=$man->fbApp->newFBhelperWithAppToken()){
+		if(!$helper=$man->fbApp->newFBhelperWithApptoken()){
 			$output->alert->setMsgError("Ocurrió un error");
 			$output->xml->root_do_all_output();
 			return false;	
@@ -42,8 +42,8 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 		}
 		//get
 		
-		//if(!$info=$helper->getTokenInfo($input->get_value_by_dot_cod("accessToken"))){
-		if(!$info=$helper->get("me",array(),$input->get_value_by_dot_cod("accessToken"))){
+		//if(!$info=$helper->gettokenInfo($input->get_value_by_dot_cod("accesstoken"))){
+		if(!$info=$helper->get("me",array(),$input->get_value_by_dot_cod("accesstoken"))){
 			$output->alert->setMsgError("Ocurrió un error");
 			$output->xml->root_do_all_output();
 			return false;	
@@ -60,7 +60,7 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 		
 	}
 	*/
-	function testToken($token){
+	function testtoken($token){
 		if(!$token=$token.""){
 			return false;	
 		}
@@ -69,7 +69,7 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 		}
 		$CLIENT_ID=$man->getAppID();
 		$client = new Google_Client(array('client_id' => $CLIENT_ID));  // Specify the CLIENT_ID of the app that accesses the backend
-		$payload = $client->verifyIdToken($token);
+		$payload = $client->verifyIdtoken($token);
 		if ($payload) {
 		  $userid = $payload['sub'];
 		  return $payload;
@@ -84,7 +84,7 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 		
 		
 		if(is_array($_REQUEST["nd"])){
-			mw_array2list_echo($this->testToken($_REQUEST["nd"]["token"]));	
+			mw_array2list_echo($this->testtoken($_REQUEST["nd"]["token"]));	
 		}
 		
 		$container=$this->get_ui_dom_elem_container_empty();
@@ -114,7 +114,7 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 		$frmjs->set_prop("lbl","Probar");	
 		$inputsgrdata=$frmjs->add_data_main_gr("nd");
 		$input=$inputsgrdata->addNewChild("token","textarea");
-		$input->set_prop("lbl","Token");
+		$input->set_prop("lbl","token");
 		$inputjs=$frmjs->add_submit("Probar token");
 		$this->ui_js_init_params->set_prop("testfrm",$frmjs);
 

@@ -7,7 +7,7 @@ class mwap_demo_uiadmin_main extends mwmod_mw_ui_def_main_admin{
 		$this->url_base_path="/admin/";
 		$this->enable_session_check();
 		$this->logout_script_file="logout.php";
-		$this->su_cods_for_side="demo,mwx,cfg,uidebug,users";
+		$this->su_cods_for_side="demo,mwx,uidebug,users,cfg";
 		
 	}
 	function createUISessionDataMan(){

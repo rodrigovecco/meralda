@@ -412,7 +412,7 @@ abstract class mwmod_mw_users_userabs extends mw_apsubbaseobj{
 		if(!$this->can_login()){
 			return false;
 		}
-		if(!$tocken=$this->tblitem->get_data("reset_pass_code")){
+		if(!$token=$this->tblitem->get_data("reset_pass_code")){
 			return false;	
 		}
 		if(!$ok=$this->tblitem->get_data("reset_pass_enabled")){
@@ -432,29 +432,29 @@ abstract class mwmod_mw_users_userabs extends mw_apsubbaseobj{
 	}
 	
 	
-	function check_reset_pass_tocken($tocken){
-		if(!$tocken){
+	function check_reset_pass_token($token){
+		if(!$token){
 			return false;	
 		}
 		if($orig=$this->tblitem->get_data("reset_pass_code")){
-			if($orig===$tocken){
+			if($orig===$token){
 				return true;
 			}
 		}
 	}
 	
 	
-	function create_reset_password_tocken(){
-		$tocken=randPass(50);
+	function create_reset_password_token(){
+		$token=randPass(50);
 		$exp=date("Y-m-d H:i",strtotime(date("Y-m-d H:i",time())." + 8 hours" ));
 		$nd=array(
-		"reset_pass_code"=>$tocken,
+		"reset_pass_code"=>$token,
 		"reset_pass_enabled"=>1,
 		"reset_pass_expires"=>$exp,
 		);
-		$this->reset_pass_code=$tocken;
+		$this->reset_pass_code=$token;
 		$this->tblitem->do_update($nd);
-		return $tocken;
+		return $token;
 	}
 	
 	function get_user_data_man(){

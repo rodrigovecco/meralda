@@ -21,6 +21,7 @@ abstract class mwmod_mw_datafield_datafielabs extends mw_apsubbaseobj{
 	var $js_mw_datainput;
 	public $btFloating=false;
 	public $readonly=false;
+	public $disabled;
 
 
 	function setBTFloating($children=true){

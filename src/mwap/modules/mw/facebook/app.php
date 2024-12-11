@@ -46,8 +46,8 @@ class  mwmod_mw_facebook_app extends mw_apsubbaseobj {
 		
 		return $app;	
 	}
-	function newFBhelperWithAppToken(){
-		return $this->newFBhelper($this->getGenericApiToken());	
+	function newFBhelperWithApptoken(){
+		return $this->newFBhelper($this->getGenericApitoken());	
 	}
 	function newFBhelper($token=false){
 		$fb=$this->newFacebook($token);
@@ -79,7 +79,7 @@ class  mwmod_mw_facebook_app extends mw_apsubbaseobj {
 	function isDefault(){
 		return $this->isdefault;	
 	}
-	function getGenericApiToken(){
+	function getGenericApitoken(){
 		return $this->app_id."|".$this->app_secret;	
 	}
 	

@@ -68,7 +68,29 @@ class  mwmod_mw_db_row extends mw_apsubbaseobj{
 			if(is_string($c)){
 				if(!is_array($v)){
 					if($field=$this->tblman->getField($c)){
-						if((!$this->tblman->only_update_if_different)or(($this->data[$c]!==$v)or(!isset($this->data[$c])))){
+						//20241113
+						if(is_object($v)){
+							if(is_a($v, "mwmod_mw_db_sql_value_abs")){
+								$this->data[$c]=$v->getValueAsData();
+								$cc="`$c`";
+
+								if($this->tblman->dbman->dbModeCheckSQLsrv()){
+									$cc="$c";
+								}
+								$updatelist[]=$cc."=".$v->getSQLValueStrQuoted()." ";
+								if(($paramQuery)and($v->isParamQueryAllowed())){
+									$updatelistPH[]=$cc."=? ";
+									$paramQuery->addParam($v->getValueForParamQuery());
+								}else{
+									$updatelistPH[]=$cc."=".$v->getSQLValueStrQuoted()." ";
+								}
+
+
+								$ok=true;
+							}
+
+
+						}elseif((!$this->tblman->only_update_if_different)or(($this->data[$c]!==$v)or(!isset($this->data[$c])))){
 							$this->data[$c]=$v;
 							if(is_null($v) and $field->nullAllowed()){
 								if($this->tblman->dbman->dbModeCheckSQLsrv()){

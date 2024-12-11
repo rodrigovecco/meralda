@@ -32,13 +32,13 @@ class mwmod_mw_subui_rememberlogindata extends mwmod_mw_bootstrap_ui_sub_abs{
 		if(!$this->can_change_password()){
 			return false;	
 		}
-		if(!$tocken =$inputman->get_value_by_dot_cod("u.rptocken")){
+		if(!$token =$inputman->get_value_by_dot_cod("u.rptoken")){
 			return false;	
 		}
 		if(!$user->can_reset_pass()){
 			return false;	
 		}
-		if(!$user->check_reset_pass_tocken($tocken)){
+		if(!$user->check_reset_pass_token($token)){
 			return false;	
 		}
 		if(!$uman=$this->get_related_user_man()){
@@ -96,7 +96,7 @@ class mwmod_mw_subui_rememberlogindata extends mwmod_mw_bootstrap_ui_sub_abs{
 		if(!$uname =$inputman->get_value_by_dot_cod("u.uname")){
 			return false;	
 		}
-		if(!$tocken =$inputman->get_value_by_dot_cod("u.rptocken")){
+		if(!$token =$inputman->get_value_by_dot_cod("u.rptoken")){
 			return false;	
 		}
 		if($this->use_captcha){
@@ -122,7 +122,7 @@ class mwmod_mw_subui_rememberlogindata extends mwmod_mw_bootstrap_ui_sub_abs{
 			$this->alert_fail->add_cont_as_html($this->lng_get_msg_txt("user_reset_pass_disabled","La función de restablecer contraseña está desactivada"));
 			return false;	
 		}
-		if(!$user->check_reset_pass_tocken($tocken)){
+		if(!$user->check_reset_pass_token($token)){
 			$this->alert_fail->add_cont_as_html($this->lng_get_msg_txt("invalid_reset_pass_code","Código de reestablecimiento de contraseña inválido"));
 			return false;	
 		}
@@ -210,10 +210,10 @@ class mwmod_mw_subui_rememberlogindata extends mwmod_mw_bootstrap_ui_sub_abs{
 		}
 		
 		
-		$i=$gru->add_item(new mwmod_mw_datafield_input("rptocken",$this->lng_get_msg_txt("reset_pass_code","Código de reestablecimiento de contraseña")));
+		$i=$gru->add_item(new mwmod_mw_datafield_input("rptoken",$this->lng_get_msg_txt("reset_pass_code","Código de reestablecimiento de contraseña")));
 		$i->set_required();
-		if($_REQUEST["rptocken"]??null){
-			$i->set_value($_REQUEST["rptocken"]);
+		if($_REQUEST["rptoken"]??null){
+			$i->set_value($_REQUEST["rptoken"]);
 		}
 		if($d=$inputman->get_value_by_dot_cod_as_list("u")){
 			$gru->set_value($d);	
@@ -257,7 +257,7 @@ class mwmod_mw_subui_rememberlogindata extends mwmod_mw_bootstrap_ui_sub_abs{
 		$dsitem->add_item_by_cod($url,"reset_pass_url");
 		
 		$params["uname"]=$user->get_idname();
-		$params["rptocken"]=$user->reset_pass_code;
+		$params["rptoken"]=$user->reset_pass_code;
 		$url=$main->get_abs_url($this->get_url($params));
 		$dsitem->add_item_by_cod($url,"reset_pass_url_full");
 		
@@ -344,12 +344,31 @@ class mwmod_mw_subui_rememberlogindata extends mwmod_mw_bootstrap_ui_sub_abs{
 	}
 	function is_enabled(){
 		if($uman=$this->get_related_user_man()){
+			if($bruteForceMan=$uman->bruteForceMan){
+				if($bruteForceMan->isEnabled()){
+					if($bfBlackList=$bruteForceMan->getCurrentIPBlacklistItem()){
+						return false;
+					}
+					if(!$whilelistItem=$bruteForceMan->getCurrentIPWhitelistItem()){
+						if($curretIPActivity=$bruteForceMan->getCurrentIPActivityItem()){
+							if($lockTimeUntil=$curretIPActivity->isLocked()){
+								return false;
+							}
+						}
+						
+					}
+
+				}
+			}
+
+
 			if($mailer=$uman->get_user_mailer()){
 				return $mailer->msg_reset_password_request_enabled();	
 			}
 		}
 	}
 	function do_exec_page_in(){
+
 		$reset_pass_mode=false;
 		//echo get_class($this);
 		

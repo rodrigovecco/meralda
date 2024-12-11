@@ -36,7 +36,7 @@ class mwmod_mw_paymentapi_api_culqi_debugui_testapi extends mwmod_mw_paymentapi_
 		$fnc=new mwmod_mw_jsobj_codecontainer();
 		$fnc->add_cont("function culqi() {
 
-    if(Culqi.token) { // ¡Token creado exitosamente!
+    if(Culqi.token) { // ¡token creado exitosamente!
         // Get the token ID:
         var token = Culqi.token.id;
         alert('Se ha creado un token:'.token);
@@ -77,7 +77,7 @@ class mwmod_mw_paymentapi_api_culqi_debugui_testapi extends mwmod_mw_paymentapi_
   			"email"=> "richard@piedpiper.com"
 		);
 		
-		//$list=$culqi->Tokens->create($data);
+		//$list=$culqi->tokens->create($data);
 		//$e=$html->add_cont_elem();
 		//$e->add_cont(new mwmod_mw_html_cont_rawdata($list));
 		

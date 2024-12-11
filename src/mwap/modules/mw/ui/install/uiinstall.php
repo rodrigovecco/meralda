@@ -13,7 +13,7 @@ class mwmod_mw_ui_install_uiinstall extends mwmod_mw_ui_sub_uiabs{
 		$frm=$this->new_frm();
 		$frm->set_enctype_urlencoded();
 		$cr=$this->new_datafield_creator();
-		$cr->add_item(new mwmod_mw_datafield_password("login_tocken",$this->get_msg("Clave")));
+		$cr->add_item(new mwmod_mw_datafield_password("login_token",$this->get_msg("Clave")));
 		$cr->add_submit($this->get_msg("Enviar"));
 		$frm->set_datafieldcreator($cr);
 		echo $frm->get_html();

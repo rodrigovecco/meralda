@@ -1,25 +1,25 @@
 <?php
 class  mwmod_mw_facebook_helper_response_tokeninfo extends mwmod_mw_facebook_helper_response {
-	public $inputToken;
-	function __construct($inputToken=false,$fbHelper=false){
+	public $inputtoken;
+	function __construct($inputtoken=false,$fbHelper=false){
 		$this->init(false,$fbHelper);
-		$this->inputToken=$inputToken;
+		$this->inputtoken=$inputtoken;
 		$this->endPoint="debug_token";
 	}
 	function getParams(){
-		if(!$token=$this->getInputToken()){
+		if(!$token=$this->getInputtoken()){
 			return false;	
 		}
 		return array("input_token"=>$token);	
 	}
 	
 	
-	function getInputToken(){
-		if($this->inputToken){
-			return $this->inputToken;	
+	function getInputtoken(){
+		if($this->inputtoken){
+			return $this->inputtoken;	
 		}
 		if($this->fbHelper){
-			return 	$this->getDefaultAccessToken();
+			return 	$this->getDefaultAccesstoken();
 		}
 	}
 	

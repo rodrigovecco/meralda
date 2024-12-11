@@ -12,8 +12,7 @@ function mw_ui_login(info){
 		this.frm_man.disable_on_submit=true;
 		this.submit_btn_man=this.frm_man.get_input_manager("_btns[_submit]");
 		this.input_pass_man=this.frm_man.get_input_manager("login_pass");
-		//this.input_test=this.frm_man.get_input_manager("test");
-		//this.input_test1=this.frm_man.get_input_manager("test1");
+		
 		
 		
 		if(this.frm_container){
@@ -22,6 +21,7 @@ function mw_ui_login(info){
 		}
 
 	}
+	
 	this.stop_re_enable_timeout=function(){
 		if(this.re_enable_timeout_seconds){
 			clearInterval(this.re_enable_timeout_seconds);	
@@ -46,8 +46,8 @@ function mw_ui_login(info){
 	}
 	this.re_enable_fraction_step=function(){
 		this.re_enable_on_fraction_passed++;
-		if(this.waite_progressBar){
-			this.waite_progressBar.option("value", this.get_wait_bar_progress());	
+		if(this.wait_progressBar){
+			this.wait_progressBar.option("value", this.get_wait_bar_progress());	
 		}
 	}
 	
@@ -63,10 +63,10 @@ function mw_ui_login(info){
 		this.re_enable_on_seconds=seconds;
 		this.re_enable_on_fraction_total=seconds*10;
 		this.re_enable_on_fraction_passed=0;
-		if(this.waite_progressBar){
-			this.waite_progressBar.option("value", this.re_enable_on_fraction_passed);	
+		if(this.wait_progressBar){
+			this.wait_progressBar.option("value", this.re_enable_on_fraction_passed);	
 		}
-		if(e=this.get_ui_elem("waite")){
+		if(e=this.get_ui_elem("wait")){
 			$(e).removeClass("complete");	
 			mw_show_obj(e);
 		}
@@ -86,7 +86,7 @@ function mw_ui_login(info){
 				
 		}
 		var e;
-		if(e=this.get_ui_elem("waite")){
+		if(e=this.get_ui_elem("wait")){
 			$(e).removeClass("complete");	
 			mw_hide_obj(e);
 		}
@@ -110,9 +110,40 @@ function mw_ui_login(info){
 		
 		
 	}
+	this.requestToken=function(){
+		this.frm_man.disable_all_submit_btns(false);
+		var url=this.get_dl_url("logintoken");
+		var a=this.getAjaxLoader();
+		var _this=this;
+		a.set_url(url);
+		a.addOnLoadAcctionUnique(function(){_this.on_token_response()});
+		a.run();
+
+
+	}
+	this.on_token_response=function(){
+		var data=this.getAjaxDataResponse(true);
+		if(!data){
+			return; 
+		}
+
+
+		
+		if(!data.get_param("ok")){
+			return;
+		}
+		var tokeninput=this.frm_man.get_input_manager("login_token");
+		if(!tokeninput){
+			return;
+		}
+		tokeninput.set_value(data.get_param("chiwawa"));
+		this.frm_man.disable_all_submit_btns(true);
+
+	}
 	this.on_post_response=function(data){
 		var dataman=new mw_obj();
 		dataman.set_params(data);
+		console.log("on_post_response",data);
 		var p;
 		if(p=dataman.get_param_or_def("ok",false)){
 			if(!this.submit_frm_on_self()){
@@ -134,11 +165,11 @@ function mw_ui_login(info){
 			//this.start_re_enable_timeout(1);
 			this.re_enable_frm();	
 		}
-		//
+		
 		
 	}
 	this.get_waiting_msg=function(){
-		return this.params.get_param("plase_wait")+" "+this.re_enable_on_seconds+" "+this.params.get_param("seconds")+".";	
+		return this.params.get_param("please_wait")+" "+this.re_enable_on_seconds+" "+this.params.get_param("seconds")+".";	
 	}
 	this.onWaitprogressBarComplete=function(){
 		if(this.re_enable_timeout_fraction){
@@ -155,9 +186,9 @@ function mw_ui_login(info){
 		if(e=this.get_ui_elem("container")){
 			this.set_container(e);
 		}
-		if(e=this.get_ui_elem("waite")){
-			this.waite_container=e;
-			this.waite_progressBar = $($(e)).dxProgressBar({
+		if(e=this.get_ui_elem("wait")){
+			this.wait_container=e;
+			this.wait_progressBar = $($(e)).dxProgressBar({
 				min: 0,
 				max: 100,
 				width: "100%",
@@ -180,8 +211,12 @@ function mw_ui_login(info){
 				mw_show_obj(this.frm_container);
 			}
 		}
+		//
 		
 		this.after_init_more();
+		if(this.params.get_param("requestTokenMode")){
+			this.requestToken();
+		}
 		return;
 		
 	}
@@ -189,5 +224,3 @@ function mw_ui_login(info){
 	
 	
 }
-
-//mw_ui_login.prototype=new mw_ui();

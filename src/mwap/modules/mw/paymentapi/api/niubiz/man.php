@@ -1,12 +1,12 @@
 ﻿<?php
 class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
-	public $accessToken;//loaded by req or retrived from sotred for specific order
-	public $transactionToken;
-	public $accessTokenLoadedResult;
+	public $accesstoken;//loaded by req or retrived from sotred for specific order
+	public $transactiontoken;
+	public $accesstokenLoadedResult;
 	public $debugHTML;
 	public $sessionKeyInputData;//temp!!!
-	public $sessionTokenResponse;
-	public $sessionToken;
+	public $sessiontokenResponse;
+	public $sessiontoken;
 	public $currency="PEN";
 	public $orderData;
 	public $validateTransactionData;
@@ -29,11 +29,11 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 		$this->name="Niubiz";
 	}
 	///validacion de pago
-	function setAccessToken($accessToken){
-		$this->accessToken=$accessToken;
+	function setAccesstoken($accesstoken){
+		$this->accesstoken=$accesstoken;
 	}
-	function setTransactionToken($transactionToken){
-		$this->transactionToken=$transactionToken;
+	function setTransactiontoken($transactiontoken){
+		$this->transactiontoken=$transactiontoken;
 	}
 	function buildValidateTransactionData(){
 		if(!$this->orderData){
@@ -47,18 +47,18 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 		return true;
 
 	}
-	function buildOrderData($purchaseNumber,$amount,$transactionToken=false,$currency=false){
+	function buildOrderData($purchaseNumber,$amount,$transactiontoken=false,$currency=false){
 		if(!$currency){
 			$currency=$this->currency;
 		}
-		if(!$transactionToken){
-			$transactionToken=$this->transactionToken;
+		if(!$transactiontoken){
+			$transactiontoken=$this->transactiontoken;
 		}
-		if(!$transactionToken){
+		if(!$transactiontoken){
 			return false;
 		}
 		$this->orderData= new stdClass();
-		$this->orderData->tokenId=$transactionToken;
+		$this->orderData->tokenId=$transactiontoken;
 		$this->orderData->purchaseNumber=$purchaseNumber;
 		$this->orderData->amount=$amount;
 		$this->orderData->currency=$currency;
@@ -67,14 +67,14 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 
 
 	}
-	function validateTransactionToken(){
+	function validateTransactiontoken(){
 		unset($this->transactionResponse);
 		if(!$this->validateTransactionData){
 			return false;
 		}
 		$merchantId=$this->getMerchantID();
 		$url = $this->getEndPointURL("api.authorization/v3/authorization/ecommerce/{$merchantId}");
-		$key=$this->getAccessToken();
+		$key=$this->getAccesstoken();
 		$header = array("Content-Type: application/json","Authorization: $key");
 		$ch = curl_init();
 		$request_body=json_encode($this->validateTransactionData);
@@ -255,7 +255,7 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 			$jsman->add_item_by_item($item);
 		}
 	}
-	function setSessionKeyInputDataFromOrderData($purchaseNumber,$amount,$transactionToken=false,$currency=false){
+	function setSessionKeyInputDataFromOrderData($purchaseNumber,$amount,$transactiontoken=false,$currency=false){
 		$data=new stdClass();
 		$data->channel="web";
 		$data->amount=$amount;
@@ -311,16 +311,16 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 		}
 		$this->sessionKeyInputData=$data;
 	}
-	function getAccessToken(){
-		$this->loadAccessToken();
-		return $this->accessToken;
+	function getAccesstoken(){
+		$this->loadAccesstoken();
+		return $this->accesstoken;
 
 	}
-	function loadAccessToken(){
-		if(!isset($this->accessTokenLoadedResult)){
-			$this->reloadAccessToken();
+	function loadAccesstoken(){
+		if(!isset($this->accesstokenLoadedResult)){
+			$this->reloadAccesstoken();
 		}
-		return $this->accessTokenLoadedResult;
+		return $this->accesstokenLoadedResult;
 
 	}
 	function createTestSessionKey(){
@@ -351,15 +351,15 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 		if(!$this->sessionKeyInputData){
 			return false;
 		}
-		unset($this->sessionToken);
-		unset($this->sessionTokenResponse);
+		unset($this->sessiontoken);
+		unset($this->sessiontokenResponse);
 		$merchantId=$this->getMerchantID();
 		$url = $this->getEndPointURL("api.ecommerce/v2/ecommerce/token/session/{$merchantId}");
 		//echo $url."<br>";
 		//$user=$this->getSecretUsername();
 		//$pass=$this->getSecretPassword();
 
-		$key=$this->getAccessToken();
+		$key=$this->getAccesstoken();
 
 
 		$header = array("Content-Type: application/json","Authorization: $key");
@@ -385,10 +385,10 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 				$this->sessionKeyRawResponseInfo=$info;
 
 				if($info["http_code"]=="200"){
-					if($this->sessionTokenResponse=@json_decode(trim($response))){
-						if(is_object($this->sessionTokenResponse)){
-							if($this->sessionToken=trim($this->sessionTokenResponse->sessionKey."")){
-								return $this->sessionToken;
+					if($this->sessiontokenResponse=@json_decode(trim($response))){
+						if(is_object($this->sessiontokenResponse)){
+							if($this->sessiontoken=trim($this->sessiontokenResponse->sessionKey."")){
+								return $this->sessiontoken;
 							}
 							
 
@@ -404,13 +404,13 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 		}		
 
 		curl_close($ch);
-		return $this->sessionToken;
+		return $this->sessiontoken;
 
 
 	}
-	function reloadAccessToken(){
-		unset($this->accessToken);
-		unset($this->accessTokenLoadedResult);
+	function reloadAccesstoken(){
+		unset($this->accesstoken);
+		unset($this->accesstokenLoadedResult);
 		$url = $this->getEndPointURL("api.security/v1/security");
 		//echo $url."<br>";
 		$user=$this->getSecretUsername();
@@ -430,12 +430,12 @@ class  mwmod_mw_paymentapi_api_niubiz_man extends mwmod_mw_paymentapi_abs_man{
 		#curl_setopt($ch, CURLOPT_POSTFIELDS, $request_body);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		$data = curl_exec($ch);
-		$this->accessTokenLoadedResult=false;
+		$this->accesstokenLoadedResult=false;
 		if(!curl_errno($ch)){
 			if($info = curl_getinfo($ch)){
 				if($info["http_code"]=="201"){
-					$this->accessTokenLoadedResult=false;
-					$this->accessToken=trim($data."");
+					$this->accesstokenLoadedResult=false;
+					$this->accesstoken=trim($data."");
 				}
 			}
 			

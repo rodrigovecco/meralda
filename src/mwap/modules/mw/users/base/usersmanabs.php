@@ -6,12 +6,12 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 	var $current_user_cookie_enabled=true;
 	
 	var $userValidationDone=0;
-	
+	private $bruteForceMan;
 	public $login_security_sess_var_name="_user_login_sec_params";
-	public $use_login_session_tocken=false;
+	public $use_login_session_token=false;
 	public $disable_login_after_fail=false;
 	public $disable_login_after_fail_tries=3;
-	public $disable_login_after_fail_timeout=5;//seconds cliente will receive data plus 1 second
+	public $disable_login_after_fail_timeout=5;//seconds client will receive data plus 1 second
 	private $login_js_response;
 	
 	
@@ -68,14 +68,14 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 	}
 	final function __get_priv_tokensMan(){
 		if(!isset($this->tokensMan)){
-			if(!$this->tokensMan=$this->createTokensMan()){
+			if(!$this->tokensMan=$this->createtokensMan()){
 				return false;	
 			}
 		}
 		return $this->tokensMan;
 		
 	}
-	function createTokensMan(){
+	function createtokensMan(){
 		//mwmod_mw_users_tokens_man
 		return false;	
 	}
@@ -94,9 +94,9 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		return $i;
 		
 	}
-	function login_input_tocken(){
-		$i=new mwmod_mw_datafield_hidden("login_tocken");
-		$i->set_value($this->get_login_session_tocken());
+	function login_input_token(){
+		$i=new mwmod_mw_datafield_hidden("login_token");
+		$i->set_value($this->get_login_session_token());
 		return $i;
 		
 	}
@@ -105,8 +105,8 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		$cr->add_item($user_name_input);
 		$pass_input=$this->login_input_password();
 		$cr->add_item($pass_input);
-		if($this->login_session_tocken_enabled()){
-			$i=$this->login_input_tocken();
+		if($this->login_session_token_enabled()){
+			$i=$this->login_input_token();
 			$cr->add_item($i);	
 		}
 		
@@ -177,11 +177,11 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 			
 	}
 	
-	function enable_login_session_tocken($val=true){
+	function enable_login_session_token($val=true){
 		if($val){
-			$this->use_login_session_tocken=true;	
+			$this->use_login_session_token=true;	
 		}else{
-			$this->use_login_session_tocken=false;	
+			$this->use_login_session_token=false;	
 		}
 	}
 	
@@ -358,11 +358,7 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		return $man->new_query();
 	}
 	
-	/*
-	function get_users_on_rol_query(){
-		
-	}
-	*/
+	
 	function get_users_rol_ids($ids,$rol){
 		if(!is_array($ids)){
 			return false;
@@ -677,12 +673,12 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 			$this->after_user_changed();
 			return false;
 		}
-		if($cookie_name=$this->get_tocken_name()){
-			if(!$tocken=$this->get_sv_data("tocken")){
+		if($cookie_name=$this->get_token_name()){
+			if(!$token=$this->get_sv_data("token")){
 				$this->after_user_changed();
 				return false;
 			}
-			if($_COOKIE[$cookie_name]!=$tocken){
+			if($_COOKIE[$cookie_name]!=$token){
 				$this->after_user_changed();
 				return false;
 			}
@@ -738,19 +734,19 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 	}
 	
 	///session login security
-	function login_session_tocken_enabled(){
-		return $this->use_login_session_tocken;	
+	function login_session_token_enabled(){
+		return $this->use_login_session_token;	
 	}
 	
-	function get_login_session_tocken($generate=true){
-		if($t=$this->get_login_security_sess_data("tocken")){
+	function get_login_session_token($generate=true){
+		if($t=$this->get_login_security_sess_data("token")){
 			return $t;	
 		}
 		if(!$generate){
 			return false;	
 		}
 		$t=randPass(20);
-		$this->set_login_security_sess_data($t,"tocken");
+		$this->set_login_security_sess_data($t,"token");
 		return $t;
 		
 	}
@@ -786,14 +782,14 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		return mw_array_get_sub_key($_SESSION[$sv],$key);	
 	
 	}
-	function login_session_tocken_check($input){
+	function login_session_token_check($input){
 		if(!$input){
 			return false;	
 		}
 		if(!is_string($input)){
 			return false;	
 		}
-		if(!$t=$this->get_login_session_tocken(false)){
+		if(!$t=$this->get_login_session_token(false)){
 			return false;	
 		}
 		if($input==$t){
@@ -896,12 +892,26 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 			
 			return false;
 		}
-		$js->set_prop("test.current",$current);	
+		//$js->set_prop("test.current",$current);	
 		$this->set_login_security_sess_data(0,"login_temp_disabled");
 		$this->set_login_security_sess_data("","login_reallowed_time");
 		$this->set_login_security_sess_data(0,"fails_num_after_reallowed");	
 		return true;
 		
+	}
+	
+	final function __get_priv_bruteForceMan(){
+		if(!isset($this->bruteForceMan)){
+			if(!$this->bruteForceMan=$this->loadBruteForceMan()){
+				$this->bruteForceMan=false;
+			}
+		}
+		return $this->bruteForceMan;
+		
+	}
+	
+	function loadBruteForceMan(){
+		return $this->mainap->get_submanager("bruteforce");
 	}
 	
 	function exec_login_and_user_validation(){
@@ -910,29 +920,84 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 			return $this->logout();	
 		}
 		if($_REQUEST["login_userid"]){
+
+			
+			
 			if(!$this->check_login_allowed_by_timeout()){
 				
 				return false;
 			}
 			
-			if($this->login_session_tocken_enabled()){
-				if(!$this->login_session_tocken_check($_REQUEST["login_tocken"])){
-					$this->session_register_login_fail($this->lng_common_get_msg_txt("invalid_session_tocken","Clave de control se sesión no válida"));	
+			if($this->login_session_token_enabled()){
+				if(!$this->login_session_token_check($_REQUEST["login_token"])){
+					$this->session_register_login_fail($this->lng_get_msg_txt("invalid_session_token","Clave de control se sesión no válida"));	
 					return false;
 				}
 			}
 			
-			//if($this->use_login_session_tocken
 			
+			if($bruteForceMan=$this->__get_priv_bruteForceMan()){
+				if($bruteForceMan->isEnabled()){
+					if($bfBlackList=$bruteForceMan->getCurrentIPBlacklistItem()){
+						$this->set_login_response($this->lng_get_msg_txt("unableToLogin","No es posible iniciar sesión"),false);
+						return false;
+					}
+					if($curretIPActivity=$bruteForceMan->getCurrentIPActivityItem()){
+						if(!$whilelistItem=$bruteForceMan->getCurrentIPWhitelistItem()){
+							if($lockTimeUntil=$curretIPActivity->isLocked()){
+								$current=time();
+								$date=date("Y-m-d H:i:s",$lockTimeUntil);
+								$to=($lockTimeUntil-$current);
+								$msg=$this->lng_common_get_msg_txt("login_temporarily_disabled_please_try_again_in_X_seconds","Inicio de sesión temporalmente desactivado. Por favor, inténtalo nuevamente en %S% segundos.",array("S"=>($to+1)));
+								$js=$this->set_login_response($msg,false);
+								$js->set_prop("login_not_allowed_timeout.not_allowed",true);	
+								$js->set_prop("login_not_allowed_timeout.date",$date);
+				
+								$js->set_prop("login_not_allowed_timeout.seconds",$to+1);	
+								$js->set_prop("login_not_allowed_timeout.real_seconds",$to);
+								return false;
+							}							
+						}
+						
+
+					}
+
+				}
+			}
+			
+			
+
 			if($this->login($_REQUEST["login_userid"],$_REQUEST["login_pass"])){
 				$this->session_register_login_ok("");
-				//$this->set_login_response("",true);
-				//$this->login_fail_msg="";
+				if($bruteForceMan=$this->__get_priv_bruteForceMan()){
+					if($bruteForceMan->isEnabled()){
+						$bruteForceMan->registerCurrentIPsuccessfullLogin($_REQUEST["login_userid"]);
+					}
+				}
 				return true;
 			}else{
-				//$this->set_login_response($this->lng_common_get_msg_txt("invalid_user_or_password","Usuario o contraseña no válidos"),false);
 				$this->session_register_login_fail($this->lng_common_get_msg_txt("invalid_user_or_password","Usuario o contraseña no válidos"));	
-				//$this->login_fail_msg=$this->lng_common_get_msg_txt("invalid_user_or_password","Usuario o contraseña no válidos");
+				if($bruteForceMan=$this->__get_priv_bruteForceMan()){
+					if($bruteForceMan->isEnabled()){
+						if(!$whilelistItem=$bruteForceMan->getCurrentIPWhitelistItem()){
+							if($curretIPActivity=$bruteForceMan->registerCurrentIPfailedLogin($_REQUEST["login_userid"])){
+								if($lockTimeUntil=$curretIPActivity->isLocked()){
+									$current=time();
+									$date=date("Y-m-d H:i:s",$lockTimeUntil);
+									$to=($lockTimeUntil-$current);
+									$msg=$this->lng_common_get_msg_txt("login_temporarily_disabled_please_try_again_in_X_seconds","Inicio de sesión temporalmente desactivado. Por favor, inténtalo nuevamente en %S% segundos.",array("S"=>($to+1)));
+									$js=$this->set_login_response($msg,false);
+									$js->set_prop("login_not_allowed_timeout.not_allowed",true);	
+									$js->set_prop("login_not_allowed_timeout.date",$date);
+					
+									$js->set_prop("login_not_allowed_timeout.seconds",$to+1);	
+									$js->set_prop("login_not_allowed_timeout.real_seconds",$to);
+								}
+							}
+
+						}
+					}
+				}
 				return false;
 			}
 		}
@@ -965,8 +1030,8 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		$this->currentuser=$user;
 		return $user;
 	}
-	function create_tocken_cookie(){
-		if($cookie_name=$this->get_tocken_name()){
+	function create_token_cookie(){
+		if($cookie_name=$this->get_token_name()){
 			$cookie_value = randPass(20);
 			setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
 			$_COOKIE[$cookie_name]=$cookie_value;
@@ -974,18 +1039,18 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 		}
 			
 	}
-	function get_tocken_name(){
+	function get_token_name(){
 		if(!$n=$this->get_sv_var_name()){
 			return false;	
 		}
-		return $n."_tocken";
+		return $n."_token";
 	}
 	
 	function set_current_session_var($user){
 		$this->unset_currentuser();
 		$this->set_sv_data($user->get_id(),"id");
-		if($t=$this->create_tocken_cookie()){
-			$this->set_sv_data($t,"tocken");	
+		if($t=$this->create_token_cookie()){
+			$this->set_sv_data($t,"token");	
 		}
 		$this->set_sv_data($_SERVER['REMOTE_ADDR'],"ip");
 	}
