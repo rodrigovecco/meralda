@@ -31,10 +31,12 @@ class mwmod_mw_demo_ui_extmods_phpspreadsheet extends mwmod_mw_demo_ui_abs{
 			return false;
 		}
 		$helper=new mwmod_mw_extmods_phpspreadsheet();
+		
 		if(!$helper->registerAutoLoader()){
 			echo "Module not installed";
 			return false;
 		}
+
 
 
 

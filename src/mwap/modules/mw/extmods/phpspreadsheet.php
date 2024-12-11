@@ -19,6 +19,8 @@ class mwmod_mw_extmods_phpspreadsheet extends mw_apsubbaseobj{
 		$this->autoLoaderRegistered=false;
 
 		$subpathman=$this->mainap->get_sub_path_man("modulesext/phpoffice/vendor","system");
+		$autoloader=mw_get_autoload_manager();
+		$autoloader->setSilentMode();
 		//echo $subpathman->get_full_path_filename("autoload.php");
 		if($fullpath=$subpathman->get_file_path_if_exists("autoload.php")){
 			
