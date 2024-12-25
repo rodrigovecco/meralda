@@ -259,7 +259,7 @@ class  mwmod_mw_jobs_jobsmainman extends mw_apsubbaseobj{
 		if(!$cod){
 			return false;	
 		}
-		return $this->_managers[$cod];	
+		return $this->_managers[$cod]??null;	
 	}
 	function get_exec_path(){
 		return "cronjobs";	

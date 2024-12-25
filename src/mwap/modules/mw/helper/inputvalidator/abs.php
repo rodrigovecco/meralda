@@ -18,6 +18,9 @@ abstract class mwmod_mw_helper_inputvalidator_abs extends mw_baseobj{
 			return trim($v);
 
 		}
+		if(is_numeric($v)){
+			return $v."";
+		}
 	}
 	function getValueStr($cod=false){
 		$v=$this->get_value_by_dot_cod($cod);

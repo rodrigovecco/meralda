@@ -45,9 +45,13 @@ class mwmod_mw_users_ui_user_fulldata extends mwmod_mw_users_ui_user_abs{
 	}
 
 	function do_exec_page_in(){
+
 		if(!$user=$this->get_current_item()){
+
 			return false;
+
 		}
+		
 		if(!$user->allowadmin_admin()){
 			return false;	
 		}

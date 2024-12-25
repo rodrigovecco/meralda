@@ -21,7 +21,7 @@ class mwmod_mw_users_ui_users extends mwmod_mw_ui_sub_uiabs{
 		if(!$query=$tblman->new_query()){
 			return false;	
 		}
-		$this->queryHelper->addAllTblFields($tblman);
+		//$this->queryHelper->addAllTblFields($tblman);
 		if($tblfields=$tblman->getFields()){
 			foreach($tblfields as $c=>$f){
 				if($c!="pass"){
@@ -173,7 +173,7 @@ class mwmod_mw_users_ui_users extends mwmod_mw_ui_sub_uiabs{
 		$si=$this->add_new_subinterface(new mwmod_mw_users_ui_newuser("new",$this));
 		$si=$this->add_new_subinterface(new mwmod_mw_users_ui_user("user",$this));
 		$si=$this->add_new_subinterface(new mwmod_mw_users_ui_user_fulldata("userfulldata",$this));
-		if($uman=$this->mainap->get_user_manager()){
+		if($uman=$this->getUman()){
 			if($grman=$uman->get_groups_man()){
 				$grman->add_admin_interface($this);	
 			}

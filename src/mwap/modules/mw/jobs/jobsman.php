@@ -49,6 +49,9 @@ class  mwmod_mw_jobs_jobsman extends mw_apsubbaseobj{
 		$this->jobs_main_man->register_job_exec($item);
 	}
 	final function add_item($item){
+		if(!$item->cod){
+			return false;	
+		}
 		if(!$cod=basename($item->cod)){
 			return false;	
 		}
@@ -62,7 +65,7 @@ class  mwmod_mw_jobs_jobsman extends mw_apsubbaseobj{
 		if(!$cod=$this->check_str_key_alnum_underscore($cod)){
 			return false;	
 		}
-		return $this->_items[$cod];
+		return $this->_items[$cod]??null;
 	}
 	final function init_jobs_man($man){
 		$this->man=$man;

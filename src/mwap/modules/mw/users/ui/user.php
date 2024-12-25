@@ -79,13 +79,17 @@ class mwmod_mw_users_ui_user extends mwmod_mw_ui_sub_uiabs{
 	}
 	
 	function do_exec_no_sub_interface(){
-		if(!$uman=$this->mainap->get_user_manager()){
+		if(!$uman=$this->getUman()){
+
 			return false;	
 		}
+
 		if(!$user=$uman->get_user($_REQUEST["iditem"])){
+
 			return false;	
 		}
 		$this->set_current_item($user);
+
 		$this->set_url_param("iditem",$user->get_id());
 
 		
@@ -98,9 +102,11 @@ class mwmod_mw_users_ui_user extends mwmod_mw_ui_sub_uiabs{
 	}
 
 	function do_exec_page_in(){
+		
 		if(!$user=$this->get_current_item()){
 			return false;
 		}
+
 		$frm=$this->new_frm();
 		$frm->set_enctype_urlencoded();
 		$cr=$this->new_datafield_creator();

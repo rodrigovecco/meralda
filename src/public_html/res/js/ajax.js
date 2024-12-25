@@ -309,7 +309,21 @@ mw_ajax_launcher.prototype.postFormData=function(data){
 	}
 	this.req.send(data);
 }
-
+mw_ajax_launcher.prototype.postFormDataMultipart=function(data){
+	//data FormData 
+	this.abort();
+	if(!this.url){
+		return false;	
+	}
+	this.buildReq();
+	this.req.open("POST", this.url, true);
+	this.is_submited=true;
+	
+	if(this.debug_mode){
+		console.log("posting",data);
+	}
+	this.req.send(data);
+}
 mw_ajax_launcher.prototype.post=function(data){
 	this.abort();
 	if(!this.url){

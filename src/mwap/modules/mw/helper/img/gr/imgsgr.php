@@ -74,8 +74,10 @@ class mwmod_mw_helper_img_gr_imgsgr extends mwmod_mw_helper_img_abs{
 	}
 	function upload_new_img_and_proc($input){
 		if(!$new=$this->upload_new_img($input)){
+			
 			return false;	
 		}
+
 		$this->uploaded_filename=$new;
 		return $this->update_images_from_uploaded();
 	}
@@ -92,9 +94,11 @@ class mwmod_mw_helper_img_gr_imgsgr extends mwmod_mw_helper_img_abs{
 			return false;	
 		}
 		if(!$imgman=$this->uploaded_img_subman()){
+
 			return false;	
 		}
 		$name="img".date("YmdHis");
+
 		if($new=$imgman->process_upload_input($input,$name)){
 			return $new;
 		}
@@ -180,6 +184,7 @@ class mwmod_mw_helper_img_gr_imgsgr extends mwmod_mw_helper_img_abs{
 				if($realpath){
 					$item->set_img_path($realpath."/$cod");	
 				}
+				$url="";
 				if($filename){
 					if($realpath){
 						if(is_file($realpath."/$cod/".$filename)){

@@ -187,7 +187,7 @@ class mwmod_mw_helper_fileman extends mw_apsubbaseobj{
 			$info["error"]="invalid_input";
 			return $info;	
 		}
-		if(!$inputname=$input["fileinputname"]){
+		if(!$inputname=$input["fileinputname"]??null){
 			$info["error"]="invalid_input";
 			return $info;	
 		}

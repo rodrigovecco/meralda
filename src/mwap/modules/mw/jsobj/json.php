@@ -1,5 +1,4 @@
 <?php
-
 class mwmod_mw_jsobj_json extends mwmod_mw_jsobj_obj{
 	var $jsonStr="{}";
 	function __construct($jsonStr="{}"){

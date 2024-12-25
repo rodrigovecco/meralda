@@ -9,6 +9,7 @@ class mwmod_mw_users_rols_rol extends mw_apsubbaseobj{
 	public $name_for_permitions_option;
 	public $is_permitions_option=true;
 	public $allways_for_mainadmin=false;
+	public $color; 
 	private $_permissions=array();
 	function __construct($cod,$namedef,$man){
 		$this->init($cod,$namedef,$man);	

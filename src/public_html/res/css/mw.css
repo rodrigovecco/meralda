@@ -214,3 +214,71 @@ Match DX styles
 .has-warning .form-control{
 		border-color: #a88332;
 }
+
+
+.mw_input_file_drop_container_full{
+	align-content:center;
+	text-align: center;
+	
+
+}
+
+
+
+.mw_input_file_drop_container_full label{
+	text-align:center;
+	font-size:16px;
+	margin-top: 5px;
+	margin-bottom:10px;
+
+}
+.mw_input_file_drop_container{
+	width: 100%;
+	max-width: 200px;
+  aspect-ratio: 1 / 1;
+  margin:auto;
+  border: #9D9D9D 1px solid;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.mw_input_file_drop_indicator_text{
+	position: absolute;
+	top:50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	max-width: 100px;
+	border: 1px #00000055 dashed;
+	background-color:#ffffffaa;
+	padding: 6px;
+	border-radius:5px;
+	font-size:12px;
+	opacity:0;
+	
+
+
+}
+
+.mw_input_file_drop_container_full:hover .mw_input_file_drop_indicator_text{
+	opacity:100;
+	
+
+}
+
+.mw_input_file_drop_container img{
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 20px;
+
+}
+.mw_input_file_addBtns{
+	padding-bottom: 10px;
+}
+.mw_input_file_addBtns button{
+	margin: 5px;
+}
+

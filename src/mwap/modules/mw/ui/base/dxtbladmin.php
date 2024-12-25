@@ -88,7 +88,7 @@ abstract class mwmod_mw_ui_base_dxtbladmin extends mwmod_mw_ui_base_basesubui{
 		//$xml->set_prop("debug.sqlbefore",$query->get_sql());
 		//$xml->set_prop("debug.loadoptions",$_REQUEST["lopts"]);
 		$dataqueryhelper=$this->queryHelper;
-		$dataqueryhelper->setLoadOptions($_REQUEST["lopts"]);
+		$dataqueryhelper->setLoadOptions($_REQUEST["lopts"]??null);
 		//$xml->set_prop("debug.dataqueryhelper",$dataqueryhelper->getDebugData());
 		$dataqueryhelper->aplay2Query($query);
 		if(!$dataqueryhelper->sorted){
