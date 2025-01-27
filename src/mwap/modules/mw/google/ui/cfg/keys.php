@@ -22,7 +22,7 @@ class mwmod_mw_google_ui_cfg_keys extends mwmod_mw_google_ui_cfg_abs{
 		
 		//se podría crea un grupo data para otros datos
 		if($man=$this->getGoogleMan()){
-			if($td=$man->get_treedata_item("keys")){
+			if($td=$man->getJsonDataItem("keys")){
 				$inputappid->set_value($td->get_data("appId"));
 				if($td->get_data("appsecret")){
 					$inputsec->set_prop("placeholder","Cambiar clave secreta");
@@ -37,7 +37,7 @@ class mwmod_mw_google_ui_cfg_keys extends mwmod_mw_google_ui_cfg_abs{
 			return false;	
 		}
 		if($man=$this->getGoogleMan()){
-			if($td=$man->get_treedata_item("keys")){
+			if($td=$man->getJsonDataItem("keys")){
 				$s=false;
 				if($nd=$input->get_value_by_dot_cod_as_list("keys.data")){
 					$s=true;

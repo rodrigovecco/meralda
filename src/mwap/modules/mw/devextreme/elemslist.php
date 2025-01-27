@@ -13,11 +13,25 @@ class mwmod_mw_devextreme_elemslist extends mw_apsubbaseobj{
 		}
 		return $r;
 	}
+	function getItemsByCods($cods){
+		if(!is_array($cods)){
+			$cods =explode(',',$cods);
+		}
+		$r=array();
+		foreach($cods as $cod){
+			if($cod=trim($cod)){
+				if($item=$this->get_item($cod)){
+					$r[$cod]=$item;
+				}
+			}
+		}
+		return $r;
+	}
 	final function get_item($cod){
 		if(!$cod){
 			return false;	
 		}
-		return $this->_items[$cod];	
+		return $this->_items[$cod]??null;	
 	}
 	final function get_all_items(){
 		return $this->_items;	

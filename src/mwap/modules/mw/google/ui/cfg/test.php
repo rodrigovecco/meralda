@@ -83,8 +83,8 @@ class mwmod_mw_google_ui_cfg_test extends mwmod_mw_google_ui_cfg_abs{
 	function do_exec_page_in(){
 		
 		
-		if(is_array($_REQUEST["nd"])){
-			mw_array2list_echo($this->testtoken($_REQUEST["nd"]["token"]));	
+		if(is_array($_REQUEST["nd"]??null)){
+			mw_array2list_echo($this->testtoken($_REQUEST["nd"]["token"]??null));	
 		}
 		
 		$container=$this->get_ui_dom_elem_container_empty();

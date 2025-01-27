@@ -13,6 +13,8 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 	public $disable_login_after_fail_tries=3;
 	public $disable_login_after_fail_timeout=5;//seconds client will receive data plus 1 second
 	private $login_js_response;
+
+	public $disableUserIPsessionValidations=false;
 	
 	
 	private $tokensMan;
@@ -684,13 +686,19 @@ abstract class mwmod_mw_users_base_usersmanabs extends mw_apsubbaseobj{
 			}
 				
 		}
-		if(!$ip=$this->get_sv_data("ip")){
-			$this->after_user_changed();
-			return false;
-		}
-		if($ip!=$_SERVER['REMOTE_ADDR']){
-			$this->after_user_changed();
-			return false;	
+		if(!$this->disableUserIPsessionValidations){
+			
+			if(!$ip=$this->get_sv_data("ip")){
+				$this->after_user_changed();
+				return false;
+			}
+			
+			if($ip!=$_SERVER['REMOTE_ADDR']){
+				//die("IP ".$ip." ".$_SERVER['REMOTE_ADDR']);
+				$this->after_user_changed();
+				return false;	
+			}
+
 		}
 		
 

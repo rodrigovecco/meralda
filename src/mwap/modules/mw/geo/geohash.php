@@ -108,7 +108,70 @@ class mwmod_mw_geo_geohash{
      * @return  mixed   Array of Latitude and Longitude
      */
     public function decode($hash, $error = false)    {
+        $hash = strtolower(trim($hash));
+        if(!$this->isValidGeohash($hash)){
+            return array(0,0);
+        }
         $hashLength = strlen($hash);
+        $latlonbits = "";
+    
+        // Convert geohash to binary representation
+        foreach (str_split($hash) as $g) {
+            $position = strpos($this->base32Mapping, $g);
+            $latlonbits .= str_pad(decbin($position), 5, "0", STR_PAD_LEFT);
+        }
+
+        $latbits = $lonbits = "";
+
+        // Even bits go to longitude, odd bits to latitude
+        $binaryLength = strlen($latlonbits);
+        for ($i = 0; $i < $binaryLength; $i++) {
+            if ($i % 2 == 0) {
+                $lonbits .= $latlonbits[$i];
+            } else {
+                $latbits .= $latlonbits[$i];
+            }
+        }
+
+        // Get latitude and longitude
+        $latitude = $this->getCoordinate(-90, 90, $latbits);
+        $longitude = $this->getCoordinate(-180, 180, $lonbits);
+
+        // Round coordinates based on hash precision
+        $latitude = round($latitude, $hashLength - 2);
+        $longitude = round($longitude, $hashLength - 2);
+
+        return [$latitude, $longitude];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ////////this was corrected by rvh
+        /*
+        echo "*{$hash}*".strtoupper($hash);
+        $hash=$hash."";
+        $hashLength = strlen($hash);
+        
         $latlonbits = base_convert($hash, 32, 2);
         $binaryLength = strlen($latlonbits);
         $latbits = "";
@@ -138,6 +201,7 @@ class mwmod_mw_geo_geohash{
         $latitude = round($latitude, $hashLength - 2);
         $longitude = round($longitude, $hashLength - 2);
         return array($latitude, $longitude);
+        */
     }
 
     /**
@@ -240,11 +304,28 @@ class mwmod_mw_geo_geohash{
 
     //added by RVH
     /**
+     * Decode the Geohash into geographic coordinates
+     * @param   string  $hash
+     * @param   double  Percentage error
+     * @return  mixed   Indexed Array of Latitude and Longitude
+     */
+    public function decodeIndexed($hash, $error = false)    {
+        if($r=$this->decode($hash,$error)){
+            return $this->getIndexedPoint($r);
+        }
+    }
+    public function getIndexedPoint($latLng){
+        if(is_array($latLng)){
+           return array("lat"=>$latLng[0],"lng"=>$latLng[1]); 
+        }
+    }
+
+    /**
      * Get the 4 corner points (NW, NE, SW, SE) of a geohash
      * @param string $hash The geohash string
      * @return array An associative array with keys 'NW', 'NE', 'SW', 'SE'
      */
-    public function getCorners($hash) {
+    public function getCorners($hash,$indexed=false) {
         $decoded = $this->decode($hash);
         $lat = $decoded[0];
         $lon = $decoded[1];
@@ -261,6 +342,13 @@ class mwmod_mw_geo_geohash{
             'SW' => [$lat - $latError, $lon - $lonError],
             'SE' => [$lat - $latError, $lon + $lonError],
         ];
+        if($indexed){
+            $r=array();
+            foreach($corners as $c=>$ll){
+                $r[$c]=$this->getIndexedPoint($ll);
+            }
+            return $r;
+        }
 
         return $corners;
     }

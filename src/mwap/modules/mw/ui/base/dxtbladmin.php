@@ -267,7 +267,7 @@ abstract class mwmod_mw_ui_base_dxtbladmin extends mwmod_mw_ui_base_basesubui{
 			$xml->root_do_all_output();
 			return false;	
 		}
-		if(!$item=$man->get_item($_REQUEST["itemid"])){
+		if(!$item=$man->get_item($_REQUEST["itemid"]??null)){
 			$xml->root_do_all_output();
 			return false;	
 				
@@ -332,7 +332,7 @@ abstract class mwmod_mw_ui_base_dxtbladmin extends mwmod_mw_ui_base_basesubui{
 			$xml->root_do_all_output();
 			return false;	
 		}
-		if(!$item=$man->get_item($_REQUEST["itemid"])){
+		if(!$item=$man->get_item($_REQUEST["itemid"]??null)){
 			$xml->root_do_all_output();
 			return false;	
 				

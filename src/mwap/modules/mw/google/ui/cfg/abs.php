@@ -2,6 +2,7 @@
 abstract class mwmod_mw_google_ui_cfg_abs extends mwmod_mw_ui_sub_uiabs{
 	public $sucods;
 	public $frmTitle;
+	public $jsfrm;
 	function new_js_frm(){
 		$frmjs=new mwmod_mw_jsobj_inputs_frmonpanel("frm");
 		if($lbl=$this->getFrmTitle()){

@@ -514,8 +514,25 @@ abstract class  mwmod_mw_ap_apabs extends mw_baseobj{
 	function after_connect_db_ok(){
 		$this->after_connect_db_ok_sub();
 	}
+	function setDBtimezoneAfterConnect(){
+		if($man=$this->get_submanager("db")){
+			$connection=$man->get_link();
+			 $timeZone = date('P'); // Example: +05:30
+	        if (preg_match('/^[+-](0[0-9]|1[0-2]):[0-5][0-9]$/', $timeZone)) {
+	            $stmt = $connection->prepare("SET time_zone = ?");
+	            $stmt->bind_param("s", $timeZone);
+	            $stmt->execute();
+	            $stmt->close();
+	        } 
+			//mysqli_query($connection, "SET time_zone = '" . date('P') . "'");
+
+		}
+	}
 	function after_connect_db_ok_sub(){
-		//
+		$this->setDBtimezoneAfterConnect();
+		
+		
+		
 	}
 	function connect_db(){
 		

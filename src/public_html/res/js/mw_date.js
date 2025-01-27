@@ -138,7 +138,25 @@ function mw_date(){
 		var s=""+str;
 		return s.replace(re, replacement);
 	}
+	this.getTimeZoneOffsetFromPart=function(tz){
+		if(!tz){
+			return false;
+		}
+		tz = tz.trim();
+		var tzOffset = false;
+		if (tz === "Z") {
+	        tzOffset = 0;
+	    } else if (/^[+-]\d{2}:?\d{2}$/.test(tz)) {
+	        var sign = tz[0] === '+' ? 1 : -1;
+	        var tzParts = tz.substring(1).split(/:|(?=\d{2}$)/); // Support both hh:mm and hhmm formats
+	        var tzHours = mw_getInt(tzParts[0]);
+	        var tzMinutes = mw_getInt(tzParts[1] || 0);
+	        tzOffset = sign * (tzHours * 60 + tzMinutes) * 60000; // Convert to milliseconds
+	    }
+	    return tzOffset;
+	}
 	this.get_date_from_sys_formated_str=function(val,no_hour_to_max){
+		//console.log("get_date_from_sys_formated_str",val);
 		if(!val){
 			return false;	
 		}
@@ -149,8 +167,12 @@ function mw_date(){
 		if(typeof(val)!="string"){
 			return false;		
 		}
-		var dharray=val.split(" ",2);
-		//var dval = dharray[0].replace("/", "-");
+		var dharray=val.split(" ",3);
+		//console.log("get_date_from_sys_formated_str",dharray);
+		var tzOffset=false;
+		if (dharray.length > 2) {
+			tzOffset = this.getTimeZoneOffsetFromPart(dharray[2]);
+		}
 		var dval = this.replaceAll(dharray[0],"/", "-");
 		var a=dval.split("-");
 		var year=mw_getInt(a[0]);
@@ -183,6 +205,8 @@ function mw_date(){
 		if(!mw_isNumber(day)){
 			return false;	
 		}
+
+
 		var date = new Date(year,( month-1), day,hour,minute,sec);
 		//var date = new Date(year, month, day,hour,minute,sec);
 		var ok=false;
@@ -197,6 +221,13 @@ function mw_date(){
 		if(!ok){
 			return false;	
 		}
+		if (tzOffset !== false) {
+			let dateutc=new Date(Date.UTC(year, month - 1, day, hour, minute, sec) - tzOffset);
+			//console.log("dateconv",{"orig":val,"final":dateutc,"notz":date});
+    		return dateutc;
+		}
+
+
 		return date;
 		
 

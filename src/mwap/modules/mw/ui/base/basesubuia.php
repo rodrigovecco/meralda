@@ -15,11 +15,11 @@ abstract class mwmod_mw_ui_base_basesubuia extends mwmod_mw_ui_base_basesubui{
 		
 		echo "<div class='card'><div class='card-body'>";
 		if($subs=$this->get_subinterfaces_by_code($this->sucods,true)){
-			echo "<ul>";
+			echo "<div class='list-group'>";
 			foreach($subs as $su){
-				echo "<li><a href='".$su->get_url()."'>".$su->get_mnu_lbl()."</a></li>";	
+				echo "<a href='".$su->get_url()."' class='list-group-item list-group-item-action'>".$su->get_mnu_lbl()."</a>";	
 			}
-			echo "</ul>";
+			echo "</div>";
 			
 		}
 		echo "</div></div>";

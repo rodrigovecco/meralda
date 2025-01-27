@@ -40,7 +40,10 @@ class mwmod_mw_jsobj_dataoptim_field extends mw_apsubbaseobj{
 			}
 		}
 		if($this->is_mode("numeric")){
-			return $val+0;	
+			if(is_numeric($val)){
+				return $val+0;	
+			}
+			return null;	
 		}
 		if($this->is_mode("date")){
 			return $this->get_val_as_date($val);	

@@ -64,7 +64,7 @@ class  mwmod_mw_db_tblfield extends mw_apsubbaseobj{
 		if(!$t=$this->getTypeInfo("type")){
 			return false;	
 		}
-		$a=array("date","datetime");
+		$a=array("date","datetime","timestamp");
 		if(in_array($t,$a)){
 			return true;	
 		}

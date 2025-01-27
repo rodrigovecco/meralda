@@ -231,6 +231,58 @@ function mw_datainput_dx_selectBox(options){
 			params["valueExpr"]="cod";
 		}
 	}
+	this.getSelectedItemData=function(){
+		if(this.DXctr){
+			return this.DXctr.option("selectedItem");
+		}
+		return null;
+	}
+
+
+
+}
+
+function mw_datainput_dx_selectBoxRemote(options){
+	mw_datainput_dx_selectBox.call(this,options);
+	this.getDXOptionsMore=function(params){
+		if(this.options.get_param_if_object("dataSourceMan")){
+			if(!params["dataSource"]){
+				params["dataSource"]=this.getDataSource();
+			}
+
+
+		}
+	}
+	this.getDataStore=function(){
+		if(!this.DataStore){
+			this.DataStore=this.getDataSourceMan().getDataStore();
+		}
+		return this.DataStore;	
+	}
+	this.getDataSourceMan=function(){
+		if(this.dataSourceMan){
+			return this.dataSourceMan;	
+		}
+		this.createDataSourceMan()
+		return this.dataSourceMan;	
+	}
+	
+	this.createDataSourceMan=function(){
+		var _this=this;
+		var params=this.options.get_param_if_object("dataSourceMan",true);
+		if(mw_is_function(params["isDSMan"])){
+			this.dataSourceMan=params;
+		}else{
+			this.dataSourceMan=new mw_devextreme_data(params);	
+		}
+		return this.dataSourceMan;	
+	}
+	this.getDataSource=function(){
+		if(!this.dataSource){
+			this.dataSource=this.getDataSourceMan().getDataSource();
+		}
+		return this.dataSource;	
+	}
 
 
 

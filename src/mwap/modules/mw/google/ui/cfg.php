@@ -1,6 +1,6 @@
 <?php
 class mwmod_mw_google_ui_cfg extends mwmod_mw_ui_sub_uiabs{
-	public $sucods="cfg,keys,test";
+	public $sucods="maps,cfg,keys,test";
 	public $googleMan;
 	function __construct($cod,$parent,$Man){
 		$this->init_as_main_or_sub($cod,$parent);
@@ -30,7 +30,10 @@ class mwmod_mw_google_ui_cfg extends mwmod_mw_ui_sub_uiabs{
 		$si=new mwmod_mw_google_ui_cfg_keys("keys",$this);
 		return $si;
 	}
-	
+	function _do_create_subinterface_child_maps(){
+		$si=new mwmod_mw_google_ui_cfg_maps("maps",$this);
+		return $si;
+	}
 	function allowcreatesubinterfacechildbycode(){
 		return true;	
 	}

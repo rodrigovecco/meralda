@@ -42,7 +42,7 @@ class  mwmod_mw_db_sqlsrv_tblfield extends mwmod_mw_db_tblfield{
 		if(!$t=$this->getInfoData("DATA_TYPE")){
 			return false;	
 		}
-		$a=array("date","datetime");
+		$a=array("date","datetime","timestamp");
 		if(in_array($t,$a)){
 			return true;	
 		}
