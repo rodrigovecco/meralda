@@ -1,5 +1,5 @@
 <?php
-//20230221
+//20250201 by Hernan A.
 abstract class  mwmod_mw_service_abs extends mw_apsubbaseobj{
 	public $cod;
 	public $baseurl="";
@@ -161,7 +161,9 @@ abstract class  mwmod_mw_service_abs extends mw_apsubbaseobj{
 			
 			$ch->execAsChild($subpath);	
 		}else{
-			$this->execAsDefault($subpath);	
+			//$this->execAsDefault($subpath);	
+			$this->execAsDefault($path);	
+			
 		}
 		
 	}
@@ -395,7 +397,7 @@ abstract class  mwmod_mw_service_abs extends mw_apsubbaseobj{
 		if($sub){
 			$s.="/$sub";	
 		}
-		return $r;
+		return $s;
 		
 	}
 	function getUrlBase($sub=false){
