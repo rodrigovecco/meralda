@@ -14,7 +14,28 @@ abstract class  mwmod_mw_manager_itemabs extends mw_apsubbaseobj{
 	
 	
 	private $_related_objects_man;
-	
+	//20250202 HAC 
+	function getDataAsDate($format="c"){
+		$r=$this->get_data();
+
+		if($this->tblitem){
+			if($fields=$this->tblitem->tblman->getFields()){
+				foreach($fields as $cod=>$field){
+					if($field->isDate()){
+						if(array_key_exists($cod,$r)){
+							$t=$this->tblitem->get_data_as_time($cod);
+							if($t){
+								$r[$cod]=date($format,$t);	
+							}else{
+								$r[$cod]=null;
+							}
+						}
+					}
+				}
+			}
+		}
+		return $r;
+	}
 	function create_related_objects_man(){
 		return false;	
 	}
