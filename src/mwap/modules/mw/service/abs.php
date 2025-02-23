@@ -12,11 +12,40 @@ abstract class  mwmod_mw_service_abs extends mw_apsubbaseobj{
 	public $name;
 	public $autocreateChildrenCods="";
 
+	private $JsonRequestBody;
+
+	public $JsonPostKey="json_data";
+
+	final function __get_priv_JsonRequestBody(){
+		if(!isset($this->JsonRequestBody)){
+			$this->JsonRequestBody=$this->loadJsonRequestBody();
+		}
+		return $this->JsonRequestBody;
+	}
 	function getJsonRequestBody(){
+		return $this->__get_priv_JsonRequestBody();
+	}
+
+	function loadJsonRequestBody(){
 		$data=null;
+		$request_body=null;
+		if($this->JsonPostKey){
+			if($v=$_POST[$this->JsonPostKey]??null){
+				if(is_string($v)){
+					$request_body=$v;
+				}
+			}
+		}
+		if(!$request_body){
+			$request_body = file_get_contents("php://input");
+		}
+		if(!$request_body){
+			return false;
+		}
+
 		try {
 		    // Read the request body
-		    $request_body = file_get_contents("php://input");
+		    
 
 		    // Decode the JSON data
 		    $data = json_decode($request_body, true);
