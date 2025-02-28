@@ -271,7 +271,7 @@ class mwmod_mw_users_ui_users extends mwmod_mw_ui_sub_uiabs{
 			//$xml->set_prop("uniqItemsIds",$d);
 		}
 		
-		$gridhelper->set_prop("dsoptim",$dataoptim);
+		//$gridhelper->set_prop("dsoptim",$dataoptim);
 		$js=new mwmod_mw_jsobj_obj();
 		$js->set_prop("datagridman",$gridhelper);
 		$xml_js=new mwmod_mw_data_xml_js("jsresponse",$js);
@@ -323,11 +323,12 @@ class mwmod_mw_users_ui_users extends mwmod_mw_ui_sub_uiabs{
 		
 
 		
-		
+		/*
 		if($groupsman){
 			$col=$datagrid->add_column_string("groups",$this->lng_common_get_msg_txt("groups","Grupos"));
 			$col->js_data->set_prop("visible",false);	
 		}
+		*/
 		//$col=$datagrid->add_column_string("groups",$this->lng_common_get_msg_txt("email","Email"));
 		$col=$datagrid->add_column_boolean("active",$this->lng_common_get_msg_txt("active","Activo"));
 		$col->js_data->set_prop("filterValue",true);

@@ -6,7 +6,7 @@ class mwmod_mw_data_json_item extends mwmod_mw_data_tree_item{
 	}
 	function encode($value){
 		//json_encode ( mixed $value [, int $options = 0 [, int $depth = 512 ]] )	
-		return json_encode($value);
+		return json_encode($value,JSON_PRETTY_PRINT);
 	}
 	function decode($value){
 		//json_decode ( string $json [, bool $assoc = false [, int $depth = 512 [, int $options = 0 ]]] )

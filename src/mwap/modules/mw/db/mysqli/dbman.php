@@ -1,10 +1,45 @@
 <?php
+//20250207
 class mwmod_mw_db_mysqli_dbman extends mwmod_mw_db_dbman{
 	public $lastException;
 	function __construct($ap){
 		$this->init($ap);	
 	}
+
+	function create_views_managers() {
+		$sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES 
+				WHERE TABLE_TYPE = 'VIEW' 
+				AND TABLE_SCHEMA = DATABASE();";
+	
+		if (!$query = $this->query($sql)) {
+			return false;
+		}
+	
+		$r = [];
+		while ($array = $this->fetch_array($query)) {
+			if ($tbl = $array[0]) {
+				if ($man = $this->create_view_man($tbl)) {
+					$r[$tbl] = $man;
+				}
+			}
+		}
+	
+		return !empty($r) ? $r : false;
+	}
+	
+	function create_view_man_def($tbl) {
+		if (!$tbl = $this->check_str_key($tbl)) {
+			return false;
+		}
+		$man = new mwmod_mw_db_mysqli_view($this, $tbl);
+		return $man;
+	}
+	
+
 	//todo paramquery
+
+
+
 	function query($sql){
 		if(!is_string($sql)){
 			return false;

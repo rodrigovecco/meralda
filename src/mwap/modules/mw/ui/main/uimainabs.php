@@ -394,7 +394,7 @@ abstract class mwmod_mw_ui_main_uimainabs extends mw_apsubbaseobj{
 		return false;
 	}
 	function get_page_html_head(){
-		$html.='<meta charset="utf-8">'."\n";	
+		$html='<meta charset="utf-8">'."\n";	
 		$html.='<title>'.$this->get_page_title().'</title>'."\n";	
 		$html.=$this->get_page_html_style();
 		$html.=$this->get_page_html_head_js();

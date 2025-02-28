@@ -27,6 +27,20 @@ abstract class  mwmod_mw_ap_apabs extends mw_baseobj{
 	private $cfg;
 	
 	private $admin_ui;
+	private $jsonCfgMan;
+	function create_jsonCfgMan(){
+		$man=new mwmod_mw_data_json_mancuspath("cfg/json",$this->get_path("instance"));
+		return $man;
+	}
+
+
+	final function __get_priv_jsonCfgMan(){
+		if(!isset($this->jsonCfgMan)){
+			$this->jsonCfgMan=$this->create_jsonCfgMan();	
+		}
+
+		return $this->jsonCfgMan; 	
+	}
 	function after_init(){
 		if($cfg=$this->get_cfg()){
 			if($timezone=$cfg->get_value("timezone")){
