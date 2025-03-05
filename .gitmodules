@@ -1,3 +1,6 @@
 [submodule "src/mwap/modules/mw"]
 	path = src/mwap/modules/mw
 	url = https://github.com/rodrigovecco/meralda_mw_modules.git
+[submodule "src/public_html/res/js"]
+	path = src/public_html/res/js
+	url = https://github.com/rodrigovecco/meralda_js_submodule.git
