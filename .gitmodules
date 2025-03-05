@@ -1,0 +1,3 @@
+[submodule "src/mwap/modules/mw"]
+	path = src/mwap/modules/mw
+	url = https://github.com/rodrigovecco/meralda_mw_modules.git
