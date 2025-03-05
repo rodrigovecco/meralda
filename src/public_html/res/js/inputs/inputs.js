@@ -372,21 +372,48 @@ function mw_datainput_item_abs(){
 		return this.help_elem;
 	}
 	
-	this.set_validation_status_normal=function(msg){
-		return this.set_validation_status(msg,0);	
+	this.set_validation_status_normal=function(msg,children){
+		return this.set_validation_status(msg,0,children);	
 	}
-	this.set_validation_status_success=function(msg){
-		return this.set_validation_status(msg,1);	
+	this.set_validation_status_success=function(msg,children){
+		return this.set_validation_status(msg,1,children);	
 	}
-	this.set_validation_status_warning=function(msg){
-		return this.set_validation_status(msg,2);	
+	this.set_validation_status_warning=function(msg,children){
+		return this.set_validation_status(msg,2,children);	
 	}
-	this.set_validation_status_error=function(msg){
-		return this.set_validation_status(msg,3);	
+	this.set_validation_status_error=function(msg,children){
+		return this.set_validation_status(msg,3,children);	
 	}
-	
-	this.set_validation_status=function(msg,status){
+	this.onRequiredUpdated=function(){
+		var req=false;
+		
+		if(this.options.get_param_or_def("state.required",false)){
+			req=true;
+		}
+		var elemgr=this.frm_group_elem;	
+		if(elemgr){
+			
+			if(req){
+				$( $(elemgr) ).addClass( "required" );
+			
+			}else{
+				$( $(elemgr) ).removeClass( "required" );
+			}
+		}
+		if(this.sub_items_list){
+
+			var list=this.sub_items_list.getList();
+			if(!list){
+				return false;	
+			}
+			for(var i =0; i<list.length;i++){
+				list[i].onRequiredUpdated();
+			}
+		}
+	}
+	this.set_validation_status=function(msg,status,children){
 	//status=0 normal, 1 success, 2 warning 3 erro
+		
 		this.set_help_elem_cont(msg);
 		var elemgr=this.frm_group_elem;	
 		if(elemgr){
@@ -397,6 +424,18 @@ function mw_datainput_item_abs(){
 				$( $(elemgr) ).addClass( "has-warning" );
 			}else if(status==3){
 				$( $(elemgr) ).addClass( "has-error" );
+			}
+		}
+		if(children){
+			if(this.sub_items_list){
+
+				var list=this.sub_items_list.getList();
+				if(!list){
+					return false;	
+				}
+				for(var i =0; i<list.length;i++){
+					list[i].set_validation_status(msg,status,children);
+				}
 			}
 		}
 	
@@ -834,6 +873,7 @@ function mw_datainput_item_abs(){
 			this.hide();	
 		}
 		this.initTooltipFromParams();
+		this.onRequiredUpdated();
 		
 	}
 	this.beforeAppend=function(){
@@ -956,6 +996,7 @@ function mw_datainput_item_abs(){
 		if(this.input_elem){
 			this.update_input_atts(this.input_elem);	
 		}
+
 		if(!children){
 			return;	
 		}

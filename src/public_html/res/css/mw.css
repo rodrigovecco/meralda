@@ -282,3 +282,30 @@ Match DX styles
 	margin: 5px;
 }
 
+/* Apply error styles */
+.has-error .dx-texteditor {
+    border: 1px solid #ff0000 !important; /* Match Bootstrap error style */
+}
+
+/* Apply warning styles */
+.has-warning .dx-texteditor {
+    border: 1px solid #a88332 !important; /* Match Bootstrap warning style */
+}
+
+/* Ensure the input inside DevExtreme fields also gets styled */
+.has-error .dx-texteditor-input {
+    color: #ff0000 !important; /* Change text color for errors */
+}
+
+.has-warning .dx-texteditor-input {
+    color: #a88332 !important; /* Change text color for warnings */
+}
+
+/* Optional: Add background colors like Bootstrap */
+.has-error .dx-texteditor {
+    background-color: rgba(255, 0, 0, 0.1); /* Light red background */
+}
+
+.has-warning .dx-texteditor {
+    background-color: rgba(168, 131, 50, 0.1); /* Light yellow background */
+}

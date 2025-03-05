@@ -7,6 +7,8 @@ src/public_html/res/globalize
 src/public_html/res/icons
 src/public_html/res/qr-scanner
 src/public_html/res/sbadmin
+src/app
+src/public_html/data/
 src/mwap/modulesext
 src/app/cfg
 src/mwap/modules/mwx
