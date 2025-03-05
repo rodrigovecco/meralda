@@ -4,3 +4,6 @@
 [submodule "src/public_html/res/js"]
 	path = src/public_html/res/js
 	url = https://github.com/rodrigovecco/meralda_js_submodule.git
+[submodule "src/public_html/res/css"]
+	path = src/public_html/res/css
+	url = https://github.com/rodrigovecco/meralda_css.git
