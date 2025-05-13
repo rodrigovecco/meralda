@@ -19,3 +19,18 @@ Meralda is the culmination of decades of software development expertise, startin
 mwPHPlib, now known as Meralda, is a collection of PHP classes designed to facilitate the development of complex applications in PHP. These classes and development techniques and methods are the result of over 20 years of experience in this field, providing resources to build robust web platforms with significant time savings. The modular structure allows grouping classes into folders and files that relate to their names and making them available as they are required through automatic loading mechanisms. Typically, an application developed with this platform will have a main object called an application, on which various object handlers will depend, which will be loaded on demand. 
 
 Created by Rodrigo Vecco Haddad (rodrigo@novoingenios.com).
+
+# Meralda
+
+Meralda uses **Git submodules** for managing some parts of the project. To ensure you get the complete repository with all submodules, follow these instructions.
+
+## 🚀 Clone the Repository with Submodules
+
+To properly clone Meralda along with all its submodules, use the following command:
+
+```bash
+git clone --recurse-submodules https://github.com/rodrigovecco/meralda.git
+
+If You Already Cloned the Repo (Without Submodules)
+```bash
+git submodule update --init --recursive
