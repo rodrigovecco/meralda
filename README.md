@@ -14,6 +14,15 @@ Meralda is the culmination of decades of software development expertise, startin
 - **Contributing:** We welcome contributions from the community! Whether it's fixing bugs, adding new features, or improving documentation, every contribution is valuable.
 - **License:** Meralda is open-source software released under the [MIT License](LICENSE). You are free to use, modify, and distribute Meralda for both commercial and non-commercial purposes.
 
+## 🛠️ Initialize Your App
+To start a new application using Meralda:
+1. Copy the example application files from `example/demo/app` to the `src/app` directory:
+   ```bash
+   cp -r example/demo/app src/app
+2. Edit the file src/app/cfg/db.php to configure your database connection.
+3. Review and adjust other configuration files inside src/app/cfg/ as needed to fit your environment.
+
+
 ## About mwPHPlib (by Rodrigo Vecco Haddad)
 
 mwPHPlib, now known as Meralda, is a collection of PHP classes designed to facilitate the development of complex applications in PHP. These classes and development techniques and methods are the result of over 20 years of experience in this field, providing resources to build robust web platforms with significant time savings. The modular structure allows grouping classes into folders and files that relate to their names and making them available as they are required through automatic loading mechanisms. Typically, an application developed with this platform will have a main object called an application, on which various object handlers will depend, which will be loaded on demand. 

@@ -2,7 +2,7 @@
 $data=array(
 	"host"=>"localhost",
 	"db"=>"meralda",
-	"user"=>"meralda2",
+	"user"=>"meralda",
 	"pass"=>"",
 	"port"=>"3306",
 	

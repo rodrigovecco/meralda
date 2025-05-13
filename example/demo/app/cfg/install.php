@@ -2,10 +2,10 @@
 $data=array(
 	"allowed"=>false,
 	"allowed_ips"=>array("::1","127.0.0.1"),
-	"pass"=>"dgdfg3t45335ytrhdsgsgw3t53gefgfg",
+	"pass"=>"dgdfdfgdfg3t45335ytrhdsgsdgdfgfdgw3t53gefgfg",
 	"setupmainuser"=>array(
 		"allowed"=>true,
-		"pass"=>"rtewtwfewstrwsdf345634ert2twetsdfsdfwerer3q45rwerwer234twresgawe",
+		"pass"=>"dfgdgfgdgfdfgdfgd435y4yj66grthykjykgzgdfgdg",
 	)
 );
 ?>

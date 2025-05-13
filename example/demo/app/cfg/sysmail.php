@@ -10,7 +10,7 @@ $data=array(
 		"Port"=>"587",
 		"useSMTPssl"=>false,
 		"Helo"=>"",
-		"FromName"=>"mwPHPlib",
+		"FromName"=>"Meralda",
 		
 	)
 );

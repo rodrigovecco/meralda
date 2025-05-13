@@ -1,6 +1,6 @@
 <?php
 $data=array(
-	"pagetitle"=>"mwPHPlib",
-	"sitename"=>"mwPHPlib",
+	"pagetitle"=>"Meralda",
+	"sitename"=>"Meralda",
 );
 ?>

@@ -1,6 +1,6 @@
 <?php
 /*
-PHPMWLIB by RVH 
+Meralda by RVH 
 */
 /*
 Puedan todos los seres lograr la felicidad y sus causas.
@@ -120,6 +120,7 @@ abstract class  mw_baseobj{
  * 
  * Extends `mw_baseobj` to provide functionality related to language message management
  * and application sub-manager integration.
+ *  * @property-read mw_app $mainap Instancia de la aplicación principal.
  */
 abstract class  mw_apsubbaseobj extends mw_baseobj{
 	/**
