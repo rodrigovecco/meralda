@@ -14,3 +14,5 @@ src/app/cfg
 src/mwap/modules/mwx
 src/public_html/res/modules/mwx
 src/sftp-config.json
+src/sysbackup
+**/.user.ini
