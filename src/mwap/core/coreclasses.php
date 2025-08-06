@@ -20,7 +20,7 @@ TAYATA OM GATE GATE PARAGATE PARASAMGATE BODHI SOHA
 TAYATA OM MUNI MUNI MAHA MUNIYE SOHA
 
 OM BENZA SATO SAMAYA MANU PALAYA BENZA SATO TENOPA TIDRA DRIHO MEKHABA SUTO KAYO MEKHABA
-SUPO KAYO MEKHABA ANU RAKTO MEKHABA SRWA SIDDHI ME PRA YATSA MEMTRA YATSA SARVA  KARMA ZTU TSAME
+SUPO KAYO MEKHABA ANU RAKTO MEKHABA SRWA SIDDHI ME PRA YATSA SARVA KARMA ZTU TSAME
 SITAM SIDDHI YAM KURU HUM HA HA HA HA HO BAGAVAN SARWA TATAGATA BENZA MAME MUNTZA BENSA BAWA MAHA 
 SAMAYA SATO AH
 
@@ -120,7 +120,7 @@ abstract class  mw_baseobj{
  * 
  * Extends `mw_baseobj` to provide functionality related to language message management
  * and application sub-manager integration.
- *  * @property-read mw_app $mainap Instancia de la aplicación principal.
+ * @property-read mw_app $mainap Instancia de la aplicación principal.
  */
 abstract class  mw_apsubbaseobj extends mw_baseobj{
 	/**
