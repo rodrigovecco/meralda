@@ -7,3 +7,7 @@
 [submodule "src/public_html/res/css"]
 	path = src/public_html/res/css
 	url = https://github.com/rodrigovecco/meralda_css.git
+[submodule "src/public_html/res/thirdparty"]
+	path = src/public_html/res/thirdparty
+	url = https://github.com/rodrigovecco/meralda-thirdparty-public.git
+	branch = master
