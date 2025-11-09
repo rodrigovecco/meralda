@@ -11,3 +11,7 @@
 	path = src/public_html/res/thirdparty
 	url = https://github.com/rodrigovecco/meralda-thirdparty-public.git
 	branch = master
+[submodule "docs"]
+	path = docs
+	url = https://github.com/rodrigovecco/meralda-docs.git
+	branch = main
