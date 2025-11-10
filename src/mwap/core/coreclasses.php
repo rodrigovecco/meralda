@@ -123,22 +123,13 @@ abstract class  mw_baseobj{
  * @property-read mw_app $mainap Instancia de la aplicación principal.
  */
 abstract class  mw_apsubbaseobj extends mw_baseobj{
-	/**
-     * @var object Reference to the main application instance.
-     */
 	private $mainap;
-	/**
-     * @var array|null Stores language order mapping.
-     */
+	
 	private $____lng_order;
-	/**
-     * @var string|null Stores the application sub-manager code.
-     */
+	
 	private $__ap_submanager_cod;
 	
-	/**
-     * @var string|null Stores the language messages manager code.
-     */
+	
 	private $lngmsgsmancod;
 	/**
      * Sets the language message manager code.
@@ -162,7 +153,7 @@ abstract class  mw_apsubbaseobj extends mw_baseobj{
 	}
 	 /**
      * Private getter for the language message manager code.
-     * 
+     * @internal
      * Initializes the value if not already set.
      * 
      * @return string The language message manager code.
@@ -228,20 +219,23 @@ abstract class  mw_apsubbaseobj extends mw_baseobj{
 	}
 	/**
      * Sets the language message manager code from another object.
-     * 
+     * @internal
      * @param object $obj The object containing `lngmsgsmancod`.
      * @return bool Returns true if successfully set.
      */
 	final function set_lngmsgsmancod_by_obj($obj){
 		return $this->set_lngmsgsmancod($obj->lngmsgsmancod);
 	}
-	
+	/**
+     * Sets the language message manager code from another object.
+     * @internal
+	 */
 	final function __get_lngmsgsmancod(){
 		return $this->__lngmsgsmancod;	
 	}
 	/**
      * Retrieves the application sub-manager code.
-     * 
+     * @internal
      * @return string|null The sub-manager code.
      */
 	final function __get_ap_submanager_cod(){

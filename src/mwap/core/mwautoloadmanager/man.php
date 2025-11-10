@@ -86,7 +86,7 @@ class  mw_autoload_manager{
 	}
 	function get_sub_pref_man_for_class($class_name){
 		if(!$class_name){
-			return $report;	
+			return false;	
 		}
 		if(!is_string($class_name)){
 			return false;
