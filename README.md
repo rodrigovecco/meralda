@@ -43,3 +43,25 @@ git clone --recurse-submodules https://github.com/rodrigovecco/meralda.git
 If You Already Cloned the Repo (Without Submodules)
 ```bash
 git submodule update --init --recursive
+```
+
+## 📦 Third-Party Submodules Structure
+
+Meralda uses two main third-party submodules:
+
+- **src/public_html/res/thirdparty**: Contains public client-side libraries (JavaScript, CSS, etc.) used in the browser. This is a Git submodule pointing to `meralda-thirdparty-public`.
+- **src/mwap/modulesext**: Contains server-side and PHP modules, not exposed to the public web. This is a Git submodule pointing to `meralda-thirdparty-modules`.
+
+This separation ensures that only safe, public assets are available in the web root, while PHP and sensitive modules remain in a non-public directory.
+
+Both submodules are managed via Git for version control and easy updates. The old `thirdparty.zip` is no longer used.
+
+### How to update submodules
+
+To update all submodules to their latest versions:
+
+```bash
+git submodule update --remote --merge
+```
+
+See each submodule's README and LICENSE for more information.
