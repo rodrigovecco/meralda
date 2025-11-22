@@ -1,0 +1,4 @@
+
+# Redirect all requests to the new thirdparty/cropper location
+RewriteEngine On
+RewriteRule ^(.*)$ /res/thirdparty/cropper/$1 [R=301,L]
