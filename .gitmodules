@@ -19,3 +19,6 @@
 	path = src/mwap/modulesext
 	url = https://github.com/rodrigovecco/meralda-thirdparty-modules.git
 	branch = main
+[submodule "src/public_html/res/meralda"]
+	path = src/public_html/res/meralda
+	url = https://github.com/rodrigovecco/meralda_public_res.git
