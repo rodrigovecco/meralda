@@ -22,3 +22,9 @@
 [submodule "src/public_html/res/meralda"]
 	path = src/public_html/res/meralda
 	url = https://github.com/rodrigovecco/meralda_public_res.git
+[submodule "src/mwap/modules/themes/default"]
+	path = src/mwap/modules/themes/default
+	url = file:///e:/meralda/meralda/src/mwap/modules/themes/default
+[submodule "src/public_html/res/themes/default"]
+	path = src/public_html/res/themes/default
+	url = file:///e:/meralda/meralda/src/public_html/res/themes/default
