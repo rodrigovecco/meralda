@@ -12,6 +12,7 @@ class mwap_demo_uiadmin_main extends mwmod_mw_ui_def_main_admin{
 	}
 	function create_template(){
 		return new mwtheme_default_mainuitemplate($this);
+		
 	}
 
 	

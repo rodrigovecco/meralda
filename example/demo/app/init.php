@@ -16,6 +16,7 @@ $GLOBALS["__mw_autoload_manager"]->output_error=true;
 // Example:
 //   $GLOBALS["__mw_autoload_manager"]->create_and_add_sub_pref_man("<code>", dirname(dirname(__FILE__))."/mwap/modules/themes/<code>", "mwtheme");
 // Its public assets go in public_html/res/themes/<code>/
+$GLOBALS["__mw_autoload_manager"]->create_and_add_sub_pref_man("default", dirname(dirname(__FILE__))."/mwap/modules/themes/default", "mwtheme");
 
 ///Meralda X
 //$GLOBALS["__mw_autoload_manager"]->create_and_add_sub_pref_man("mwx",dirname(dirname(__FILE__))."/mwap/modules/mwx");
