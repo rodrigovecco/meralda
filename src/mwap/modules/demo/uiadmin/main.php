@@ -10,6 +10,11 @@ class mwap_demo_uiadmin_main extends mwmod_mw_ui_def_main_admin{
 		$this->su_cods_for_side="demo,mwx,uidebug,users,cfg";
 		
 	}
+	function create_template(){
+		return new mwtheme_default_mainuitemplate($this);
+	}
+
+	
 	function createUISessionDataMan(){
 		return new mwmod_mw_data_session_man("demomainui");	
 		
