@@ -1,5 +1,5 @@
 <?php
-class mwap_demo_ap  extends mwmod_mw_ap_def{
+class mwap_demo_ap  extends mwmod_mw_ap_def2{
 	function __construct(){
 			
 	}

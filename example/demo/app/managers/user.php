@@ -1,6 +1,9 @@
 <?php
-
-$subman= new mwmod_mw_users_def_usersman($this,"users");
+// This file is no longer needed: user manager configuration was moved to mwmod_mw_ap_def2.
+// The project AP class (ap.php) extends mwmod_mw_ap_def2, which already instantiates
+// mwmod_mw_users2_def_usersman with roles, permissions, brute-force protection
+// and force-password-change enabled.
+$subman= new mwmod_mw_users2_def_usersman($this,"users");
 $subman->set_disable_login_after_fail(true,5,3);
 $subman->enable_login_session_token(true);
 $rolsman=new mwmod_mw_users_rols_rolsman($subman);
