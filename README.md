@@ -45,6 +45,41 @@ If You Already Cloned the Repo (Without Submodules)
 git submodule update --init --recursive
 ```
 
+## 🏗️ Creating a New Meralda Site/App/Portal
+
+To create a new Meralda-based application with your own repository:
+
+1. **Clone the complete Meralda repository with submodules:**
+   ```bash
+   git clone --recurse-submodules https://github.com/rodrigovecco/meralda.git my-project
+   cd my-project
+   ```
+
+2. **Remove the original Meralda remote:**
+   ```bash
+   git remote remove origin
+   ```
+
+3. **Set up your new repository:**
+   - Create an empty repository on GitHub/GitLab/Bitbucket (don't initialize with README)
+   - Add your new remote:
+   ```bash
+   git remote add origin https://github.com/yourusername/your-project.git
+   git push -u origin main
+   ```
+
+4. **Update submodules (keep them connected to Meralda):**
+   The submodules remain connected to their original Meralda remotes, allowing you to receive updates:
+   ```bash
+   git submodule update --remote --merge
+   ```
+
+This approach allows you to:
+- Start with the full Meralda framework
+- Maintain your own application code in your repository
+- Receive updates from Meralda submodules independently
+- Keep your customizations separate from the base framework
+
 ## 📦 Third-Party Submodules Structure
 
 Meralda uses two main third-party submodules:
