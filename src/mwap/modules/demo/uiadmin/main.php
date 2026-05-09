@@ -1,5 +1,5 @@
 <?php
-class mwap_demo_uiadmin_main extends mwmod_mw_ui_def_main_admin{
+class mwap_demo_uiadmin_main extends mwmod_mw_ui2_def_main_def{
 	
 	function __construct($ap){
 		$this->set_mainap($ap);	
