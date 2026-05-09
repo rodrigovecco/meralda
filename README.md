@@ -99,4 +99,45 @@ To update all submodules to their latest versions:
 git submodule update --remote --merge
 ```
 
+---
+
+## 🤖 AI-Assisted Project Setup (Agent Workflow)
+
+Meralda includes a structured set of AI agent instruction files to help you set up and develop a project with minimal manual steps. This is the recommended way to start a new project when using an AI coding assistant (GitHub Copilot, Cursor, etc.).
+
+### How it works
+
+1. **Bootstrap agent** — a workspace-level `AGENTS.md` drives the initial setup: cloning, submodules, new remote, database, virtual host.
+   A template is available at `docs/ai/templates/AGENTS.bootstrap.md`.
+
+2. **Agent config file** — `meralda-agent.config.yml` at the workspace root tells every agent which paths are read-only, where the project module lives, and which other Meralda projects can be used as reference.
+   Template: `docs/ai/templates/meralda-agent.config.yml`.
+
+3. **Specialized agents** — once the project is initialized, the agents in `docs/agents/` cover each development phase:
+
+| Agent file | When to use |
+|---|---|
+| `post-bootstrap-app-init.md` | Copy demo → `src/app/`, review submodules, set up database |
+| `module-init.md` | Create the project's custom module (replaces the demo) |
+| `app-customization.md` | Configure `cfg.ini`, SMTP, locale, login page |
+| `reference-projects.md` | Register other Meralda projects as reference for agents |
+| `architecture-overview.md` | Read before any development task — entry points, autoloader, init chain |
+| `module-development.md` | Managers, items, collections, queries, AJAX endpoints, PHPDoc |
+| `ui-development.md` | Admin UI classes, data grids, forms |
+
+### Quick start
+
+```
+workspace-root/
+├── AGENTS.md                    ← copy from docs/ai/templates/AGENTS.bootstrap.md
+├── meralda-agent.config.yml     ← copy from docs/ai/templates/meralda-agent.config.yml
+└── meralda/                     ← this repository
+```
+
+1. Create a workspace folder and place the two template files at the root.
+2. Tell the AI assistant to read `AGENTS.md` and follow the bootstrap workflow.
+3. After bootstrap, switch to the appropriate specialized agent from `docs/agents/` for each task.
+
+> The agents never modify read-only submodules. All project code lives in `src/app/` and `src/mwap/modules/[your-prefix]/`.
+
 See each submodule's README and LICENSE for more information.
