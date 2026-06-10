@@ -146,19 +146,20 @@ If you want the AI to perform the full bootstrap without manually cloning first,
 Set up a new Meralda workspace automatically.
 
 Requirements:
-1) Ask me for a destination folder and a project folder name.
-2) Clone https://github.com/rodrigovecco/meralda.git using --recurse-submodules into that destination.
-3) At the workspace root (one level above the cloned meralda folder), copy:
-   - meralda/docs/ai/templates/AGENTS.bootstrap.md -> AGENTS.md
-   - meralda/docs/ai/templates/meralda-agent.config.yml -> meralda-agent.config.yml
-4) If the repository already exists locally, run:
+1) Use the currently opened workspace root as destination.
+2) If a clone folder name is required, use mymeraldaproject as the default value.
+3) Clone https://github.com/rodrigovecco/meralda.git using --recurse-submodules into ./mymeraldaproject.
+4) At the workspace root (one level above the cloned mymeraldaproject folder), copy:
+   - mymeraldaproject/docs/ai/templates/AGENTS.bootstrap.md -> AGENTS.md
+   - mymeraldaproject/docs/ai/templates/meralda-agent.config.yml -> meralda-agent.config.yml
+5) If the repository already exists locally, run:
    git submodule update --init --recursive
-5) Validate and report:
+6) Validate and report:
    - git submodule status
    - that AGENTS.md exists at workspace root
    - that meralda-agent.config.yml exists at workspace root
-6) Do not ask me to run commands manually. Execute the required terminal commands yourself.
-7) At the end, show a short summary of what was created and the next recommended agent file to use.
+7) Do not ask me to run commands manually. Execute the required terminal commands yourself.
+8) At the end, show a short summary of what was created and the next recommended agent file to use.
 ```
 
 > The agents never modify read-only submodules. All project code lives in `src/app/` and `src/mwap/modules/[your-prefix]/`.
