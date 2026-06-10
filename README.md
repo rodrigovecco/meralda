@@ -138,6 +138,29 @@ workspace-root/
 2. Tell the AI assistant to read `AGENTS.md` and follow the bootstrap workflow.
 3. After bootstrap, switch to the appropriate specialized agent from `docs/agents/` for each task.
 
+### One-shot prompt for VS Code Chat (clone + agents)
+
+If you want the AI to perform the full bootstrap without manually cloning first, copy/paste this prompt in VS Code Chat:
+
+```text
+Set up a new Meralda workspace automatically.
+
+Requirements:
+1) Ask me for a destination folder and a project folder name.
+2) Clone https://github.com/rodrigovecco/meralda.git using --recurse-submodules into that destination.
+3) At the workspace root (one level above the cloned meralda folder), copy:
+   - meralda/docs/ai/templates/AGENTS.bootstrap.md -> AGENTS.md
+   - meralda/docs/ai/templates/meralda-agent.config.yml -> meralda-agent.config.yml
+4) If the repository already exists locally, run:
+   git submodule update --init --recursive
+5) Validate and report:
+   - git submodule status
+   - that AGENTS.md exists at workspace root
+   - that meralda-agent.config.yml exists at workspace root
+6) Do not ask me to run commands manually. Execute the required terminal commands yourself.
+7) At the end, show a short summary of what was created and the next recommended agent file to use.
+```
+
 > The agents never modify read-only submodules. All project code lives in `src/app/` and `src/mwap/modules/[your-prefix]/`.
 
 See each submodule's README and LICENSE for more information.
