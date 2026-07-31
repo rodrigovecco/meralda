@@ -10,7 +10,7 @@
 [submodule "src/public_html/res/thirdparty"]
 	path = src/public_html/res/thirdparty
 	url = https://github.com/rodrigovecco/meralda-thirdparty-public.git
-	branch = master
+	branch = main
 [submodule "docs"]
 	path = docs
 	url = https://github.com/rodrigovecco/meralda-docs.git
