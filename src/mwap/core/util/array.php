@@ -619,10 +619,8 @@ function mw_array2urlquery($data) {
 	foreach ($args as $k => $v) {
 		if(!is_null($v)) {
 			$v = (string) $v;
-		} else {
-			$v = "";
+			$a[] = $k . "=" . urlencode($v);
 		}
-		$a[] = $k . "=" . urlencode($v);
 	}
 	
 	return implode("&", $a);
