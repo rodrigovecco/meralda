@@ -738,10 +738,8 @@ function mw_array_bydefault($datos, $pordefecto, $strvacioaNULL = false) {
 	}
 	
 	if ($strvacioaNULL) {
-		if (!is_array($datos)) {
-			if (strlen($datos) <= 0) {
-				$datos = null;
-			}
+		if (is_string($datos) && strlen($datos) <= 0) {
+			$datos = null;
 		}
 	}
 	
