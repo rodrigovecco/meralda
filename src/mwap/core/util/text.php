@@ -4,6 +4,10 @@
 /**
  * Converts a value to a number if it is numeric.
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_text::get_number()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
+ * 
  * @param mixed $val Value to convert.
  * @return int|float|false Returns the number or false if not numeric.
  */
@@ -16,6 +20,10 @@ function mw_get_number(mixed $val): int|float|false {
 
 /**
  * Converts a value to string if it is numeric or string.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_text::get_string()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
  * 
  * @param mixed $val Value to convert.
  * @return string|false Returns the string or false if not convertible.
@@ -30,6 +38,10 @@ function mw_get_string(mixed $val): string|false {
 /**
  * Escapes special characters for use in JavaScript.
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_text::js_escape()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
+ * 
  * @param string $str String to escape.
  * @return string Escaped string.
  */
@@ -39,6 +51,9 @@ function mw_text_nl_js(string $str): string {
 
 /**
  * Validates that a string is a valid JS object code (without special characters).
+ * 
+ * @deprecated 2026-10-11 Sole caller was mw_array2jsval() (also deprecated).
+ *             No framework caller remains; slated for removal together with it.
  * 
  * @param mixed $str Value to validate.
  * @return string|false Returns the string if valid, false if it contains disallowed characters.
@@ -64,6 +79,10 @@ function mw_text_js_check_obj_cod(mixed $str): string|false {
 
 /**
  * Replaces accented and special characters with ASCII equivalents.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_text::replace_lng_chars()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
  * 
  * @param string $str String to process.
  * @param string|false $mode Operation mode:
@@ -231,6 +250,10 @@ function mw_text_replace_lngchars(
 /**
  * Escapes CDATA for use in XML.
  * 
+ * @deprecated 2026-10-11 Sole caller was mw_array2xml_parse_node_string_value()
+ *             (also deprecated). Its purpose is already covered by
+ *             mwmod_mw_data_xml::xml_cdata() in the mw modules submodule.
+ * 
  * @param string $str String to process.
  * @return string String with escaped CDATA.
  */
@@ -240,6 +263,9 @@ function mw_str_parse_cdata(string $str): string {
 
 /**
  * Generates a JavaScript script with an alert message.
+ * 
+ * @deprecated 2026-10-11 No framework caller remains. Kept only for
+ *             backwards compatibility; slated for removal.
  * 
  * @param string|array $msg Message to display in the alert.
  * @return string|null HTML with the script or null if no message.
@@ -257,6 +283,9 @@ function mw_text_js_msgalert(string|array $msg): ?string {
 /**
  * Converts a string to plain alphanumeric characters (ASCII).
  * Replaces special and non-alphanumeric characters with underscore.
+ * 
+ * @deprecated 2026-10-11 No framework caller remains. Kept only for
+ *             backwards compatibility; slated for removal.
  * 
  * @param string $str String to process.
  * @return string String with only alphanumeric characters and underscores.
@@ -276,6 +305,10 @@ function mw_text_plain_chars(string $str): string {
 /**
  * Validates an email address.
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_text::check_email()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
+ * 
  * @param string $address Email address to validate.
  * @param bool $allowEmpty If true, allows empty addresses.
  * @return bool True if the email is valid (or empty when allowed).
@@ -287,9 +320,31 @@ function mw_checkemail(string $address, bool $allowEmpty = false): bool {
 	
 	return filter_var($address, FILTER_VALIDATE_EMAIL) !== false;
 }
+/**
+ * Generates a random string of digits, uppercase and lowercase letters.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_random::string()
+ *             in the mw modules submodule. The legacy implementation used
+ *             the predictable rand() instead of a CSPRNG. Kept only for
+ *             backwards compatibility; slated for removal.
+ * 
+ * @param int $len Number of characters to generate.
+ * @return string The generated string.
+ */
 function randPass($len){
 	return mw_randPass($len);
 }
+/**
+ * Generates a random string of digits, uppercase and lowercase letters.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_random::string()
+ *             in the mw modules submodule. The legacy implementation used
+ *             the predictable rand() instead of a CSPRNG. Kept only for
+ *             backwards compatibility; slated for removal.
+ * 
+ * @param int $len Number of characters to generate.
+ * @return string The generated string.
+ */
 function mw_randPass($len){
 	$pw = ''; 
 	for($i=0;$i<$len;$i++) {

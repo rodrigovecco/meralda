@@ -16,6 +16,10 @@
  * Traverses nested objects and arrays, converting all objects
  * to their array representation using get_object_vars().
  * 
+ * @deprecated 2026-10-10 No framework caller remains. Convert objects
+ *             locally with get_object_vars() instead (see
+ *             mwmod_mw_mail_ui_debug_sendmail::get_php_mailer_info()).
+ * 
  * @param mixed $data Object, array, or scalar value to convert.
  * @return mixed Converted array or original scalar value.
  */
@@ -37,53 +41,16 @@ function mw_convert_object_to_array($data) {
  * Supports accessing nested values using keys separated by dots.
  * Example: mw_array_get_sub_key($arr, "user.profile.name")
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::get_sub_key()
+ *             in the mw modules submodule. This shim only delegates; it is
+ *             kept for backwards compatibility and slated for removal.
+ * 
  * @param array|mw_object_as_array $a Source array or object.
  * @param string $key Dot-separated key path (e.g., "parent.child.value").
  * @return mixed Value at the specified path, or false if not found.
  */
 function mw_array_get_sub_key($a, $key = "") {
-	if (mw_array_is_obj_mw_array_allowed($a)) {
-		return $a->get_prop_from_key_dot($key);
-	}
-	if (!$key) {
-		return $a;
-	}
-
-	$val = $a;
-	$keys1 = explode(".", $key);
-	$keys = [];
-	$keysleft = [];
-	
-	foreach ($keys1 as $k) {
-		if ($k) {
-			$keys[] = $k;
-			$keysleft[] = $k;
-		}
-	}
-	
-	if (sizeof($keys) == 0) {
-		return $val;
-	}
-	
-	foreach ($keys as $k) {
-		if (mw_array_is_obj_mw_array_allowed($val)) {
-			return $val->get_prop_from_key_dot(implode(".", $keysleft));
-		}
-
-		if (!is_array($val)) {
-			return false;
-		}
-		
-		array_shift($keysleft);
-		
-		if (isset($val[$k])) {
-			$val = $val[$k];
-		} else {
-			$val = null;
-		}
-	}
-	
-	return $val;
+	return mwmod_mw_util_array::get_sub_key($a, $key);
 }
 
 /**
@@ -92,6 +59,10 @@ function mw_array_get_sub_key($a, $key = "") {
  * Creates intermediate arrays as needed. Supports mw_object_as_array objects.
  * Example: mw_array_set_sub_key("user.profile.name", "John", $arr)
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::set_sub_key()
+ *             in the mw modules submodule. This shim only delegates; it is
+ *             kept for backwards compatibility and slated for removal.
+ * 
  * @param string|int $key Dot-separated key path.
  * @param mixed $val Value to set.
  * @param array|mw_object_as_array &$a Reference to target array or object.
@@ -99,73 +70,7 @@ function mw_array_get_sub_key($a, $key = "") {
  * @return array|false Modified array or false on failure.
  */
 function mw_array_set_sub_key($key, $val, &$a, $reemplazarsinoesarray = true) {
-	if (!$key) {
-		return false;
-	}
-	
-	if (mw_array_is_obj_mw_array_allowed($a)) {
-		return $a->set_prop_from_key_dot_if_allowed_from_mw_array_set_sub_key($key, $val);
-	}
-
-	if (!is_array($a)) {
-		$a = [];
-	}
-	
-	if (!is_string($key) && !is_numeric($key)) {
-		return false;
-	}
-
-	$keys1 = explode(".", $key);
-	$keys = [];
-	$keysleft = [];
-	
-	foreach ($keys1 as $k) {
-		if ($k) {
-			$keys[] = $k;
-			$keysleft[] = $k;
-		}
-	}
-
-	if (sizeof($keys) == 0) {
-		return false;
-	}
-	
-	$lastkey = array_pop($keys);
-	$cambiar = &$a;
-
-	if (sizeof($keys) > 0) {
-		foreach ($keys as $k) {
-			array_shift($keysleft);
-			
-			if (!isset($cambiar[$k])) {
-				$cambiar[$k] = [];
-			}
-			
-			if (mw_array_is_obj_mw_array_allowed($cambiar[$k])) {
-				return $cambiar[$k]->set_prop_from_key_dot_if_allowed_from_mw_array_set_sub_key(implode(".", $keysleft), $val);
-			}
-			
-			if (!is_array($cambiar[$k])) {
-				if ($reemplazarsinoesarray) {
-					$cambiar[$k] = [];
-				} else {
-					return false;
-				}
-			}
-			
-			$cambiar1 = &$cambiar[$k];
-			$cambiar = &$cambiar1;
-		}
-	}
-	
-	if (isset($cambiar[$lastkey])) {
-		if (mw_array_is_obj_mw_array_allowed($cambiar[$lastkey])) {
-			return $cambiar[$lastkey]->set_all_prop_from_mw_array_set_sub_key($val);
-		}
-	}
-
-	$cambiar[$lastkey] = $val;
-	return $a;
+	return mwmod_mw_util_array::set_sub_key($key, $val, $a, $reemplazarsinoesarray);
 }
 
 /**
@@ -174,27 +79,25 @@ function mw_array_set_sub_key($key, $val, &$a, $reemplazarsinoesarray = true) {
  * Verifies the object is a subclass of mw_object_as_array and
  * has array access enabled.
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::is_obj_array_allowed()
+ *             in the mw modules submodule. This shim only delegates; it is
+ *             kept for backwards compatibility and slated for removal.
+ * 
  * @param mixed $obj Object to check.
  * @return bool True if object is an allowed array-like object.
  */
 function mw_array_is_obj_mw_array_allowed($obj): bool {
-	if (!$obj) {
-		return false;
-	}
-	
-	if (is_object($obj)) {
-		if (is_subclass_of($obj, "mw_object_as_array")) {
-			return $obj->__mw_array_allow_use_this_object();
-		}
-	}
-	
-	return false;
+	return mwmod_mw_util_array::is_obj_array_allowed($obj);
 }
 /**
  * Converts an array to an HTML unordered list.
  * 
  * Recursively renders nested arrays as nested lists. Supports
  * custom callback functions for rendering.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::to_list()
+ *             in the mw modules submodule. This shim only delegates; it is
+ *             kept for backwards compatibility and slated for removal.
  * 
  * @param mixed $data Array, object, or scalar data to render.
  * @param array|null $parametros Rendering parameters:
@@ -205,88 +108,19 @@ function mw_array_is_obj_mw_array_allowed($obj): bool {
  * @return string HTML list markup.
  */
 function mw_array2list($data, $parametros = null): string {
-	$r = "";
-	
 	if (!is_array($parametros)) {
 		$parametros = [];
 	}
-	
-	if (!empty($parametros["nuevo"])) {
-		$r .= "<ul>";
+	$params = [];
+	$params["new"] = !empty($parametros["nuevo"]);
+	$params["name"] = $parametros["nombre"] ?? "";
+	if (!empty($parametros["fnc_si_array"])) {
+		$params["fnc_if_array"] = $parametros["fnc_si_array"];
 	}
-	
-	if (is_object($data)) {
-		$obj = $data;
-		if ($obj) {
-			if (mw_array_is_obj_mw_array_allowed($obj)) {
-				$data = $obj->get_props_as_array_or_str();
-			} elseif (method_exists($obj, '__toString')) {
-				$data = $obj . " [" . get_class($obj) . "]";
-			} else {
-				$data = "[" . get_class($obj) . "]";
-			}
-		} else {
-			$data = "NULL";
-		}
+	if (!empty($parametros["fnc_si_dato"])) {
+		$params["fnc_if_value"] = $parametros["fnc_si_dato"];
 	}
-	
-	if (is_bool($data)) {
-		$data = $data ? "true" : "false";
-	}
-	
-	$fnc_si_array = false;
-	if (isset($parametros["fnc_si_array"]) && $parametros["fnc_si_array"]) {
-		if (is_string($parametros["fnc_si_array"])) {
-			if (function_exists($parametros["fnc_si_array"])) {
-				$fnc_si_array = $parametros["fnc_si_array"];
-			}
-		}
-	}
-	
-	$fnc_si_dato = false;
-	if (isset($parametros["fnc_si_dato"]) && $parametros["fnc_si_dato"]) {
-		if (is_string($parametros["fnc_si_dato"])) {
-			if (function_exists($parametros["fnc_si_dato"])) {
-				$fnc_si_dato = $parametros["fnc_si_dato"];
-			}
-		}
-	}
-
-	if (is_array($data)) {
-		if ($fnc_si_array) {
-			$r .= call_user_func($fnc_si_array, $data, $parametros);
-		} else {
-			$oncl = "";
-			$r .= "<li><div $oncl>";
-			$r .= $parametros["nombre"] ?? "";
-			$r .= "</div>";
-			$r .= "<ul>";
-
-			foreach ($data as $key => $val) {
-				$parametros_n = $parametros;
-				$parametros_n["nuevo"] = 0;
-				$parametros_n["nombre"] = $key;
-				$r .= mw_array2list($val, $parametros_n);
-			}
-			
-			$r .= "</ul>";
-			$r .= "</li>";
-		}
-	} else {
-		if ($fnc_si_dato) {
-			$r .= call_user_func($fnc_si_dato, $data, $parametros);
-		} else {
-			$r .= "<li>";
-			$r .= ($parametros["nombre"] ?? "") . " == > " . $data;
-			$r .= "</li>";
-		}
-	}
-
-	if (isset($parametros["nuevo"]) && $parametros["nuevo"]) {
-		$r .= "</ul>";
-	}
-	
-	return $r;
+	return mwmod_mw_util_array::to_list($data, $params);
 }
 
 /**
@@ -294,6 +128,9 @@ function mw_array2list($data, $parametros = null): string {
  * 
  * Handles arrays (to objects), strings, numbers, booleans, nulls,
  * and mw_object_as_array instances.
+ * 
+ * @deprecated 2026-10-10 No framework caller remains. Kept only for
+ *             backwards compatibility; slated for removal.
  * 
  * @param mixed $data PHP value to convert.
  * @param bool $addbrline Whether to add line breaks between object properties.
@@ -366,40 +203,27 @@ function mw_array2jsval($data, $addbrline = false): string {
  * Handles booleans, mw_object_as_array instances, and objects
  * with __toString method.
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::get_obj_as_array_or_str()
+ *             in the mw modules submodule. This shim only delegates; it is
+ *             kept for backwards compatibility and slated for removal.
+ * 
  * @param mixed $data Value to convert.
  * @return mixed Array, string representation, or original value.
  */
 function mw_array_get_obj_as_array_or_str($data) {
-	if (is_bool($data)) {
-		return $data ? "true" : "false";
-	}
-
-	if (is_object($data)) {
-		$obj = $data;
-		if ($obj) {
-			if (mw_array_is_obj_mw_array_allowed($obj)) {
-				$data = $obj->get_props_as_array_or_str();
-			} elseif (method_exists($obj, '__toString')) {
-				$data = $obj . "";
-			} else {
-				$data = "";
-			}
-		} else {
-			$data = "NULL";
-		}
-	}
-	
-	if (is_bool($data)) {
-		$data = $data ? "true" : "false";
-	}
-	
-	return $data;
+	return mwmod_mw_util_array::get_obj_as_array_or_str($data);
 }
 /**
  * Abstract base class for objects that can be used as arrays.
  * 
  * Provides array-like access to object properties with dot notation support.
  * Subclasses can control read/write access through method overrides.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_objectasarray in the
+ *             mw modules submodule. Kept as the legacy ancestor so that
+ *             existing subclasses and type checks (is_subclass_of /
+ *             instanceof mw_object_as_array) keep working; new code must
+ *             extend mwmod_mw_util_objectasarray instead. Slated for removal.
  */
 abstract class mw_object_as_array {
 	
@@ -532,31 +356,26 @@ abstract class mw_object_as_array {
  * 
  * Wraps mw_array2list() with a title and container div.
  * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::to_list_echo()
+ *             in the mw modules submodule. This shim only delegates; it is
+ *             kept for backwards compatibility and slated for removal.
+ * 
  * @param mixed $data Array or data to render.
  * @param string $titulo Title/label for the list.
  * @param bool $echo Whether to echo the output.
  * @return string HTML markup.
  */
 function mw_array2list_echo($data, $titulo = "DATA", $echo = true) {
-	$parametros["nuevo"] = true;
-	$parametros["expandible"] = true;
-	$parametros["nombre"] = $titulo;
-
-	$html = "<div align='left'>";
-	$html .= mw_array2list($data, $parametros);
-	$html .= "</div>";
-	
-	if ($echo) {
-		echo $html;
-	}
-	
-	return $html;
+	return mwmod_mw_util_array::to_list_echo($data, $titulo, $echo);
 }
 
 /**
  * Converts an array to a JavaScript alert-safe string.
  * 
  * Escapes special characters and joins array elements with newlines.
+ * 
+ * @deprecated 2026-10-11 Sole caller was mw_text_js_msgalert() (also deprecated).
+ *             No framework caller remains; slated for removal.
  * 
  * @param mixed $data Array or string to convert.
  * @return string Escaped string for JavaScript alert.
@@ -576,6 +395,9 @@ function mw_array2jsalert($data) {
  * Converts an array to PHP assignment statements.
  * 
  * Generates PHP code that reconstructs the array structure.
+ * 
+ * @deprecated 2026-10-10 No framework caller remains. Kept only for
+ *             backwards compatibility; slated for removal.
  * 
  * @param mixed $data Array or value to convert.
  * @param string $array_name Base variable name for assignments.
@@ -599,6 +421,10 @@ function mw_array2php($data, $array_name = '$datos') {
  * Converts an array to URL query string format.
  * 
  * Handles nested arrays with bracket notation.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::to_url_query()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
  * 
  * @param array $data Array to convert.
  * @return string|false URL query string or false on failure.
@@ -631,6 +457,9 @@ function mw_array2urlquery($data) {
  * 
  * Helper function for mw_array2urlquery().
  * 
+ * @deprecated 2026-10-11 Only used by mw_array2urlquery() (also deprecated).
+ *             Its logic now lives in mwmod_mw_util_array::to_url_query().
+ * 
  * @param array &$arg Reference to arguments array.
  * @param mixed $data Current data to process.
  * @param string|false $array_name Current key path.
@@ -661,6 +490,9 @@ function mw_array2urlarg(&$arg, $data, $array_name = false) {
  * Used for XML serialization to preserve type information.
  * Corresponds to the JS function fp_ajax_xml2obj_item.
  * 
+ * @deprecated 2026-10-10 No framework caller remains. Kept only for
+ *             backwards compatibility; slated for removal.
+ * 
  * @param mixed $data Value to check.
  * @return string Data type: "Object", "Bool", "Int", "Numeric", or "String".
  */
@@ -685,6 +517,9 @@ function mw_array2xml_str_data_type($data): string {
  * 
  * Handles booleans, nulls, numbers, and wraps special characters
  * in CDATA sections when needed.
+ * 
+ * @deprecated 2026-10-10 No framework caller remains. Kept only for
+ *             backwards compatibility; slated for removal.
  * 
  * @param mixed $val Value to parse.
  * @return mixed Formatted value for XML output.
@@ -727,6 +562,10 @@ function mw_array2xml_parse_node_string_value($val) {
  * Merges array with default values.
  * 
  * Recursively applies default values where the data is null or missing.
+ * 
+ * @deprecated 2026-10-11 Superseded by mwmod_mw_util_array::by_default()
+ *             in the mw modules submodule. Kept only for backwards
+ *             compatibility; slated for removal.
  * 
  * @param mixed $datos Source data array.
  * @param mixed $pordefecto Default values to apply.
