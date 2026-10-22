@@ -55,10 +55,13 @@ To create a new Meralda-based application with your own repository:
    cd my-project
    ```
 
-2. **Remove the original Meralda remote:**
+2. **Divorce the superproject from Meralda** (the submodules keep their own remotes):
    ```bash
    git remote remove origin
    ```
+   > Only the **superproject** remote changes. Do **not** touch the submodule URLs in
+   > `.gitmodules`. See the [Repository Divorce](#-repository-divorce--detach-from-meralda-keep-the-submodules)
+   > section below for the full procedure and how to verify it.
 
 3. **Set up your new repository:**
    - Create an empty repository on GitHub/GitLab/Bitbucket (don't initialize with README)
@@ -80,7 +83,133 @@ This approach allows you to:
 - Receive updates from Meralda submodules independently
 - Keep your customizations separate from the base framework
 
-## 📦 Third-Party Submodules Structure
+## � Repository Divorce — Detach from Meralda, Keep the Submodules
+
+**Divorcing** the repository means turning this clone into an **independent repository for your
+own project**: the **superproject** stops pointing at Meralda, while every **submodule keeps its
+own `.git` directory and its own remote**. The submodules are shared components — they keep
+receiving updates from the Meralda repositories independently of where your project lives.
+
+> **Golden rule:** a divorce changes **only the superproject's `origin` remote**.
+> Never edit the submodule URLs in `.gitmodules`, never run `git submodule deinit`,
+> and never `git rm` a submodule or delete its `.git` directory.
+
+### Step 1 — Create the destination repository
+
+Create an **empty** repository (GitHub / GitLab / Bitbucket): no README, no `.gitignore`,
+no license. That way the first push has nothing to merge.
+
+### Step 2 — Swap the remote (default: keep Meralda's history)
+
+```bash
+cd meralda
+git remote remove origin                                        # cut the link with Meralda
+git remote add origin https://github.com/yourusername/your-project.git
+git push -u origin main
+```
+
+The project keeps Meralda's commits as background history and the submodules are untouched.
+**This is the recommended option.**
+
+Never push automatically in an agent-driven workflow: confirm with the user first.
+
+### Step 3 — Verify the divorce
+
+```bash
+git remote -v
+git submodule status
+git config -f .gitmodules --get-regexp url
+```
+
+| Check | Expected result |
+|---|---|
+| `git remote -v` | only `origin` → your new repository; no `meralda.git` anywhere |
+| `git submodule status` | every submodule listed and checked out (no `-` prefix) |
+| `.gitmodules` URLs | **unchanged** — still pointing at the Meralda submodule repositories |
+
+The submodules are still registered as gitlinks (`mode 160000`), not as regular files:
+
+```bash
+git ls-files -s docs src/mwap/modules/themes/default
+# 160000 <sha> 0<TAB>docs
+# 160000 <sha> 0<TAB>src/mwap/modules/themes/default
+```
+
+If a path shows `100644` / `100755` instead of `160000`, it was added as regular files — the
+divorce went wrong and must be redone before pushing.
+
+### Step 4 — Full divorce, clean history (only when explicitly requested)
+
+The default divorce keeps Meralda's history. If the user explicitly wants to **erase that
+history** and start with a single initial commit, the submodules must stay intact while the
+superproject history is rewritten.
+
+#### 4a. Safest way: orphan branch (submodules untouched, recommended)
+
+```bash
+cd meralda
+git checkout --orphan fresh            # new branch with no history
+git add -A                             # submodules are already gitlinks, nothing to re-register
+git commit -m "Initial project scaffold based on Meralda"
+git branch -M main                     # replace main. If main still exists use: git branch -D main first
+git remote remove origin
+git remote add origin https://github.com/yourusername/your-project.git
+git push -u origin main
+```
+
+This deletes no `.git` directory, so the submodule registration (`gitlinks` + `.git/modules/**`)
+stays exactly as it was.
+
+#### 4b. Wipe `.git` entirely (only if a pristine repo is required)
+
+The bootstrap agent documents this variant. **Critical ordering:** submodules must be
+re-registered **before** the first `git add`.
+
+```bash
+# 1. Back up the submodule definitions (removing .git deletes the gitlink info)
+cp meralda/.gitmodules ../gitmodules.bak
+
+# 2. Wipe the old history
+cd meralda
+rm -rf .git
+git init
+
+# 3. Re-register every submodule from .gitmodules BEFORE any git add
+git submodule add https://github.com/rodrigovecco/meralda_mw_modules.git          src/mwap/modules/mw
+git submodule add https://github.com/rodrigovecco/meralda_js_submodule.git        src/public_html/res/js
+git submodule add https://github.com/rodrigovecco/meralda_css.git                  src/public_html/res/css
+git submodule add https://github.com/rodrigovecco/meralda-thirdparty-public.git    src/public_html/res/thirdparty
+git submodule add https://github.com/rodrigovecco/meralda-docs.git                 docs
+git submodule add https://github.com/rodrigovecco/meralda-thirdparty-modules.git   src/mwap/modulesext
+git submodule add https://github.com/rodrigovecco/meralda_public_res.git           src/public_html/res/meralda
+git submodule add https://github.com/rodrigovecco/meralda-theme-default.git        src/mwap/modules/themes/default
+git submodule add https://github.com/rodrigovecco/meralda-theme-default-public.git src/public_html/res/themes/default
+
+# 4. Only now stage and commit
+git add .
+git commit -m "Initial project scaffold based on Meralda"
+git remote add origin https://github.com/yourusername/your-project.git
+git push -u origin main
+```
+
+> **NEVER run `git add .` in the new repo before the submodules are registered.** Doing so
+> explodes the submodule directories into thousands of individually tracked files and they stop
+> behaving as submodules.
+
+> If `git submodule add` complains that the path already exists or is not a valid git repo, the
+> submodule directory still holds a stale `.git` pointer into the deleted `.git/modules/...`.
+> Remove **only** that `.git` file from the submodule directory and retry the `git submodule add`.
+
+### What the divorce must never change
+
+| Do not… | Why |
+|---|---|
+| Edit `url =` lines in `.gitmodules` | Submodules are shared across all Meralda projects; rewriting the URL breaks upstream updates |
+| `git submodule deinit` / `git rm` a submodule | Removes it from the project instead of just detaching the superproject |
+| Delete a submodule's `.git` / `.git/modules/**` | Destroys the gitlink and the submodule's own history |
+| Commit project code inside a submodule | Submodules are read-only framework components; project code goes in `src/app/` and `src/mwap/modules/[your-prefix]/` |
+
+## �📦 Third-Party Submodules Structure
 
 Meralda uses two main third-party submodules:
 
